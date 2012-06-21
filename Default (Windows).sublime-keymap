@@ -1,0 +1,26 @@
+[
+  { "keys": ["ctrl+k", "up"], "command": "split_pane", "args": {"travel_to_pane_in_direction": "up"} },
+  { "keys": ["ctrl+k", "right"], "command": "split_pane", "args": {"travel_to_pane_in_direction": "right"} },
+  { "keys": ["ctrl+k", "down"], "command": "split_pane", "args": {"travel_to_pane_in_direction": "down"} },
+  { "keys": ["ctrl+k", "left"], "command": "split_pane", "args": {"travel_to_pane_in_direction": "left"} },
+  
+  { "keys": ["ctrl+k", "shift+up"], "command": "split_pane", "args": {"carry_file_to_pane_in_direction": "up"} },
+  { "keys": ["ctrl+k", "shift+right"], "command": "split_pane", "args": {"carry_file_to_pane_in_direction": "right"} },
+  { "keys": ["ctrl+k", "shift+down"], "command": "split_pane", "args": {"carry_file_to_pane_in_direction": "down"} },
+  { "keys": ["ctrl+k", "shift+left"], "command": "split_pane", "args": {"carry_file_to_pane_in_direction": "left"} },
+  
+  { "keys": ["ctrl+k", "alt+up"], "command": "split_pane", "args": {"clone_file_to_pane_in_direction": "up"} },
+  { "keys": ["ctrl+k", "alt+right"], "command": "split_pane", "args": {"clone_file_to_pane_in_direction": "right"} },
+  { "keys": ["ctrl+k", "alt+down"], "command": "split_pane", "args": {"clone_file_to_pane_in_direction": "down"} },
+  { "keys": ["ctrl+k", "alt+left"], "command": "split_pane", "args": {"clone_file_to_pane_in_direction": "left"} },
+  
+  { "keys": ["ctrl+k", "ctrl+up"], "command": "split_pane", "args": {"create_pane_in_direction": "up"} },
+  { "keys": ["ctrl+k", "ctrl+right"], "command": "split_pane", "args": {"create_pane_in_direction": "right"} },
+  { "keys": ["ctrl+k", "ctrl+down"], "command": "split_pane", "args": {"create_pane_in_direction": "down"} },
+  { "keys": ["ctrl+k", "ctrl+left"], "command": "split_pane", "args": {"create_pane_in_direction": "left"} },
+  
+  { "keys": ["ctrl+k", "ctrl+shift+up"], "command": "split_pane", "args": {"destroy_pane_in_direction": "up"} },
+  { "keys": ["ctrl+k", "ctrl+shift+right"], "command": "split_pane", "args": {"destroy_pane_in_direction": "right"} },
+  { "keys": ["ctrl+k", "ctrl+shift+down"], "command": "split_pane", "args": {"destroy_pane_in_direction": "down"} },
+  { "keys": ["ctrl+k", "ctrl+shift+left"], "command": "split_pane", "args": {"destroy_pane_in_direction": "left"} }
+]
