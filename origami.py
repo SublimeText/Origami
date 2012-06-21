@@ -121,19 +121,27 @@ class SplitPaneCommand(sublime_plugin.TextCommand):
 			cells.remove(cell_to_remove)
 			if direction == "up":
 				rows.pop(cell_to_remove[YMAX])
-				current_cell[YMIN] = cell_to_remove[YMIN]
+				adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cell_to_remove, "down")
+				for cell in adjacent_cells:
+					cells[cells.index(cell)][YMIN] = cell_to_remove[YMIN]
 				cells = pull_up_cells_after(cells, cell_to_remove[YMAX])
 			elif direction == "right":
 				cols.pop(cell_to_remove[XMIN])
-				current_cell[XMAX] = cell_to_remove[XMAX]
+				adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cell_to_remove, "left")
+				for cell in adjacent_cells:
+					cells[cells.index(cell)][XMAX] = cell_to_remove[XMAX]
 				cells = pull_left_cells_after(cells, cell_to_remove[XMIN])
 			elif direction == "down":
 				rows.pop(cell_to_remove[YMIN])
-				current_cell[YMAX] = cell_to_remove[YMAX]
+				adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cell_to_remove, "up")
+				for cell in adjacent_cells:
+					cells[cells.index(cell)][YMAX] = cell_to_remove[YMAX]
 				cells = pull_up_cells_after(cells, cell_to_remove[YMIN])
 			elif direction == "left":
 				cols.pop(cell_to_remove[XMAX])
-				current_cell[XMIN] = cell_to_remove[XMIN]
+				adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cell_to_remove, "right")
+				for cell in adjacent_cells:
+					cells[cells.index(cell)][XMIN] = cell_to_remove[XMIN]
 				cells = pull_left_cells_after(cells, cell_to_remove[XMAX])
 			layout = {"cols": cols, "rows": rows, "cells": cells}
 			print layout
