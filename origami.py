@@ -43,7 +43,9 @@ def cells_adjacent_to_cell_in_direction(cells, cell, direction):
 		return [c for c in cells if fn(cell, c)]
 	return None
 
-class SplitPaneCommand(sublime_plugin.TextCommand):
+class PaneCommand(sublime_plugin.WindowCommand):
+	"Abstract base class for commands."
+	
 	def get_layout(self):
 		layout = self.window.get_layout()
 		print layout
@@ -62,7 +64,7 @@ class SplitPaneCommand(sublime_plugin.TextCommand):
 			window.focus_group(new_view_index)
 	
 	def carry_file_to_pane(self, direction):
-		view = self.view
+		view = self.window.active_view()
 		window = self.window
 		group = self.travel_to_pane(direction)
 		window.set_view_index(view, window.active_group(), 0)
@@ -146,22 +148,29 @@ class SplitPaneCommand(sublime_plugin.TextCommand):
 			layout = {"cols": cols, "rows": rows, "cells": cells}
 			print layout
 			window.set_layout(layout)
-	
-	def run(self, edit,	travel_to_pane_in_direction=None,
-	                   	carry_file_to_pane_in_direction=None,
-	                   	clone_file_to_pane_in_direction=None,
-	                   	create_pane_in_direction=None,
-	                   	destroy_pane_in_direction=None):
-	
-		# keep track of the window so that cloning works
-		self.window = self.view.window()
-		if travel_to_pane_in_direction:
-			self.travel_to_pane(travel_to_pane_in_direction)
-		elif carry_file_to_pane_in_direction:
-			self.carry_file_to_pane(carry_file_to_pane_in_direction)
-		elif clone_file_to_pane_in_direction:
-			self.clone_file_to_pane(clone_file_to_pane_in_direction)
-		elif create_pane_in_direction:
-			self.create_pane(create_pane_in_direction)
-		elif destroy_pane_in_direction:
-			self.destroy_pane(destroy_pane_in_direction)
+
+
+class TravelToPaneCommand(PaneCommand):
+	def run(self, direction):
+		self.travel_to_pane(direction)
+
+
+class CarryFileToPaneCommand(PaneCommand):
+	def run(self, direction):
+		self.carry_file_to_pane(direction)
+
+
+class CloneFileToPaneCommand(PaneCommand):
+	def run(self, direction):
+		self.clone_file_to_pane(direction)
+
+
+class CreatePaneCommand(PaneCommand):
+	def run(self, direction):
+		print "creating"
+		self.create_pane(direction)
+
+
+class DestroyPaneCommand(PaneCommand):
+	def run(self, direction):
+		self.destroy_pane(direction)
