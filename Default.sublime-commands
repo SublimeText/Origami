@@ -1,0 +1,16 @@
+[
+  {
+    "caption": "Horizonal Split",
+    "command": "conditional_split_pane",
+    "args": {
+      "direction": "down"
+    }
+  },
+  {
+    "caption": "Vertical Split",
+    "command": "conditional_split_pane",
+    "args": {
+      "direction": "right"
+    }
+  }
+]

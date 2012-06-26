@@ -1,4 +1,4 @@
-import sublime_plugin
+import sublime, sublime_plugin
 
 XMIN, YMIN, XMAX, YMAX = range(4)
 
@@ -83,8 +83,16 @@ class PaneCommand(sublime_plugin.WindowCommand):
         window.set_view_index(view, window.active_group(), 0)
 
     def clone_file_to_pane(self, direction):
+        orig_view = self.window.active_view()
         self.window.run_command("clone_file")
+        new_view = self.window.active_view()
         self.carry_file_to_pane(direction)
+
+        def scroll():
+            new_view.set_viewport_position(orig_view.viewport_position())
+            for region in orig_view.sel():
+                new_view.sel().add(region)
+        sublime.set_timeout(scroll, 0)
 
     def create_pane(self, direction):
         window = self.window
@@ -180,7 +188,6 @@ class CloneFileToPaneCommand(PaneCommand):
 
 class CreatePaneCommand(PaneCommand):
     def run(self, direction):
-        print "creating"
         self.create_pane(direction)
 
 
@@ -189,7 +196,7 @@ class DestroyPaneCommand(PaneCommand):
         self.destroy_pane(direction)
 
 
-class ConditionalSplitCommand(PaneCommand):
+class ConditionalSplitPaneCommand(PaneCommand):
     def run(self, direction):
         if not self.existing_pane(direction):
             self.create_pane(direction)
