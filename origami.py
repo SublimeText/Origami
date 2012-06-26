@@ -60,19 +60,24 @@ class SplitPaneCommand(sublime_plugin.TextCommand):
         cols = layout["cols"]
         return rows, cols, cells
 
-    def travel_to_pane(self, direction):
+    def existing_pane(self, direction):
         window = self.window
         rows, cols, cells = self.get_layout()
         current_group = window.active_group()
         adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cells[current_group], direction)
         if len(adjacent_cells) > 0:
-            new_view_index = cells.index(adjacent_cells[0])
-            window.focus_group(new_view_index)
+            return cells.index(adjacent_cells[0])
+        return None
+
+    def travel_to_pane(self, direction):
+        new_view_index = self.existing_pane(direction)
+        if new_view_index:
+            self.window.focus_group(new_view_index)
 
     def carry_file_to_pane(self, direction):
         view = self.view
         window = self.window
-        group = self.travel_to_pane(direction)
+        self.travel_to_pane(direction)
         window.set_view_index(view, window.active_group(), 0)
 
     def clone_file_to_pane(self, direction):
