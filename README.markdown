@@ -20,6 +20,10 @@ These keyboard shortcuts are designed to make it really easy to modify the layou
 
 (Note: Windows uses `ctrl` instead of `super`.)
 
+Menu Actions
+------------
+You can also use Origami's clone action to get a split view into files. Simply open Goto Anything (super+P) and type "Horizontal Split" or "Vertical Split", then hit enter.
+
 Install
 -------
 
