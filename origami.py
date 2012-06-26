@@ -153,8 +153,7 @@ class SplitPaneCommand(sublime_plugin.TextCommand):
 	                   	create_pane_in_direction=None,
 	                   	destroy_pane_in_direction=None):
 	
-		print "\n\n\n\n\n"
-		#keep track of the window so that cloning works
+		# keep track of the window so that cloning works
 		self.window = self.view.window()
 		if travel_to_pane_in_direction:
 			self.travel_to_pane(travel_to_pane_in_direction)
