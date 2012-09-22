@@ -73,6 +73,10 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		self.window.run_command("clone_file")
 		self.carry_file_to_pane(direction)
 	
+	def create_pane_with_file(self,direction):
+		self.create_pane(direction)
+		self.carry_file_to_pane(direction)
+
 	def create_pane(self, direction):
 		window = self.window
 		rows, cols, cells = self.get_layout()
@@ -163,6 +167,11 @@ class CarryFileToPaneCommand(PaneCommand):
 class CloneFileToPaneCommand(PaneCommand):
 	def run(self, direction):
 		self.clone_file_to_pane(direction)
+
+
+class CreatePaneWithFileCommand(PaneCommand):
+	def run(self, direction):
+		self.create_pane_with_file(direction)
 
 
 class CreatePaneCommand(PaneCommand):
