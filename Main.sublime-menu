@@ -55,6 +55,16 @@
                         "children":
                         [
                             {
+                                "caption": "Create to",
+                                "children":
+                                [
+                                    { "command": "create_pane_with_file", "args": {"direction": "up"}, "caption": "Above" },
+                                    { "command": "create_pane_with_file", "args": {"direction": "down"}, "caption": "Below" },
+                                    { "command": "create_pane_with_file", "args": {"direction": "right"}, "caption": "Right" },
+                                    { "command": "create_pane_with_file", "args": {"direction": "left"}, "caption": "Left" }
+                                ]
+                            },
+                            {
                                 "caption": "Carry to",
                                 "children":
                                 [
