@@ -22,5 +22,10 @@
   { "keys": ["ctrl+k", "ctrl+shift+up"], "command": "destroy_pane", "args": {"direction": "up"} },
   { "keys": ["ctrl+k", "ctrl+shift+right"], "command": "destroy_pane", "args": {"direction": "right"} },
   { "keys": ["ctrl+k", "ctrl+shift+down"], "command": "destroy_pane", "args": {"direction": "down"} },
-  { "keys": ["ctrl+k", "ctrl+shift+left"], "command": "destroy_pane", "args": {"direction": "left"} }
+  { "keys": ["ctrl+k", "ctrl+shift+left"], "command": "destroy_pane", "args": {"direction": "left"} },
+
+  { "keys": ["ctrl+k", "ctrl+alt+up"], "command": "create_pane_with_file", "args": {"direction": "up"} },
+  { "keys": ["ctrl+k", "ctrl+alt+right"], "command": "create_pane_with_file", "args": {"direction": "right"} },
+  { "keys": ["ctrl+k", "ctrl+alt+down"], "command": "create_pane_with_file", "args": {"direction": "down"} },
+  { "keys": ["ctrl+k", "ctrl+alt+left"], "command": "create_pane_with_file", "args": {"direction": "left"} }  
 ]
