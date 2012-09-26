@@ -28,3 +28,4 @@
 	{ "command": "create_pane_with_file", "args": {"direction": "right"}, "caption": "Origami: Create Pane with File on the Right" },
 	{ "command": "create_pane_with_file", "args": {"direction": "down"}, "caption": "Origami: Create Pane with File Below" },
 	{ "command": "create_pane_with_file", "args": {"direction": "left"}, "caption": "Origami: Create Pane with File on the Left" }
+]
