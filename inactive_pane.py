@@ -21,10 +21,9 @@ be activated for the change to take effect.
 # deeply than perhaps would be optimal.
 module_path = os.getcwdu()
 
+settings = sublime.load_settings('Preferences.sublime-settings')
+
 class InactivePaneCommand(sublime_plugin.EventListener):
-	def get_settings(self):
-		return sublime.load_settings('Preferences.sublime-settings')
-	
 	def copy_scheme(self, scheme):
 		packages_path = sublime.packages_path()
 		# Unfortunately, scheme paths start with "Packages/" and
@@ -76,12 +75,11 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		f.close()
 	
 	def on_activated(self, view):
-		active_scheme = self.get_settings().get('color_scheme')
+		active_scheme = settings.get('color_scheme')
 		view.settings().set('color_scheme', active_scheme)
 	
 	def on_deactivated(self, view):
-		settings = self.get_settings()
-		active_scheme = self.get_settings().get('color_scheme')
+		active_scheme = settings.get('color_scheme')
 		
 		inactive_scheme, existed_already = self.copy_scheme(active_scheme)
 		if not existed_already:
