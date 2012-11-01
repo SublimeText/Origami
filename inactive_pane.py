@@ -79,6 +79,9 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		view.settings().set('color_scheme', active_scheme)
 	
 	def on_deactivated(self, view):
+		if not settings.get('fade_inactive_panes', True):
+			return
+		
 		active_scheme = settings.get('color_scheme')
 		
 		inactive_scheme, existed_already = self.copy_scheme(active_scheme)
