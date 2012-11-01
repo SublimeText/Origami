@@ -24,6 +24,22 @@ module_path = os.getcwdu()
 settings = sublime.load_settings('Preferences.sublime-settings')
 
 class InactivePaneCommand(sublime_plugin.EventListener):
+	def __init__(self):
+		settings.add_on_change('origami', lambda: self.refresh_views())
+		super(InactivePaneCommand, self).__init__()
+
+	def refresh_views(self):
+		if not settings.get('fade_inactive_panes', True):
+			return
+		
+		active_view_id = sublime.active_window().active_view().id()
+		for window in sublime.windows():
+			for v in window.views():
+				if v.id() == active_view_id:
+					self.on_activated(v)
+				else:
+					self.on_deactivated(v)
+
 	def copy_scheme(self, scheme):
 		packages_path = sublime.packages_path()
 		# Unfortunately, scheme paths start with "Packages/" and
