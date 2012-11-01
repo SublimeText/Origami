@@ -4,4 +4,5 @@
 *.hgignore
 *.hgtags
 *.DS_Store
+*.tmTheme
 package-metadata.json

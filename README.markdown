@@ -4,6 +4,8 @@ Origami is a new way of thinking about panes in Sublime Text: you tell Sublime T
 
 Ordinarily one uses the commands under View>Layout, or if one is quite intrepid a custom keyboard shortcut can be made to give a specific layout, but both of these solutions were unsatisfactory to me. Perhaps they were to you too! That's what this plugin is for.
 
+As a bonus side effect, any inactive panes are dimmed slightly (or, for you with dark color schemes, greyed slightly) so that you can easily keep track of where you're working.
+
 Try it out! I think you'll like it.
 
 Keyboard shortcuts
