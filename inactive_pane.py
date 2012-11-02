@@ -106,14 +106,28 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		f.close()
 
 	def on_activated(self, view):
-		active_scheme = settings.get('color_scheme')
-		view.settings().set('color_scheme', active_scheme)
+		default_scheme = view.settings().get('default_scheme')
+		if default_scheme:
+			view.settings().set('color_scheme', default_scheme)
+			view.settings().erase('default_scheme')
+		else:
+			view.settings().erase('color_scheme')
+
 
 	def on_deactivated(self, view):
 		if not settings.get('fade_inactive_panes', True):
 			return
 
-		active_scheme = settings.get('color_scheme')
+		# Reset to the base color scheme first if there was any
+		self.on_activated(view)
+
+		active_scheme = view.settings().get('color_scheme')
+		view.settings().erase('color_scheme')
+		default_scheme = view.settings().get('color_scheme')
+		if active_scheme != default_scheme:
+			# Because the settings do not equal after removing the view-depended component
+			# the view's color scheme is expicitly set so save it for later
+			view.settings().set('default_scheme', active_scheme)
 
 		inactive_scheme, existed_already = self.copy_scheme(active_scheme)
 		if not existed_already:
