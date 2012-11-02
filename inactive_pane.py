@@ -175,12 +175,14 @@ origami = Origami()
 
 
 class InactivePaneCommand(sublime_plugin.EventListener):
+	delay = 150
+	
 	def on_activated(self, view):
 		if view is None or view.settings().get('is_widget'):
 			return
-		sublime.set_timeout(lambda: origami.on_activated(view), 500)
+		sublime.set_timeout(lambda: origami.on_activated(view), self.delay)
 
 	def on_deactivated(self, view):
 		if view is None or view.settings().get('is_widget'):
 			return
-		origami.on_deactivated(view)
+		sublime.set_timeout(lambda: origami.on_deactivated(view), self.delay)
