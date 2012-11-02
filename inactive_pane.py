@@ -23,6 +23,19 @@ module_path = os.getcwdu()
 
 settings = sublime.load_settings('Preferences.sublime-settings')
 
+
+def reset():
+	"""Delete temporaryly generated dimmed files."""
+	for root, dirs, files in os.walk(module_path):
+		if '.git' in dirs:
+			dirs.remove('.git')  # do not iterate over .git or subdirs
+		for di in dirs:
+			shutil.rmtree(os.path.join(root, di))
+
+
+reset()
+
+
 class InactivePaneCommand(sublime_plugin.EventListener):
 	def __init__(self):
 		settings.add_on_change('origami', lambda: self.refresh_views())
@@ -68,6 +81,8 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		return destination, False
 
 	def dim_scheme(self, scheme):
+		print("[Origami] Generating dimmed color scheme")
+
 		def dim_hex(hex_val):
 			grey_scale = .2
 			orig_scale = 1-grey_scale
