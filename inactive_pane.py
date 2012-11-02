@@ -37,18 +37,43 @@ reset()
 
 
 class InactivePaneCommand(sublime_plugin.EventListener):
+	enabled    = settings.get('fade_inactive_panes')
+	grey_scale = settings.get('fade_inactive_panes_grey_scale')
+
 	def __init__(self):
-		settings.add_on_change('origami', lambda: self.refresh_views())
+		# Register some callbacks
+		def on_settings_change():
+			if settings.get('fade_inactive_panes') != self.enabled \
+					or settings.get('fade_inactive_panes_grey_scale') != self.grey_scale:
+
+				print("settings changed")
+				# Calling reset() here mostly results in the newly generated files also being deleted,
+				# it should be enough to delete old files when ST starts.
+				# reset()
+				self.refresh_views()
+
+				self.enabled    = settings.get('fade_inactive_panes')
+				self.grey_scale = settings.get('fade_inactive_panes_grey_scale')
+
+
+			print("settings did not change")
+
+		def add_on_change(setting, callback):
+			settings.clear_on_change(setting)
+			settings.add_on_change(setting, callback)
+
+		add_on_change('origami',                        lambda: self.refresh_views())
+		add_on_change('fade_inactive_panes_grey_scale', on_settings_change)
+		add_on_change('fade_inactive_panes',            on_settings_change)
+
 		super(InactivePaneCommand, self).__init__()
 
-	def refresh_views(self):
-		if not settings.get('fade_inactive_panes', True):
-			return
-
+	def refresh_views(self, disable=False):
+		disable = disable or (self.enabled and self.enabled != settings.get('fade_inactive_panes'))
 		active_view_id = sublime.active_window().active_view().id()
 		for window in sublime.windows():
 			for v in window.views():
-				if v.id() == active_view_id:
+				if disable or v.id() == active_view_id:
 					self.on_activated(v)
 				else:
 					self.on_deactivated(v)
@@ -81,10 +106,10 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		return destination, False
 
 	def dim_scheme(self, scheme):
-		print("[Origami] Generating dimmed color scheme")
+		print("[Origami] Generating dimmed color scheme for '%s'" % scheme)
 
 		def dim_hex(hex_val):
-			grey_scale = .2
+			grey_scale = settings.get('fade_inactive_panes_grey_scale', .2)
 			orig_scale = 1-grey_scale
 			return int(int(hex_val,16)*orig_scale+127*grey_scale)
 		def dim_rgb(rgb_match):
@@ -110,7 +135,7 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		if default_scheme:
 			view.settings().set('color_scheme', default_scheme)
 			view.settings().erase('default_scheme')
-		else:
+		elif self.enabled:
 			view.settings().erase('color_scheme')
 
 
@@ -126,7 +151,7 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		default_scheme = view.settings().get('color_scheme')
 		if active_scheme != default_scheme:
 			# Because the settings do not equal after removing the view-depended component
-			# the view's color scheme is expicitly set so save it for later
+			# the view's color scheme is expicitly set so save it for later.
 			view.settings().set('default_scheme', active_scheme)
 
 		inactive_scheme, existed_already = self.copy_scheme(active_scheme)
