@@ -131,12 +131,14 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		f.close()
 
 	def on_activated(self, view):
-		default_scheme = view.settings().get('default_scheme')
-		if default_scheme:
-			view.settings().set('color_scheme', default_scheme)
-			view.settings().erase('default_scheme')
-		elif self.enabled:
-			view.settings().erase('color_scheme')
+		def activated_cb():
+			default_scheme = view.settings().get('default_scheme')
+			if default_scheme:
+				view.settings().set('color_scheme', default_scheme)
+				view.settings().erase('default_scheme')
+			elif self.enabled:
+				view.settings().erase('color_scheme')
+		sublime.set_timeout(activated_cb, 0)
 
 
 	def on_deactivated(self, view):
