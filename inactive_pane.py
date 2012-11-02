@@ -31,7 +31,7 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 	def refresh_views(self):
 		if not settings.get('fade_inactive_panes', True):
 			return
-		
+
 		active_view_id = sublime.active_window().active_view().id()
 		for window in sublime.windows():
 			for v in window.views():
@@ -46,27 +46,27 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		# packages_path ends with "Packages/", so we add a .. in the middle
 		# when we combine them.
 		source_abs = os.path.join(packages_path, "..", scheme)
-		
+
 		# commonprefix isn't guaranteed to return a complete path, so we
 		# take the dirname to get something real. All that really matters is
 		# that the path points unambiguously to one color scheme, though
 		# we'd prefer for it to be as short as possible.
 		prefix = os.path.dirname(os.path.commonprefix([source_abs, module_path]))
 		source_rel = os.path.relpath(source_abs, prefix)
-		
+
 		# Reconstruct the relative path inside of our module directory--we
 		# have something of a shadow copy of the scheme.
 		destination = os.path.join(module_path, source_rel)
 		if (os.path.isfile(destination)):
 			return destination, True
-		
+
 		destdir = os.path.dirname(destination)
 		if not os.path.isdir(destdir):
 			os.makedirs(destdir)
 		shutil.copy(source_abs, destination)
-		
+
 		return destination, False
-	
+
 	def dim_scheme(self, scheme):
 		def dim_hex(hex_val):
 			grey_scale = .2
@@ -80,32 +80,32 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 			g = dim_hex(g)
 			b = dim_hex(b)
 			return "#{0:02x}{1:02x}{2:02x}".format(r,g,b)
-		
+
 		f = open(scheme)
 		text = f.read()
 		f.close()
-		
+
 		text = re.sub("#[0-9a-fA-F]{6}", dim_rgb, text)
 		f = open(scheme, 'w')
 		f.write(text)
 		f.close()
-	
+
 	def on_activated(self, view):
 		active_scheme = settings.get('color_scheme')
 		view.settings().set('color_scheme', active_scheme)
-	
+
 	def on_deactivated(self, view):
 		if not settings.get('fade_inactive_panes', True):
 			return
-		
+
 		active_scheme = settings.get('color_scheme')
-		
+
 		inactive_scheme, existed_already = self.copy_scheme(active_scheme)
 		if not existed_already:
 			self.dim_scheme(inactive_scheme)
-		
+
 		# Sublime Text 2 only likes relative paths for its color schemes
 		prefix = os.path.dirname(os.path.commonprefix([inactive_scheme, module_path]))
 		inactive_scheme_rel = os.path.relpath(inactive_scheme, prefix)
-		inactive_scheme_rel = os.path.join("Packages", inactive_scheme_rel)
+		inactive_scheme_rel = os.path.join("Packages", inactive_scheme_rel).replace("\\", "/")
 		view.settings().set('color_scheme', inactive_scheme_rel)
