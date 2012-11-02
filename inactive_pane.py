@@ -37,7 +37,7 @@ reset()
 
 
 class Origami(object):
-	enabled    = settings.get('fade_inactive_panes')
+	enabled    = settings.get('fade_inactive_panes', False)
 	grey_scale = settings.get('fade_inactive_panes_grey_scale')
 
 	def __init__(self):
