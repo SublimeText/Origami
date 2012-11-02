@@ -36,8 +36,8 @@ def reset():
 reset()
 
 
-class InactivePaneCommand(sublime_plugin.EventListener):
-	enabled    = settings.get('fade_inactive_panes', False)
+class Origami(object):
+	enabled    = settings.get('fade_inactive_panes')
 	grey_scale = settings.get('fade_inactive_panes_grey_scale')
 
 	def __init__(self):
@@ -66,13 +66,15 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		add_on_change('fade_inactive_panes_grey_scale', on_settings_change)
 		add_on_change('fade_inactive_panes',            on_settings_change)
 
-		super(InactivePaneCommand, self).__init__()
+		super(Origami, self).__init__()
 
 	def refresh_views(self, disable=False):
 		disable = disable or (self.enabled and self.enabled != settings.get('fade_inactive_panes'))
 		active_view_id = sublime.active_window().active_view().id()
 		for window in sublime.windows():
 			for v in window.views():
+				if v.settings().get('is_widget'):
+					continue
 				if disable or v.id() == active_view_id:
 					self.on_activated(v)
 				else:
@@ -131,15 +133,19 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		f.close()
 
 	def on_activated(self, view):
-		default_scheme = view.settings().get('default_scheme')
+		if view is None or view.settings().get('is_widget'):
+			return
+		default_scheme = view.settings().get('default_scheme', settings.get('color_scheme'))
 		if default_scheme:
 			view.settings().set('color_scheme', default_scheme)
 			view.settings().erase('default_scheme')
 		elif self.enabled:
 			view.settings().erase('color_scheme')
 
-
 	def on_deactivated(self, view):
+		if view is None or view.settings().get('is_widget'):
+			return
+
 		if not settings.get('fade_inactive_panes', True):
 			return
 
@@ -163,3 +169,20 @@ class InactivePaneCommand(sublime_plugin.EventListener):
 		inactive_scheme_rel = os.path.relpath(inactive_scheme, prefix)
 		inactive_scheme_rel = os.path.join("Packages", inactive_scheme_rel).replace("\\", "/")
 		view.settings().set('color_scheme', inactive_scheme_rel)
+
+
+origami = Origami()
+
+
+class InactivePaneCommand(sublime_plugin.EventListener):
+	delay = 150
+	
+	def on_activated(self, view):
+		if view is None or view.settings().get('is_widget'):
+			return
+		sublime.set_timeout(lambda: origami.on_activated(view), self.delay)
+
+	def on_deactivated(self, view):
+		if view is None or view.settings().get('is_widget'):
+			return
+		sublime.set_timeout(lambda: origami.on_deactivated(view), self.delay)
