@@ -33,23 +33,22 @@ def reset():
 			shutil.rmtree(os.path.join(root, di))
 
 
-reset()
-
-
 class Origami(object):
 	enabled    = settings.get('fade_inactive_panes', False)
 	grey_scale = settings.get('fade_inactive_panes_grey_scale')
 
-	def __init__(self):
+	def __init__(self, first_load=False):
 		# Register some callbacks
 		def on_settings_change():
 			if settings.get('fade_inactive_panes') != self.enabled \
 					or settings.get('fade_inactive_panes_grey_scale') != self.grey_scale:
 
 				print("settings changed")
-				# Calling reset() here mostly results in the newly generated files also being deleted,
-				# it should be enough to delete old files when ST starts.
-				# reset()
+				if first_load:
+					# Reset all views to default themes
+					self.refresh_views(True)
+					# Clean up old themes
+					reset()
 				self.refresh_views()
 
 				self.enabled    = settings.get('fade_inactive_panes')
@@ -171,12 +170,12 @@ class Origami(object):
 		view.settings().set('color_scheme', inactive_scheme_rel)
 
 
-origami = Origami()
+origami = Origami(True)
 
 
 class InactivePaneCommand(sublime_plugin.EventListener):
 	delay = 150
-	
+
 	def on_activated(self, view):
 		if view is None or view.settings().get('is_widget'):
 			return
