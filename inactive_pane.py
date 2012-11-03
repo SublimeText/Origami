@@ -174,18 +174,12 @@ origami = Origami(True)
 
 
 class InactivePaneCommand(sublime_plugin.EventListener):
-	def __init__(self):
-		self.delay = settings.get('fade_inactive_panes_delay', 150)
-		settings.clear_on_change('fade_inactive_panes_delay')
-		settings.add_on_change('fade_inactive_panes_delay', self.__init__)
-		super(InactivePaneCommand, self).__init__()
-
 	def on_activated(self, view):
 		if view is None or view.settings().get('is_widget'):
 			return
-		sublime.set_timeout(lambda: origami.on_activated(view), self.delay)
+		sublime.set_timeout(lambda: origami.on_activated(view), settings.get('fade_inactive_panes_delay', 150))
 
 	def on_deactivated(self, view):
 		if view is None or view.settings().get('is_widget'):
 			return
-		sublime.set_timeout(lambda: origami.on_deactivated(view), self.delay)
+		sublime.set_timeout(lambda: origami.on_deactivated(view), settings.get('fade_inactive_panes_delay', 150))
