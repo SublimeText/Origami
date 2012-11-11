@@ -1,32 +1,32 @@
 [
-  { "keys": ["super+k", "up"], "command": "travel_to_pane", "args": {"direction": "up"} },
-  { "keys": ["super+k", "right"], "command": "travel_to_pane", "args": {"direction": "right"} },
-  { "keys": ["super+k", "down"], "command": "travel_to_pane", "args": {"direction": "down"} },
-  { "keys": ["super+k", "left"], "command": "travel_to_pane", "args": {"direction": "left"} },
+  { "keys": ["super+k", "k"], "command": "travel_to_pane", "args": {"direction": "up"} },
+  { "keys": ["super+k", "l"], "command": "travel_to_pane", "args": {"direction": "right"} },
+  { "keys": ["super+k", "j"], "command": "travel_to_pane", "args": {"direction": "down"} },
+  { "keys": ["super+k", "h"], "command": "travel_to_pane", "args": {"direction": "left"} },
   
-  { "keys": ["super+k", "shift+up"], "command": "carry_file_to_pane", "args": {"direction": "up"} },
-  { "keys": ["super+k", "shift+right"], "command": "carry_file_to_pane", "args": {"direction": "right"} },
-  { "keys": ["super+k", "shift+down"], "command": "carry_file_to_pane", "args": {"direction": "down"} },
-  { "keys": ["super+k", "shift+left"], "command": "carry_file_to_pane", "args": {"direction": "left"} },
+  { "keys": ["super+k", "shift+k"], "command": "carry_file_to_pane", "args": {"direction": "up"} },
+  { "keys": ["super+k", "shift+l"], "command": "carry_file_to_pane", "args": {"direction": "right"} },
+  { "keys": ["super+k", "shift+j"], "command": "carry_file_to_pane", "args": {"direction": "down"} },
+  { "keys": ["super+k", "shift+h"], "command": "carry_file_to_pane", "args": {"direction": "left"} },
   
-  { "keys": ["super+k", "alt+up"], "command": "clone_file_to_pane", "args": {"direction": "up"} },
-  { "keys": ["super+k", "alt+right"], "command": "clone_file_to_pane", "args": {"direction": "right"} },
-  { "keys": ["super+k", "alt+down"], "command": "clone_file_to_pane", "args": {"direction": "down"} },
-  { "keys": ["super+k", "alt+left"], "command": "clone_file_to_pane", "args": {"direction": "left"} },
+  { "keys": ["super+k", "alt+k"], "command": "clone_file_to_pane", "args": {"direction": "up"} },
+  { "keys": ["super+k", "alt+l"], "command": "clone_file_to_pane", "args": {"direction": "right"} },
+  { "keys": ["super+k", "alt+j"], "command": "clone_file_to_pane", "args": {"direction": "down"} },
+  { "keys": ["super+k", "alt+h"], "command": "clone_file_to_pane", "args": {"direction": "left"} },
   
-  { "keys": ["super+k", "super+up"], "command": "create_pane", "args": {"direction": "up"} },
-  { "keys": ["super+k", "super+right"], "command": "create_pane", "args": {"direction": "right"} },
-  { "keys": ["super+k", "super+down"], "command": "create_pane", "args": {"direction": "down"} },
-  { "keys": ["super+k", "super+left"], "command": "create_pane", "args": {"direction": "left"} },
+  { "keys": ["super+k", "super+k"], "command": "create_pane", "args": {"direction": "up"} },
+  { "keys": ["super+k", "super+l"], "command": "create_pane", "args": {"direction": "right"} },
+  { "keys": ["super+k", "super+j"], "command": "create_pane", "args": {"direction": "down"} },
+  { "keys": ["super+k", "super+h"], "command": "create_pane", "args": {"direction": "left"} },
   
-  { "keys": ["super+k", "super+shift+up"], "command": "destroy_pane", "args": {"direction": "up"} },
-  { "keys": ["super+k", "super+shift+right"], "command": "destroy_pane", "args": {"direction": "right"} },
-  { "keys": ["super+k", "super+shift+down"], "command": "destroy_pane", "args": {"direction": "down"} },
-  { "keys": ["super+k", "super+shift+left"], "command": "destroy_pane", "args": {"direction": "left"} },
+  { "keys": ["super+k", "super+shift+k"], "command": "destroy_pane", "args": {"direction": "up"} },
+  { "keys": ["super+k", "super+shift+l"], "command": "destroy_pane", "args": {"direction": "right"} },
+  { "keys": ["super+k", "super+shift+j"], "command": "destroy_pane", "args": {"direction": "down"} },
+  { "keys": ["super+k", "super+shift+h"], "command": "destroy_pane", "args": {"direction": "left"} },
 
-  { "keys": ["super+k", "super+alt+up"], "command": "create_pane_with_file", "args": {"direction": "up"} },
-  { "keys": ["super+k", "super+alt+right"], "command": "create_pane_with_file", "args": {"direction": "right"} },
-  { "keys": ["super+k", "super+alt+down"], "command": "create_pane_with_file", "args": {"direction": "down"} },
-  { "keys": ["super+k", "super+alt+left"], "command": "create_pane_with_file", "args": {"direction": "left"} }
+  { "keys": ["super+k", "super+alt+k"], "command": "create_pane_with_file", "args": {"direction": "up"} },
+  { "keys": ["super+k", "super+alt+l"], "command": "create_pane_with_file", "args": {"direction": "right"} },
+  { "keys": ["super+k", "super+alt+j"], "command": "create_pane_with_file", "args": {"direction": "down"} },
+  { "keys": ["super+k", "super+alt+h"], "command": "create_pane_with_file", "args": {"direction": "left"} }
 
 ]
