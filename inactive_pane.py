@@ -146,7 +146,7 @@ class Origami(object):
 		if view is None or view.settings().get('is_widget'):
 			return
 
-		if not settings.get('fade_inactive_panes', True):
+		if not settings.get('fade_inactive_panes', False):
 			return
 
 		# Reset to the base color scheme first if there was any
