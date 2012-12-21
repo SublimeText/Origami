@@ -39,7 +39,7 @@ Go to your Packages subdirectory under ST2's data directory:
 
 Then clone this repository:
 
-    git clone git://github.com/SublimeText/Origami.git
+    git clone https://github.com/SublimeText/Origami.git
 
 That's it!
 
