@@ -1,6 +1,6 @@
 import sublime, sublime_plugin
 
-XMIN, YMIN, XMAX, YMAX = range(4)
+XMIN, YMIN, XMAX, YMAX = list(range(4))
 
 def increment_if_greater_or_equal(x, threshold):
 	if x >= threshold:
@@ -48,7 +48,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 	
 	def get_layout(self):
 		layout = self.window.get_layout()
-		print layout
+		print(layout)
 		cells = layout["cells"]
 		rows = layout["rows"]
 		cols = layout["cols"]	
@@ -107,7 +107,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			cells.insert(current_group, focused_cell)
 			cells.append(unfocused_cell)
 			layout = {"cols": cols, "rows": rows, "cells": cells}
-			print layout
+			print(layout)
 			window.set_layout(layout)
 	
 	def destroy_pane(self, direction):
@@ -119,7 +119,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		current_cell = cells[current_group]
 		
 		adjacent_cells = cells_adjacent_to_cell_in_direction(cells, current_cell, direction)
-		print "number adjacent: ", len(adjacent_cells)
+		print("number adjacent: ", len(adjacent_cells))
 		if len(adjacent_cells) == 1:
 			cell_to_remove = adjacent_cells[0]
 		
@@ -150,7 +150,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 					cells[cells.index(cell)][XMIN] = cell_to_remove[XMIN]
 				cells = pull_left_cells_after(cells, cell_to_remove[XMAX])
 			layout = {"cols": cols, "rows": rows, "cells": cells}
-			print layout
+			print(layout)
 			window.set_layout(layout)
 
 
@@ -176,7 +176,7 @@ class CreatePaneWithFileCommand(PaneCommand):
 
 class CreatePaneCommand(PaneCommand):
 	def run(self, direction):
-		print "creating"
+		print("creating")
 		self.create_pane(direction)
 
 
