@@ -70,7 +70,16 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		window.set_view_index(view, window.active_group(), 0)
 	
 	def clone_file_to_pane(self, direction):
-		self.window.run_command("clone_file")
+		window = self.window
+		view = window.active_view()
+		group, original_index = window.get_view_index(view)
+		window.run_command("clone_file")
+		
+		# If we move the cloned file's tab to the left of the original's,
+		# then when we remove it from the group, focus will fall to the
+		# original view.
+		new_view = window.active_view()
+		window.set_view_index(new_view, group, original_index)
 		self.carry_file_to_pane(direction)
 	
 	def create_pane_with_file(self,direction):
