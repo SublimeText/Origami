@@ -54,6 +54,9 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		cols = layout["cols"]	
 		return rows, cols, cells
 	
+	def get_cells(self):
+		return self.get_layout()[2]
+	
 	def travel_to_pane(self, direction):
 		window = self.window
 		rows, cols, cells = self.get_layout()
