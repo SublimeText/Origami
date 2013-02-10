@@ -57,14 +57,17 @@ class PaneCommand(sublime_plugin.WindowCommand):
 	def get_cells(self):
 		return self.get_layout()[2]
 	
+	def adjacent_cells(self, direction):
+		cells = self.get_cells()
+		current_group = self.window.active_group()
+		return cells_adjacent_to_cell_in_direction(cells, cells[current_group], direction)
+	
 	def travel_to_pane(self, direction):
-		window = self.window
-		rows, cols, cells = self.get_layout()
-		current_group = window.active_group()
-		adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cells[current_group], direction)
+		adjacent_cells = self.adjacent_cells(direction)
 		if len(adjacent_cells) > 0:
-			new_view_index = cells.index(adjacent_cells[0])
-			window.focus_group(new_view_index)
+			cells = self.get_cells()
+			new_group_index = cells.index(adjacent_cells[0])
+			self.window.focus_group(new_group_index)
 	
 	def carry_file_to_pane(self, direction):
 		view = self.window.active_view()
