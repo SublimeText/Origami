@@ -23,9 +23,7 @@ These keyboard shortcuts are designed to make it really easy to modify the layou
 Install
 -------
 
-This plugin is available through Package Control, which is available here:
-
-    http://wbond.net/sublime_packages/package_control
+This plugin is available through [Package Control](http://wbond.net/sublime_packages/package_control).
 
 Manual Install
 --------------
