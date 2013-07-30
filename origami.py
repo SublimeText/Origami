@@ -57,10 +57,26 @@ class PaneCommand(sublime_plugin.WindowCommand):
 	def get_cells(self):
 		return self.get_layout()[2]
 	
-	def adjacent_cells(self, direction):
+	def adjacent_cell(self, direction):
 		cells = self.get_cells()
-		current_group = self.window.active_group()
-		return cells_adjacent_to_cell_in_direction(cells, cells[current_group], direction)
+		current_cell = cells[self.window.active_group()]
+		adjacent_cells = cells_adjacent_to_cell_in_direction(cells, current_cell, direction)
+		rows, cols, _ = self.get_layout()
+		
+		if direction in ["left", "right"]:
+			MIN, MAX, fields = YMIN, YMAX, rows
+		else: #up or down
+			MIN, MAX, fields = XMIN, XMAX, cols
+		
+		cell_overlap = []
+		for cell in adjacent_cells:
+			start = max(fields[cell[MIN]], fields[current_cell[MIN]])
+			end = min(fields[cell[MAX]], fields[current_cell[MAX]])
+			overlap = (end - start)# / (fields[cell[MAX]] - fields[cell[MIN]])
+			cell_overlap.append(overlap)
+		
+		cell_index = cell_overlap.index(max(cell_overlap))
+		return adjacent_cells[cell_index]
 	
 	def duplicated_views(self, original_group, duplicating_group):
 		original_views = self.window.views_in_group(original_group)
@@ -73,10 +89,10 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		return dupe_views
 	
 	def travel_to_pane(self, direction):
-		adjacent_cells = self.adjacent_cells(direction)
-		if len(adjacent_cells) > 0:
+		adjacent_cell = self.adjacent_cell(direction)
+		if adjacent_cell:
 			cells = self.get_cells()
-			new_group_index = cells.index(adjacent_cells[0])
+			new_group_index = cells.index(adjacent_cell)
 			self.window.focus_group(new_group_index)
 	
 	def carry_file_to_pane(self, direction):
