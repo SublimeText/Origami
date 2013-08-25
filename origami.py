@@ -132,6 +132,57 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		self.create_pane(direction)
 		self.carry_file_to_pane(direction)
 
+	def zoom_pane(self):
+		window = self.window
+		rows,cols,cells = self.get_layout()
+		current_cell = cells[window.active_group()]
+
+		current_col = current_cell[0]
+		num_cols = len(cols)-1
+
+		current_col_width = 1 if num_cols==1 else 0.9
+		other_col_width = 0 if num_cols==1 else (1-current_col_width)/(num_cols-1)
+
+		cols = [0.0]
+		for i in range(0,num_cols):
+			cols.append(cols[i] + (current_col_width if i == current_col else other_col_width))
+
+		current_row = current_cell[1]
+		num_rows = len(rows)-1
+
+		current_row_height = 1 if num_rows==1 else 0.9
+		other_row_height = 0 if num_rows==1 else (1-current_row_height)/(num_rows-1)
+		rows = [0.0]
+		for i in range(0,num_rows):
+			rows.append(rows[i] + (current_row_height if i == current_row else other_row_height))
+
+		layout = {"cols": cols, "rows": rows, "cells": cells}
+		print(layout)
+		window.set_layout(layout)
+
+	def unzoom_pane(self):
+		window = self.window
+		rows,cols,cells = self.get_layout()
+		current_cell = cells[window.active_group()]
+
+		num_cols = len(cols)-1
+		col_width = 1/num_cols
+
+		cols = [0.0]
+		for i in range(0,num_cols):
+			cols.append(cols[i] + col_width)
+
+		num_rows = len(rows)-1
+		row_height = 1/num_rows
+		
+		rows = [0.0]
+		for i in range(0,num_rows):
+			rows.append(rows[i] + row_height)
+
+		layout = {"cols": cols, "rows": rows, "cells": cells}
+		print(layout)
+		window.set_layout(layout)
+
 	def create_pane(self, direction):
 		window = self.window
 		rows, cols, cells = self.get_layout()
@@ -238,6 +289,13 @@ class CreatePaneWithFileCommand(PaneCommand):
 	def run(self, direction):
 		self.create_pane_with_file(direction)
 
+class ZoomPaneCommand(PaneCommand):
+	def run(self):
+		self.zoom_pane()
+
+class UnzoomPaneCommand(PaneCommand):
+	def run(self):
+		self.unzoom_pane()
 
 class CreatePaneCommand(PaneCommand):
 	def run(self, direction):
