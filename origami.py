@@ -124,6 +124,54 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		self.create_pane(direction)
 		self.carry_file_to_pane(direction)
 
+	def focus_pane(self):
+		window = self.window
+		rows,cols,cells = self.get_layout()
+		current_cell = cells[window.active_group()]
+
+		current_col = current_cell[0]
+		num_cols = len(cols)-1
+
+		current_col_width = 1-(0.025*(num_cols-1));
+		cols = [0.0]
+		for i in range(0,num_cols):
+			cols.append(cols[i] + (current_col_width if i == current_col else .025))
+
+		current_row = current_cell[1]
+		num_rows = len(rows)-1
+
+		current_row_height = 1-(0.025*(num_rows-1));
+		rows = [0.0]
+		for i in range(0,num_rows):
+			rows.append(rows[i] + (current_row_height if i == current_row else .025))
+
+		layout = {"cols": cols, "rows": rows, "cells": cells}
+		print(layout)
+		window.set_layout(layout)
+
+	def unfocus_pane(self):
+		window = self.window
+		rows,cols,cells = self.get_layout()
+		current_cell = cells[window.active_group()]
+
+		num_cols = len(cols)-1
+		col_width = 1/num_cols
+
+		cols = [0.0]
+		for i in range(0,num_cols):
+			cols.append(cols[i] + col_width)
+
+		num_rows = len(rows)-1
+		row_height = 1/num_rows
+		
+		rows = [0.0]
+		for i in range(0,num_rows):
+			rows.append(rows[i] + row_height)
+
+		layout = {"cols": cols, "rows": rows, "cells": cells}
+		print(layout)
+		window.set_layout(layout)
+
 	def create_pane(self, direction):
 		window = self.window
 		rows, cols, cells = self.get_layout()
@@ -230,6 +278,15 @@ class CreatePaneWithFileCommand(PaneCommand):
 	def run(self, direction):
 		self.create_pane_with_file(direction)
 
+class FocusPaneCommand(PaneCommand):
+	def run(self):
+		print("focus")
+		self.focus_pane()
+
+class UnfocusPaneCommand(PaneCommand):
+	def run(self):
+		print("unfocus")
+		self.unfocus_pane()
 
 class CreatePaneCommand(PaneCommand):
 	def run(self, direction):
