@@ -51,7 +51,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		print(layout)
 		cells = layout["cells"]
 		rows = layout["rows"]
-		cols = layout["cols"]	
+		cols = layout["cols"]
 		return rows, cols, cells
 	
 	def get_cells(self):
@@ -75,8 +75,10 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			overlap = (end - start)# / (fields[cell[MAX]] - fields[cell[MIN]])
 			cell_overlap.append(overlap)
 		
-		cell_index = cell_overlap.index(max(cell_overlap))
-		return adjacent_cells[cell_index]
+		if len(cell_overlap) != 0:
+			cell_index = cell_overlap.index(max(cell_overlap))
+			return adjacent_cells[cell_index]
+		return None
 	
 	def duplicated_views(self, original_group, duplicating_group):
 		original_views = self.window.views_in_group(original_group)
