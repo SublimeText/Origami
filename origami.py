@@ -118,6 +118,14 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		# original view.
 		new_view = window.active_view()
 		window.set_view_index(new_view, group, original_index)
+		
+		# Fix the new view's selection and viewport
+		new_sel = new_view.sel()
+		new_sel.clear()
+		for s in view.sel():
+			new_sel.add(s)
+		sublime.set_timeout(lambda : new_view.set_viewport_position(view.viewport_position(), False), 0)
+		
 		self.carry_file_to_pane(direction)
 	
 	def create_pane_with_file(self,direction):
