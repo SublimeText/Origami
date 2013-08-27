@@ -38,36 +38,36 @@ def cells_adjacent_to_cell_in_direction(cells, cell, direction):
 		fn = lambda orig, check: orig[YMAX] == check[YMIN]
 	elif direction == "left":
 		fn = lambda orig, check: orig[XMIN] == check[XMAX]
-
+	
 	if fn:
 		return [c for c in cells if fn(cell, c)]
 	return None
 
 class PaneCommand(sublime_plugin.WindowCommand):
 	"Abstract base class for commands."
-
+	
 	def get_layout(self):
 		layout = self.window.get_layout()
 		print(layout)
 		cells = layout["cells"]
 		rows = layout["rows"]
-		cols = layout["cols"]
+		cols = layout["cols"]	
 		return rows, cols, cells
-
+	
 	def get_cells(self):
 		return self.get_layout()[2]
-
+	
 	def adjacent_cell(self, direction):
 		cells = self.get_cells()
 		current_cell = cells[self.window.active_group()]
 		adjacent_cells = cells_adjacent_to_cell_in_direction(cells, current_cell, direction)
 		rows, cols, _ = self.get_layout()
-
+		
 		if direction in ["left", "right"]:
 			MIN, MAX, fields = YMIN, YMAX, rows
 		else: #up or down
 			MIN, MAX, fields = XMIN, XMAX, cols
-
+		
 		cell_overlap = []
 		for cell in adjacent_cells:
 			start = max(fields[cell[MIN]], fields[current_cell[MIN]])
@@ -78,7 +78,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			cell_index = cell_overlap.index(max(cell_overlap))
 			return adjacent_cells[cell_index]
 		return None
-
+	
 	def duplicated_views(self, original_group, duplicating_group):
 		original_views = self.window.views_in_group(original_group)
 		original_buffers = [v.buffer_id() for v in original_views]
