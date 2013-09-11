@@ -1,6 +1,6 @@
 Origami
 ======
-Origami is a new way of thinking about panes in Sublime Text: you tell Sublime Text where you want a new pane, and it makes one for you.
+Origami is a new way of thinking about panes in Sublime Text 2 and 3: you tell Sublime Text where you want a new pane, and it makes one for you. It works seamlessly alongside the built-in layout commands.
 
 Ordinarily one uses the commands under View>Layout, or if one is quite intrepid a custom keyboard shortcut can be made to give a specific layout, but both of these solutions were unsatisfactory to me. Perhaps they were to you too! That's what this plugin is for.
 
