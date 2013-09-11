@@ -29,7 +29,7 @@
   { "keys": ["super+k", "super+alt+down"], "command": "create_pane_with_file", "args": {"direction": "down"} },
   { "keys": ["super+k", "super+alt+left"], "command": "create_pane_with_file", "args": {"direction": "left"} },
   
-  { "keys": ["super+k", "super+f"], "command": "focus_pane", "args": {} },
-  { "keys": ["super+k", "super+shift+f"], "command": "unfocus_pane", "args": {} }
+  { "keys": ["super+k", "super+z"], "command": "zoom_pane", "args": {} },
+  { "keys": ["super+k", "super+shift+z"], "command": "unzoom_pane", "args": {} }
 
 ]

@@ -29,6 +29,6 @@
   { "keys": ["ctrl+k", "ctrl+alt+down"], "command": "create_pane_with_file", "args": {"direction": "down"} },
   { "keys": ["ctrl+k", "ctrl+alt+left"], "command": "create_pane_with_file", "args": {"direction": "left"} },
   
-  { "keys": ["ctrl+k", "ctrl+f"], "command": "focus_pane", "args": {} },
-  { "keys": ["ctrl+k", "ctrl+shift+f"], "command": "unfocus_pane", "args": {} }
+  { "keys": ["ctrl+k", "ctrl+z"], "command": "zoom_pane", "args": {} },
+  { "keys": ["ctrl+k", "ctrl+shift+z"], "command": "unzoom_pane", "args": {} }
 ]
