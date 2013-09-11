@@ -27,5 +27,9 @@
 	{ "command": "create_pane_with_file", "args": {"direction": "up"}, "caption": "Origami: Create Pane with File Above" },
 	{ "command": "create_pane_with_file", "args": {"direction": "right"}, "caption": "Origami: Create Pane with File on the Right" },
 	{ "command": "create_pane_with_file", "args": {"direction": "down"}, "caption": "Origami: Create Pane with File Below" },
-	{ "command": "create_pane_with_file", "args": {"direction": "left"}, "caption": "Origami: Create Pane with File on the Left" }
+	{ "command": "create_pane_with_file", "args": {"direction": "left"}, "caption": "Origami: Create Pane with File on the Left" },
+
+	{ "command": "zoom_pane", "args": {}, "caption": "Origami: Zoom Current Pane" },
+	{ "command": "unzoom_pane", "args": {}, "caption": "Origami: Unzoom Current Pane" },
+
 ]
