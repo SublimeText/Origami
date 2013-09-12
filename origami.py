@@ -132,7 +132,12 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		self.create_pane(direction)
 		self.carry_file_to_pane(direction)
 
-	def zoom_pane(self):
+	def zoom_pane(self, fraction):
+		if fraction == None:
+			fraction = .9
+		
+		fraction = min(1, max(0, fraction))
+		
 		window = self.window
 		rows,cols,cells = self.get_layout()
 		current_cell = cells[window.active_group()]
@@ -140,7 +145,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		current_col = current_cell[0]
 		num_cols = len(cols)-1
 
-		current_col_width = 1 if num_cols==1 else 0.9
+		current_col_width = 1 if num_cols==1 else fraction
 		other_col_width = 0 if num_cols==1 else (1-current_col_width)/(num_cols-1)
 
 		cols = [0.0]
@@ -150,7 +155,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		current_row = current_cell[1]
 		num_rows = len(rows)-1
 
-		current_row_height = 1 if num_rows==1 else 0.9
+		current_row_height = 1 if num_rows==1 else fraction
 		other_row_height = 0 if num_rows==1 else (1-current_row_height)/(num_rows-1)
 		rows = [0.0]
 		for i in range(0,num_rows):
@@ -290,8 +295,8 @@ class CreatePaneWithFileCommand(PaneCommand):
 		self.create_pane_with_file(direction)
 
 class ZoomPaneCommand(PaneCommand):
-	def run(self):
-		self.zoom_pane()
+	def run(self, fraction=None):
+		self.zoom_pane(fraction)
 
 class UnzoomPaneCommand(PaneCommand):
 	def run(self):
