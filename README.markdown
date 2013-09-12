@@ -18,7 +18,12 @@ Origami is driven by keyboard shortcuts. By default, these keyboard shortcuts ar
 
 These keyboard shortcuts are designed to make it really easy to modify the layout of your editor.
 
-(Note: Windows uses `ctrl` instead of `super`.)
+Additionally, Origami allows one to zoom the current pane, making it take up a large portion of the window. As above, first press `super+k`, then press:
+
+* `super+z`: Zoom the current pane so it takes up 90% of the screen (the fraction is changeable in the keybindings)
+* `shift+super+z`: Unzoom: equally space all panes
+
+(Note: Windows and Linux use `ctrl` instead of `super`.)
 
 Install
 -------
