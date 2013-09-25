@@ -43,6 +43,13 @@ def cells_adjacent_to_cell_in_direction(cells, cell, direction):
 		return [c for c in cells if fn(cell, c)]
 	return None
 
+def fixed_set_layout(window, layout):
+	#A bug was introduced in Sublime Text 3, sometime before 3053, in that it
+	#changes the active group to 0 when the layout is changed. Annoying.
+	active_group = window.active_group()
+	window.set_layout(layout)
+	window.focus_group(active_group)
+
 class PaneCommand(sublime_plugin.WindowCommand):
 	"Abstract base class for commands."
 	
@@ -165,7 +172,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 		layout = {"cols": cols, "rows": rows, "cells": cells}
 		print(layout)
-		window.set_layout(layout)
+		fixed_set_layout(window, layout)
 
 	def unzoom_pane(self):
 		window = self.window
@@ -188,7 +195,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 		layout = {"cols": cols, "rows": rows, "cells": cells}
 		print(layout)
-		window.set_layout(layout)
+		fixed_set_layout(window, layout)
 
 	def create_pane(self, direction):
 		window = self.window
@@ -221,7 +228,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			cells.append(unfocused_cell)
 			layout = {"cols": cols, "rows": rows, "cells": cells}
 			print(layout)
-			window.set_layout(layout)
+			fixed_set_layout(window, layout)
 	
 	def destroy_pane(self, direction):
 		window = self.window
@@ -274,7 +281,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			
 			layout = {"cols": cols, "rows": rows, "cells": cells}
 			print(layout)
-			window.set_layout(layout)
+			fixed_set_layout(window, layout)
 
 
 class TravelToPaneCommand(PaneCommand):
