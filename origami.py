@@ -321,3 +321,31 @@ class CreatePaneCommand(PaneCommand):
 class DestroyPaneCommand(PaneCommand):
 	def run(self, direction):
 		self.destroy_pane(direction)
+
+
+class AutoZoomOnFocus(sublime_plugin.EventListener):
+	running = False
+	
+	def delayed_zoom(self, view, fraction):
+		# zoom_pane hangs sublime if you destroy the pane above or to your left.
+		# call it in a sublime.set_timeout to fix the issue
+		
+		args = {}
+		# Work correctly if someone sets "origami_auto_zoom_on_focus": true rather
+		# than e.g. "origami_auto_zoom_on_focus": .8.
+		if fraction != True:
+			args["fraction"] = fraction
+		view.window().run_command("zoom_pane", args)
+		self.running = False
+	
+	def on_activated(self, view):
+		print(self.running)
+		if self.running:
+			return
+		fraction = view.settings().get("origami_auto_zoom_on_focus", False)
+		if not fraction:
+			return
+		if view.settings().get("is_widget"):
+			return
+		self.running = True
+		sublime.set_timeout(lambda: self.delayed_zoom(view, fraction), 0)

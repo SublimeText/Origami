@@ -23,6 +23,8 @@ Additionally, Origami allows one to zoom the current pane, making it take up a l
 * `super+z`: Zoom the current pane so it takes up 90% of the screen (the fraction is changeable in the keybindings)
 * `shift+super+z`: Unzoom: equally space all panes
 
+Finally, you can have Origami automatically zoom the active pane by setting `origami_auto_zoom_on_focus` in your user preferences. Set it to `true` for the default zoom, or set it to a user-definable fraction of the screen.
+
 (Note: Windows and Linux use `ctrl` instead of `super`.)
 
 Install
