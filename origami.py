@@ -48,7 +48,8 @@ def fixed_set_layout(window, layout):
 	#changes the active group to 0 when the layout is changed. Annoying.
 	active_group = window.active_group()
 	window.set_layout(layout)
-	window.focus_group(active_group)
+	num_groups = len(layout['cells'])
+	window.focus_group(min(active_group, num_groups-1))
 
 class PaneCommand(sublime_plugin.WindowCommand):
 	"Abstract base class for commands."
