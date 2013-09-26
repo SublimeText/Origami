@@ -357,6 +357,16 @@ class DestroyPaneCommand(PaneCommand):
 		self.destroy_pane(direction)
 
 
+class AutoCloseEmptyPanes(sublime_plugin.EventListener):
+	def on_close(self, view):
+		auto_close = view.settings().get("origami_auto_close_empty_panes", False)
+		if not auto_close:
+			return
+		window = sublime.active_window()
+		active_group = window.active_group()
+		if len(window.views_in_group(active_group)) == 0:
+			window.run_command("destroy_pane", args={"direction":"self"})
+
 class AutoZoomOnFocus(sublime_plugin.EventListener):
 	running = False
 	
