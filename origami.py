@@ -13,20 +13,20 @@ def decrement_if_greater(x, threshold):
 	return x
 
 def pull_up_cells_after(cells, threshold):
-		return [	[x0,decrement_if_greater(y0, threshold),
-		        	x1,decrement_if_greater(y1, threshold)] for (x0,y0,x1,y1) in cells]
+	return [	[x0,decrement_if_greater(y0, threshold),
+	        	x1,decrement_if_greater(y1, threshold)] for (x0,y0,x1,y1) in cells]
 
 def push_right_cells_after(cells, threshold):
-		return [	[increment_if_greater_or_equal(x0, threshold),y0,
-		        	increment_if_greater_or_equal(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
+	return [	[increment_if_greater_or_equal(x0, threshold),y0,
+	        	increment_if_greater_or_equal(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
 
 def push_down_cells_after(cells, threshold):
-		return [	[x0,increment_if_greater_or_equal(y0, threshold),
-		        	x1,increment_if_greater_or_equal(y1, threshold)] for (x0,y0,x1,y1) in cells]
+	return [	[x0,increment_if_greater_or_equal(y0, threshold),
+	        	x1,increment_if_greater_or_equal(y1, threshold)] for (x0,y0,x1,y1) in cells]
 
 def pull_left_cells_after(cells, threshold):
-		return [	[decrement_if_greater(x0, threshold),y0,
-		        	decrement_if_greater(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
+	return [	[decrement_if_greater(x0, threshold),y0,
+	        	decrement_if_greater(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
 
 def cells_adjacent_to_cell_in_direction(cells, cell, direction):
 	fn = None
