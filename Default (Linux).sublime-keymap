@@ -23,7 +23,9 @@
   { "keys": ["ctrl+k", "ctrl+shift+right"], "command": "destroy_pane", "args": {"direction": "right"} },
   { "keys": ["ctrl+k", "ctrl+shift+down"], "command": "destroy_pane", "args": {"direction": "down"} },
   { "keys": ["ctrl+k", "ctrl+shift+left"], "command": "destroy_pane", "args": {"direction": "left"} },
-
+  // You can also destroy the current pane by binding the following command:
+  // { "keys": [], "command": "destroy_pane", "args": {"direction": "self"} },
+  
   { "keys": ["ctrl+k", "ctrl+alt+up"], "command": "create_pane_with_file", "args": {"direction": "up"} },
   { "keys": ["ctrl+k", "ctrl+alt+right"], "command": "create_pane_with_file", "args": {"direction": "right"} },
   { "keys": ["ctrl+k", "ctrl+alt+down"], "command": "create_pane_with_file", "args": {"direction": "down"} },
