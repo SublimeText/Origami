@@ -60,7 +60,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 	
 	def get_layout(self):
 		layout = self.window.get_layout()
-		print(layout)
 		cells = layout["cells"]
 		rows = layout["rows"]
 		cols = layout["cols"]
@@ -176,7 +175,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			rows.append(rows[i] + (current_row_height if i == current_row else other_row_height))
 
 		layout = {"cols": cols, "rows": rows, "cells": cells}
-		print(layout)
 		fixed_set_layout(window, layout)
 
 	def unzoom_pane(self):
@@ -199,7 +197,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			rows.append(rows[i] + row_height)
 
 		layout = {"cols": cols, "rows": rows, "cells": cells}
-		print(layout)
 		fixed_set_layout(window, layout)
 
 	def create_pane(self, direction):
@@ -232,7 +229,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			cells.insert(current_group, focused_cell)
 			cells.append(unfocused_cell)
 			layout = {"cols": cols, "rows": rows, "cells": cells}
-			print(layout)
 			fixed_set_layout(window, layout)
 	
 	def destroy_current_pane(self):
@@ -274,7 +270,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		current_cell = cells[current_group]
 		
 		adjacent_cells = cells_adjacent_to_cell_in_direction(cells, current_cell, direction)
-		print("number adjacent: ", len(adjacent_cells))
 		if len(adjacent_cells) == 1:
 			cell_to_remove = adjacent_cells[0]
 		
@@ -315,7 +310,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 				cells = pull_left_cells_after(cells, cell_to_remove[XMAX])
 			
 			layout = {"cols": cols, "rows": rows, "cells": cells}
-			print(layout)
 			fixed_set_layout(window, layout)
 
 
@@ -348,7 +342,6 @@ class UnzoomPaneCommand(PaneCommand):
 
 class CreatePaneCommand(PaneCommand):
 	def run(self, direction):
-		print("creating")
 		self.create_pane(direction)
 
 
@@ -383,7 +376,6 @@ class AutoZoomOnFocus(sublime_plugin.EventListener):
 		self.running = False
 	
 	def on_activated(self, view):
-		print(self.running)
 		if self.running:
 			return
 		fraction = view.settings().get("origami_auto_zoom_on_focus", False)
