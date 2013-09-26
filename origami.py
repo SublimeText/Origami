@@ -28,6 +28,10 @@ def pull_left_cells_after(cells, threshold):
 	return [	[decrement_if_greater(x0, threshold),y0,
 	        	decrement_if_greater(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
 
+def opposite_direction(direction):
+	opposites = {"up":"down", "right":"left", "down":"up", "left":"right"}
+	return opposites[direction]
+
 def cells_adjacent_to_cell_in_direction(cells, cell, direction):
 	fn = None
 	if direction == "up":
@@ -231,7 +235,37 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			print(layout)
 			fixed_set_layout(window, layout)
 	
+	def destroy_current_pane(self):
+		#Out of the four adjacent panes, one was split to create this pane.
+		#Find out which one, move to it, then destroy this pane.
+		cells = self.get_cells()
+		
+		current = cells[self.window.active_group()]
+		choices = {}
+		choices["up"] = self.adjacent_cell("up")
+		choices["right"] = self.adjacent_cell("right")
+		choices["down"] = self.adjacent_cell("down")
+		choices["left"] = self.adjacent_cell("left")
+		
+		target_dir = None
+		for dir,c in choices.items():
+			if not c:
+				continue
+			if dir in ["up", "down"]:
+				if c[XMIN] == current[XMIN] and c[XMAX] == current[XMAX]:
+					target_dir = dir
+			elif dir in ["left", "right"]:
+				if c[YMIN] == current[YMIN] and c[YMAX] == current[YMAX]:
+					target_dir = dir
+		if target_dir:
+			self.travel_to_pane(target_dir)
+			self.destroy_pane(opposite_direction(target_dir))
+	
 	def destroy_pane(self, direction):
+		if direction == "self":
+			self.destroy_current_pane()
+			return
+		
 		window = self.window
 		rows, cols, cells = self.get_layout()
 		current_group = window.active_group()
