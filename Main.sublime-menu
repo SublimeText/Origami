@@ -45,7 +45,8 @@
                                     { "command": "destroy_pane", "args": {"direction": "up"}, "caption": "Above" },
                                     { "command": "destroy_pane", "args": {"direction": "down"}, "caption": "Below" },
                                     { "command": "destroy_pane", "args": {"direction": "right"}, "caption": "Right" },
-                                    { "command": "destroy_pane", "args": {"direction": "left"}, "caption": "Left" }
+                                    { "command": "destroy_pane", "args": {"direction": "left"}, "caption": "Left" },
+                                    { "command": "destroy_pane", "args": {"direction": "self"}, "caption": "Current Pane" }
                                 ]
                             }
                         ]

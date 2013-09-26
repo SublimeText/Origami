@@ -23,6 +23,7 @@
 	{ "command": "destroy_pane", "args": {"direction": "right"}, "caption": "Origami: Destroy Pane on the Right" },
 	{ "command": "destroy_pane", "args": {"direction": "down"}, "caption": "Origami: Destroy Pane Below" },
 	{ "command": "destroy_pane", "args": {"direction": "left"}, "caption": "Origami: Destroy Pane on the Left" },
+	{ "command": "destroy_pane", "args": {"direction": "self"}, "caption": "Origami: Destroy Current Pane" },
 
 	{ "command": "create_pane_with_file", "args": {"direction": "up"}, "caption": "Origami: Create Pane with File Above" },
 	{ "command": "create_pane_with_file", "args": {"direction": "right"}, "caption": "Origami: Create Pane with File on the Right" },
