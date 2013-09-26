@@ -34,21 +34,4 @@ Origami can also automatically close a pane for you once you've closed the last 
 Install
 -------
 
-This plugin is available through [Package Control](http://wbond.net/sublime_packages/package_control).
-
-Manual Install
---------------
-
-Go to your Packages subdirectory under ST2's data directory:
-
-* Windows: `%APPDATA%\Sublime Text 2`
-* OS X: `~/Library/Application Support/Sublime Text 2`
-* Linux: `~/.config/sublime-text-2`
-* Portable Installation: `Sublime Text 2/Data`
-
-Then clone this repository:
-
-    git clone https://github.com/SublimeText/Origami.git
-
-That's it!
-
+Search for Origami on [Package Control](https://sublime.wbond.net/)!
