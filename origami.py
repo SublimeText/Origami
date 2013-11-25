@@ -357,8 +357,16 @@ class AutoCloseEmptyPanes(sublime_plugin.EventListener):
 			return
 		window = sublime.active_window()
 		active_group = window.active_group()
-		if len(window.views_in_group(active_group)) == 0:
-			window.run_command("destroy_pane", args={"direction":"self"})
+
+		if sublime.version()[0] == '2':
+			# in sublime 2 on_close is called before the view is removed, so destroying
+			# the current pane at this point will crash it.  using set_timeout avoids this
+			if len(window.views_in_group(active_group)) == 1:
+				sublime.set_timeout(lambda: window.run_command("destroy_pane", {"direction":"self"}), 0)
+		else:
+			# otherwise fall back on the current behavior
+			if len(window.views_in_group(active_group)) == 0:
+				window.run_command("destroy_pane", args={"direction":"self"})
 
 class AutoZoomOnFocus(sublime_plugin.EventListener):
 	running = False
