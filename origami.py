@@ -370,6 +370,7 @@ class AutoCloseEmptyPanes(sublime_plugin.EventListener):
 
 class AutoZoomOnFocus(sublime_plugin.EventListener):
 	running = False
+	active_group = -1
 	
 	def delayed_zoom(self, view, fraction):
 		# zoom_pane hangs sublime if you destroy the pane above or to your left.
@@ -391,5 +392,12 @@ class AutoZoomOnFocus(sublime_plugin.EventListener):
 			return
 		if view.settings().get("is_widget"):
 			return
+		
+		new_active_group = view.window().active_group()
+		if new_active_group == self.active_group:
+			return
+		
+		self.active_group = new_active_group
 		self.running = True
+		
 		sublime.set_timeout(lambda: self.delayed_zoom(view, fraction), 0)
