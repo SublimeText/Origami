@@ -374,6 +374,12 @@ class AutoZoomOnFocus(sublime_plugin.EventListener):
 		# zoom_pane hangs sublime if you destroy the pane above or to your left.
 		# call it in a sublime.set_timeout to fix the issue
 		
+		# Sublime Text 2 has issues on startup where views don't have windows yet.
+		# If we don't have a window yet, bail.
+		if view.window() is None:
+			self.running = False
+			return
+		
 		args = {}
 		# Work correctly if someone sets "origami_auto_zoom_on_focus": true rather
 		# than e.g. "origami_auto_zoom_on_focus": .8.
