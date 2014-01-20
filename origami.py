@@ -141,10 +141,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		
 		self.carry_file_to_pane(direction)
 	
-	def create_pane_with_file(self,direction):
-		self.create_pane(direction)
-		self.carry_file_to_pane(direction)
-
 	def zoom_pane(self, fraction):
 		if fraction == None:
 			fraction = .9
@@ -330,7 +326,9 @@ class CloneFileToPaneCommand(PaneCommand):
 
 class CreatePaneWithFileCommand(PaneCommand):
 	def run(self, direction):
-		self.create_pane_with_file(direction)
+		self.create_pane(direction)
+		self.carry_file_to_pane(direction)
+
 
 class ZoomPaneCommand(PaneCommand):
 	def run(self, fraction=None):
