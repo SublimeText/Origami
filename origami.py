@@ -195,6 +195,32 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		layout = {"cols": cols, "rows": rows, "cells": cells}
 		fixed_set_layout(window, layout)
 
+	def toggle_zoom(self, fraction):
+		window = self.window
+		rows,cols,cells = self.get_layout()
+		equal_spacing = True
+		
+		num_cols = len(cols)-1
+		col_width = 1/num_cols
+		
+		for i,c in enumerate(cols):
+			if c != i * col_width:
+				equal_spacing = False
+				break
+		
+		num_rows = len(rows)-1
+		row_height = 1/num_rows
+		
+		for i,r in enumerate(rows):
+			if r != i * row_height:
+				equal_spacing = False
+				break
+		
+		if equal_spacing:
+			self.zoom_pane(fraction)
+		else:
+			self.unzoom_pane()
+
 	def create_pane(self, direction):
 		window = self.window
 		rows, cols, cells = self.get_layout()
@@ -337,6 +363,11 @@ class ZoomPaneCommand(PaneCommand):
 class UnzoomPaneCommand(PaneCommand):
 	def run(self):
 		self.unzoom_pane()
+
+class ToggleZoomPaneCommand(PaneCommand):
+	def run(self, fraction=None):
+		self.toggle_zoom(fraction)
+
 
 class CreatePaneCommand(PaneCommand):
 	def run(self, direction):
