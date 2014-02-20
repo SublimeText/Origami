@@ -154,6 +154,8 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		current_col = current_cell[0]
 		num_cols = len(cols)-1
 
+		#TODO:	the sizes of the unzoomed panes are calculated incorrectly if the
+		#     	unzoomed panes have a split that overlaps the zoomed pane.
 		current_col_width = 1 if num_cols==1 else fraction
 		other_col_width = 0 if num_cols==1 else (1-current_col_width)/(num_cols-1)
 
