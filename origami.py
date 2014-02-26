@@ -358,6 +358,12 @@ class CreatePaneWithFileCommand(PaneCommand):
 		self.carry_file_to_pane(direction)
 
 
+class CreatePaneWithClonedFileCommand(PaneCommand):
+	def run(self, direction):
+		self.create_pane(direction)
+		self.clone_file_to_pane(direction)
+
+
 class ZoomPaneCommand(PaneCommand):
 	def run(self, fraction=None):
 		self.zoom_pane(fraction)
