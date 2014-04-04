@@ -181,14 +181,14 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		current_cell = cells[window.active_group()]
 
 		num_cols = len(cols)-1
-		col_width = 1/num_cols
+		col_width = 1.0/num_cols
 
 		cols = [0.0]
 		for i in range(0,num_cols):
 			cols.append(cols[i] + col_width)
 
 		num_rows = len(rows)-1
-		row_height = 1/num_rows
+		row_height = 1.0/num_rows
 		
 		rows = [0.0]
 		for i in range(0,num_rows):
