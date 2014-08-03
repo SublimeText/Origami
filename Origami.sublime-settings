@@ -1,0 +1,14 @@
+{
+    /**
+     * The "saved_layouts" key holds a list of previously
+     * saved layout settings. These can be set using the
+     * "Origami: Save Current Layout" command, they can be
+     * restored using the "Origami: Restore Saved Layout"
+     * command and can be removed using the "Origami: Remove
+     * Saved Layout" command.
+     *
+     * Valid format: {"nickname": XXXX, "cells": XXXX,
+     *                "cols": XXXX, "rows": XXXX}
+     */
+    "saved_layouts": []
+}
