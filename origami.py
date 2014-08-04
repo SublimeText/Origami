@@ -406,6 +406,7 @@ class SaveLayoutCommand(PaneCommand):
 
 		saved_layouts.append(layout)
 		settings.set('saved_layouts', saved_layouts)
+		sublime.save_settings('Origami.sublime-settings')
 
 	def run(self):
 		view = self.window.active_view()
@@ -462,6 +463,7 @@ class RemoveLayoutCommand(PaneCommand):
 		if index > -1:
 			saved_layouts.pop(index)
 			settings.set('saved_layouts', saved_layouts)
+			sublime.save_settings('Origami.sublime-settings')
 
 		self.layouts = []
 
