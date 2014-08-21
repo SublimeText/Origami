@@ -14,19 +14,19 @@ def decrement_if_greater(x, threshold):
 
 def pull_up_cells_after(cells, threshold):
 	return [	[x0,decrement_if_greater(y0, threshold),
-	        	x1,decrement_if_greater(y1, threshold)] for (x0,y0,x1,y1) in cells]
+				x1,decrement_if_greater(y1, threshold)] for (x0,y0,x1,y1) in cells]
 
 def push_right_cells_after(cells, threshold):
 	return [	[increment_if_greater_or_equal(x0, threshold),y0,
-	        	increment_if_greater_or_equal(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
+				increment_if_greater_or_equal(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
 
 def push_down_cells_after(cells, threshold):
 	return [	[x0,increment_if_greater_or_equal(y0, threshold),
-	        	x1,increment_if_greater_or_equal(y1, threshold)] for (x0,y0,x1,y1) in cells]
+				x1,increment_if_greater_or_equal(y1, threshold)] for (x0,y0,x1,y1) in cells]
 
 def pull_left_cells_after(cells, threshold):
 	return [	[decrement_if_greater(x0, threshold),y0,
-	        	decrement_if_greater(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
+				decrement_if_greater(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
 
 def opposite_direction(direction):
 	opposites = {"up":"down", "right":"left", "down":"up", "left":"right"}
@@ -42,7 +42,7 @@ def cells_adjacent_to_cell_in_direction(cells, cell, direction):
 		fn = lambda orig, check: orig[YMAX] == check[YMIN]
 	elif direction == "left":
 		fn = lambda orig, check: orig[XMIN] == check[XMAX]
-	
+
 	if fn:
 		return [c for c in cells if fn(cell, c)]
 	return None
@@ -57,40 +57,40 @@ def fixed_set_layout(window, layout):
 
 class PaneCommand(sublime_plugin.WindowCommand):
 	"Abstract base class for commands."
-	
+
 	def get_layout(self):
 		layout = self.window.get_layout()
 		cells = layout["cells"]
 		rows = layout["rows"]
 		cols = layout["cols"]
 		return rows, cols, cells
-	
+
 	def get_cells(self):
 		return self.get_layout()[2]
-	
+
 	def adjacent_cell(self, direction):
 		cells = self.get_cells()
 		current_cell = cells[self.window.active_group()]
 		adjacent_cells = cells_adjacent_to_cell_in_direction(cells, current_cell, direction)
 		rows, cols, _ = self.get_layout()
-		
+
 		if direction in ["left", "right"]:
 			MIN, MAX, fields = YMIN, YMAX, rows
 		else: #up or down
 			MIN, MAX, fields = XMIN, XMAX, cols
-		
+
 		cell_overlap = []
 		for cell in adjacent_cells:
 			start = max(fields[cell[MIN]], fields[current_cell[MIN]])
 			end = min(fields[cell[MAX]], fields[current_cell[MAX]])
 			overlap = (end - start)# / (fields[cell[MAX]] - fields[cell[MIN]])
 			cell_overlap.append(overlap)
-		
+
 		if len(cell_overlap) != 0:
 			cell_index = cell_overlap.index(max(cell_overlap))
 			return adjacent_cells[cell_index]
 		return None
-	
+
 	def duplicated_views(self, original_group, duplicating_group):
 		original_views = self.window.views_in_group(original_group)
 		original_buffers = [v.buffer_id() for v in original_views]
@@ -100,14 +100,14 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			if pd.buffer_id() in original_buffers:
 				dupe_views.append(pd)
 		return dupe_views
-	
+
 	def travel_to_pane(self, direction):
 		adjacent_cell = self.adjacent_cell(direction)
 		if adjacent_cell:
 			cells = self.get_cells()
 			new_group_index = cells.index(adjacent_cell)
 			self.window.focus_group(new_group_index)
-	
+
 	def carry_file_to_pane(self, direction):
 		view = self.window.active_view()
 		if view == None:
@@ -116,7 +116,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		window = self.window
 		group = self.travel_to_pane(direction)
 		window.set_view_index(view, window.active_group(), 0)
-	
+
 	def clone_file_to_pane(self, direction):
 		window = self.window
 		view = window.active_view()
@@ -125,28 +125,28 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			return
 		group, original_index = window.get_view_index(view)
 		window.run_command("clone_file")
-		
+
 		# If we move the cloned file's tab to the left of the original's,
 		# then when we remove it from the group, focus will fall to the
 		# original view.
 		new_view = window.active_view()
 		window.set_view_index(new_view, group, original_index)
-		
+
 		# Fix the new view's selection and viewport
 		new_sel = new_view.sel()
 		new_sel.clear()
 		for s in view.sel():
 			new_sel.add(s)
 		sublime.set_timeout(lambda : new_view.set_viewport_position(view.viewport_position(), False), 0)
-		
+
 		self.carry_file_to_pane(direction)
-	
+
 	def zoom_pane(self, fraction):
 		if fraction == None:
 			fraction = .9
-		
+
 		fraction = min(1, max(0, fraction))
-		
+
 		window = self.window
 		rows,cols,cells = self.get_layout()
 		current_cell = cells[window.active_group()]
@@ -189,7 +189,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 		num_rows = len(rows)-1
 		row_height = 1.0/num_rows
-		
+
 		rows = [0.0]
 		for i in range(0,num_rows):
 			rows.append(rows[i] + row_height)
@@ -201,23 +201,23 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		window = self.window
 		rows,cols,cells = self.get_layout()
 		equal_spacing = True
-		
+
 		num_cols = len(cols)-1
 		col_width = 1/num_cols
-		
+
 		for i,c in enumerate(cols):
 			if c != i * col_width:
 				equal_spacing = False
 				break
-		
+
 		num_rows = len(rows)-1
 		row_height = 1/num_rows
-		
+
 		for i,r in enumerate(rows):
 			if r != i * row_height:
 				equal_spacing = False
 				break
-		
+
 		if equal_spacing:
 			self.zoom_pane(fraction)
 		else:
@@ -227,22 +227,22 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		window = self.window
 		rows, cols, cells = self.get_layout()
 		current_group = window.active_group()
-		
+
 		old_cell = cells.pop(current_group)
 		new_cell = []
-		
+
 		if direction in ("up", "down"):
 			cells = push_down_cells_after(cells, old_cell[YMAX])
 			rows.insert(old_cell[YMAX], (rows[old_cell[YMIN]] + rows[old_cell[YMAX]]) / 2)
 			new_cell = [old_cell[XMIN], old_cell[YMAX], old_cell[XMAX], old_cell[YMAX]+1]
 			old_cell = [old_cell[XMIN], old_cell[YMIN], old_cell[XMAX], old_cell[YMAX]]
-		
+
 		elif direction in ("right", "left"):
 			cells = push_right_cells_after(cells, old_cell[XMAX])
 			cols.insert(old_cell[XMAX], (cols[old_cell[XMIN]] + cols[old_cell[XMAX]]) / 2)
 			new_cell = [old_cell[XMAX], old_cell[YMIN], old_cell[XMAX]+1, old_cell[YMAX]]
 			old_cell = [old_cell[XMIN], old_cell[YMIN], old_cell[XMAX], old_cell[YMAX]]
-		
+
 		if new_cell:
 			if direction in ("left", "up"):
 				focused_cell = new_cell
@@ -254,19 +254,19 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			cells.append(unfocused_cell)
 			layout = {"cols": cols, "rows": rows, "cells": cells}
 			fixed_set_layout(window, layout)
-	
+
 	def destroy_current_pane(self):
 		#Out of the four adjacent panes, one was split to create this pane.
 		#Find out which one, move to it, then destroy this pane.
 		cells = self.get_cells()
-		
+
 		current = cells[self.window.active_group()]
 		choices = {}
 		choices["up"] = self.adjacent_cell("up")
 		choices["right"] = self.adjacent_cell("right")
 		choices["down"] = self.adjacent_cell("down")
 		choices["left"] = self.adjacent_cell("left")
-		
+
 		target_dir = None
 		for dir,c in choices.items():
 			if not c:
@@ -280,23 +280,23 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		if target_dir:
 			self.travel_to_pane(target_dir)
 			self.destroy_pane(opposite_direction(target_dir))
-	
+
 	def destroy_pane(self, direction):
 		if direction == "self":
 			self.destroy_current_pane()
 			return
-		
+
 		window = self.window
 		rows, cols, cells = self.get_layout()
 		current_group = window.active_group()
-		
+
 		cell_to_remove = None
 		current_cell = cells[current_group]
-		
+
 		adjacent_cells = cells_adjacent_to_cell_in_direction(cells, current_cell, direction)
 		if len(adjacent_cells) == 1:
 			cell_to_remove = adjacent_cells[0]
-		
+
 		if cell_to_remove:
 			active_view = window.active_view()
 			group_to_remove = cells.index(cell_to_remove)
@@ -306,7 +306,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 				window.run_command('close')
 			if active_view:
 				window.focus_view(active_view)
-			
+
 			cells.remove(cell_to_remove)
 			if direction == "up":
 				rows.pop(cell_to_remove[YMAX])
@@ -332,7 +332,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 				for cell in adjacent_cells:
 					cells[cells.index(cell)][XMIN] = cell_to_remove[XMIN]
 				cells = pull_left_cells_after(cells, cell_to_remove[XMAX])
-			
+
 			layout = {"cols": cols, "rows": rows, "cells": cells}
 			fixed_set_layout(window, layout)
 
@@ -387,6 +387,97 @@ class DestroyPaneCommand(PaneCommand):
 		self.destroy_pane(direction)
 
 
+class SaveLayoutCommand(PaneCommand):
+	"""
+	Save the current layout configuration in a settings file.
+	"""
+	def set_layout_info(self, nickname):
+		"""
+		"""
+		settings = sublime.load_settings('Origami.sublime-settings')
+		saved_layouts = settings.get('saved_layouts')
+
+		layout_data = self.get_layout()
+		layout = {}
+		layout['nickname'] = nickname
+		layout['rows'] = layout_data[0]
+		layout['cols'] = layout_data[1]
+		layout['cells'] = layout_data[2]
+
+		saved_layouts.append(layout)
+		settings.set('saved_layouts', saved_layouts)
+		sublime.save_settings('Origami.sublime-settings')
+
+	def run(self):
+		view = self.window.active_view()
+		self.window.show_input_panel(
+			'Window layout nickname:',
+			'',
+			self.set_layout_info,
+			None,
+			None
+		)
+
+class RestoreLayoutCommand(PaneCommand):
+	"""
+	Restore a saved layout from a settings file.
+	"""
+	layouts = []
+
+	def callback(self, index):
+		view = self.window.active_view()
+		settings = sublime.load_settings('Origami.sublime-settings')
+		saved_layouts = settings.get('saved_layouts')
+
+		if index > -1:
+			selected_layout = saved_layouts[index]
+			layout = {}
+			layout['cells'] = selected_layout['cells']
+			layout['cols'] = selected_layout['cols']
+			layout['rows'] = selected_layout['rows']
+			fixed_set_layout(self.window, layout)
+		else:
+			self.layouts = []
+
+	def run(self):
+		view = self.window.active_view()
+		settings = sublime.load_settings('Origami.sublime-settings')
+		saved_layouts = settings.get('saved_layouts')
+
+		for layout in saved_layouts:
+			self.layouts.append(layout['nickname'])
+
+		self.window.show_quick_panel(self.layouts, self.callback)
+
+class RemoveLayoutCommand(PaneCommand):
+	"""
+	Remove a previously saved layout from your settings file
+	"""
+	layouts = []
+
+	def callback(self, index):
+		view = self.window.active_view()
+		settings = sublime.load_settings('Origami.sublime-settings')
+		saved_layouts = settings.get('saved_layouts')
+
+		if index > -1:
+			saved_layouts.pop(index)
+			settings.set('saved_layouts', saved_layouts)
+			sublime.save_settings('Origami.sublime-settings')
+
+		self.layouts = []
+
+	def run(self):
+		view = self.window.active_view()
+		settings = sublime.load_settings('Origami.sublime-settings')
+		saved_layouts = settings.get('saved_layouts')
+
+		for layout in saved_layouts:
+			self.layouts.append(layout['nickname'])
+
+		self.window.show_quick_panel(self.layouts, self.callback)
+
+
 class AutoCloseEmptyPanes(sublime_plugin.EventListener):
 	def on_close(self, view):
 		auto_close = view.settings().get("origami_auto_close_empty_panes", False)
@@ -408,17 +499,17 @@ class AutoCloseEmptyPanes(sublime_plugin.EventListener):
 class AutoZoomOnFocus(sublime_plugin.EventListener):
 	running = False
 	active_group = -1
-	
+
 	def delayed_zoom(self, view, fraction):
 		# zoom_pane hangs sublime if you destroy the pane above or to your left.
 		# call it in a sublime.set_timeout to fix the issue
-		
+
 		# Sublime Text 2 has issues on startup where views don't have windows yet.
 		# If we don't have a window yet, bail.
 		if view.window() is None:
 			self.running = False
 			return
-		
+
 		args = {}
 		# Work correctly if someone sets "origami_auto_zoom_on_focus": true rather
 		# than e.g. "origami_auto_zoom_on_focus": .8.
@@ -426,7 +517,7 @@ class AutoZoomOnFocus(sublime_plugin.EventListener):
 			args["fraction"] = fraction
 		view.window().run_command("zoom_pane", args)
 		self.running = False
-	
+
 	def on_activated(self, view):
 		if self.running:
 			return
@@ -435,12 +526,12 @@ class AutoZoomOnFocus(sublime_plugin.EventListener):
 			return
 		if view.settings().get("is_widget"):
 			return
-		
+
 		new_active_group = view.window().active_group()
 		if new_active_group == self.active_group:
 			return
-		
+
 		self.active_group = new_active_group
 		self.running = True
-		
+
 		sublime.set_timeout(lambda: self.delayed_zoom(view, fraction), 0)
