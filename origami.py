@@ -1,4 +1,6 @@
 import sublime, sublime_plugin
+import copy
+from functools import partial
 
 XMIN, YMIN, XMAX, YMAX = list(range(4))
 
@@ -54,6 +56,10 @@ def fixed_set_layout(window, layout):
 	window.set_layout(layout)
 	num_groups = len(layout['cells'])
 	window.focus_group(min(active_group, num_groups-1))
+
+def fixed_set_layout_no_focus_change(window, layout):
+	active_group = window.active_group()
+	window.set_layout(layout)
 
 class PaneCommand(sublime_plugin.WindowCommand):
 	"Abstract base class for commands."
@@ -141,6 +147,67 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 		self.carry_file_to_pane(direction)
 
+	def resize_panes(self, orientation):
+		rows, cols, cells = self.get_layout()
+
+		data = []
+		if orientation == "cols":
+			data = cols
+		elif orientation == "rows":
+			data = rows
+
+		text = ", ".join([str(x) for x in data[1:-1]])
+		on_done = partial(self._on_resize_panes, orientation, cells)
+		on_update = partial(self._on_resize_panes_update, orientation, cells)
+		on_cancle = partial(self._on_resize_panes, orientation, cells, text)
+		self.window.show_input_panel(orientation, text, on_done, on_update, on_cancle)
+
+	def _on_resize_panes_get_layout(self, orientation, text, cells):
+		window = self.window
+		rows, cols, _ = self.get_layout()
+		cells = copy.deepcopy(cells)
+
+		data = [float(x) for x in text.split(",")]
+		data = [0] + data + [1]
+
+		data_tmp = list(enumerate(data))
+		data_tmp = sorted(data_tmp, key=lambda x: x[1]) # sort such that you can swap grid lines
+		indxes, data = map(list, zip(*data_tmp)) # indexes are also sorted
+
+		revelant_cell_entries = []
+		if orientation == "cols":
+			revelant_cell_entries = [0,2]
+		elif orientation == "rows":
+			revelant_cell_entries = [1,3]
+
+		# change the cell boundaries according to the sorted indexes
+		for old_indx, new_indx in enumerate(indxes):
+			if old_indx >= new_indx: 
+				continue
+			for i in range(len(cells)):
+				for j in revelant_cell_entries:
+					if cells[i][j] == old_indx:
+						cells[i][j] = new_indx
+					elif cells[i][j] == new_indx:
+						cells[i][j] = old_indx
+
+		if orientation == "cols":
+			if len(cols) == len(data):
+				cols = data
+		elif orientation == "rows":
+			if len(rows) == len(data):
+				rows = data
+
+		return {"cols": cols, "rows": rows, "cells": cells}
+
+	def _on_resize_panes_update(self, orientation, cells, text):
+		layout = self._on_resize_panes_get_layout(orientation, text, cells)
+		fixed_set_layout_no_focus_change(self.window, layout)
+
+	def _on_resize_panes(self, orientation, cells, text):
+		layout = self._on_resize_panes_get_layout(orientation, text, cells)
+		fixed_set_layout(self.window, layout)
+
 	def zoom_pane(self, fraction):
 		if fraction == None:
 			fraction = .9
@@ -222,6 +289,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			self.zoom_pane(fraction)
 		else:
 			self.unzoom_pane()
+
 
 	def create_pane(self, direction):
 		window = self.window
@@ -381,10 +449,14 @@ class CreatePaneCommand(PaneCommand):
 	def run(self, direction):
 		self.create_pane(direction)
 
-
 class DestroyPaneCommand(PaneCommand):
 	def run(self, direction):
 		self.destroy_pane(direction)
+
+class ResizePaneCommand(PaneCommand):
+	def run(self, orientation):
+		self.resize_panes(orientation)
+
 
 
 class SaveLayoutCommand(PaneCommand):

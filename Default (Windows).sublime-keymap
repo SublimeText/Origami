@@ -32,5 +32,9 @@
   { "keys": ["ctrl+k", "ctrl+alt+left"], "command": "create_pane_with_file", "args": {"direction": "left"} },
   
   { "keys": ["ctrl+k", "ctrl+z"], "command": "zoom_pane", "args": {"fraction": 0.9} },
-  { "keys": ["ctrl+k", "ctrl+shift+z"], "command": "unzoom_pane", "args": {} }
+  { "keys": ["ctrl+k", "ctrl+shift+z"], "command": "unzoom_pane", "args": {} },
+
+  { "keys": ["ctrl+k", "ctrl+c"], "command": "resize_pane", "args": {"orientation": "cols"} },
+  { "keys": ["ctrl+k", "ctrl+r"], "command": "resize_pane", "args": {"orientation": "rows"} }
+
 ]
