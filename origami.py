@@ -190,9 +190,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 						cells[i][j] = new_indx
 					elif cells[i][j] == new_indx:
 						cells[i][j] = old_indx
-		print(cells)
-
-
 
 		if orientation == "cols":
 			if len(cols) == len(data):
