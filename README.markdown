@@ -23,6 +23,17 @@ Additionally, Origami allows one to zoom the current pane, making it take up a l
 * `super+z`: Zoom the current pane so it takes up 90% of the screen (the fraction is changeable in the keybindings)
 * `shift+super+z`: Unzoom: equally space all panes
 
+It is also possible to edit the pane sizes. After `super+k` press:
+* `super+r`: Adjust the top and bottom separator
+* `super+c`: Adjust the left and right separator
+
+In the keybindings you can change a `mode` which specifies which separation lines you want to edit.
+* `ALL` means all horizontal (or vertical) separators
+* `RELEVANT` means all horizontal (or vertical) separators which intersect the column (row) of the selected row.
+* `NEAREST` means top and bottom (or left and right) separators
+* `BEFORE` means top (or left) separator
+* `AFTER` means bottom (or right) separator
+
 (Note: Windows and Linux use `ctrl` instead of `super`.)
 
 Automation
