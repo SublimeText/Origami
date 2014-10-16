@@ -120,7 +120,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			# If we're in an empty group, there's no active view
 			return
 		window = self.window
-		group = self.travel_to_pane(direction)
+		self.travel_to_pane(direction)
 		window.set_view_index(view, window.active_group(), 0)
 
 	def clone_file_to_pane(self, direction):
@@ -146,6 +146,41 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		sublime.set_timeout(lambda : new_view.set_viewport_position(view.viewport_position(), False), 0)
 
 		self.carry_file_to_pane(direction)
+
+	def reorder_panes(self, leave_files_at_position = True):
+		_, _, cells = self.get_layout()
+		current_cell = cells[self.window.active_group()]
+		old_index = self.window.active_group()
+		on_done = partial(self._on_reorder_done, old_index, leave_files_at_position)
+		view = self.window.show_input_panel("enter new index", str(old_index+1), on_done, None, None)
+		view.sel().clear()
+		view.sel().add(sublime.Region(0, view.size()))
+
+	def _on_reorder_done(self, old_index, leave_files_at_position, text):
+		try:
+			new_index = int(text) - 1
+		except ValueError:
+			return
+			
+		rows, cols, cells = self.get_layout()
+
+		if new_index < 0 or new_index >= len(cells):
+			return 
+
+		cells[old_index], cells[new_index] = cells[new_index], cells[old_index]
+
+		
+		if leave_files_at_position:
+			old_files = self.window.views_in_group(old_index)
+			new_files = self.window.views_in_group(new_index)
+			for position, v in enumerate(old_files):
+				self.window.set_view_index(v, new_index, position)
+			for position, v in enumerate(new_files):
+				self.window.set_view_index(v, old_index, position)
+
+
+		layout = {"cols": cols, "rows": rows, "cells": cells}
+		fixed_set_layout(self.window, layout)
 
 	def resize_panes(self, orientation, mode):
 		rows, cols, cells = self.get_layout()
@@ -499,6 +534,9 @@ class ResizePaneCommand(PaneCommand):
 			mode = "NEAREST"
 		self.resize_panes(orientation, mode)
 
+class ReorderPaneCommand(PaneCommand):
+	def run(self):
+		self.reorder_panes()
 
 
 class SaveLayoutCommand(PaneCommand):
