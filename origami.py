@@ -161,15 +161,15 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			new_index = int(text) - 1
 		except ValueError:
 			return
-			
+
 		rows, cols, cells = self.get_layout()
 
 		if new_index < 0 or new_index >= len(cells):
-			return 
+			return
 
 		cells[old_index], cells[new_index] = cells[new_index], cells[old_index]
 
-		
+
 		if leave_files_at_position:
 			old_files = self.window.views_in_group(old_index)
 			new_files = self.window.views_in_group(new_index)
@@ -542,30 +542,52 @@ class ReorderPaneCommand(PaneCommand):
 class SaveLayoutCommand(PaneCommand):
 	"""
 	Save the current layout configuration in a settings file.
+
 	"""
-	def set_layout_info(self, nickname):
-		"""
-		"""
-		settings = sublime.load_settings('Origami.sublime-settings')
-		saved_layouts = settings.get('saved_layouts')
 
+	def __init__(self, window):
+		self.window = window
+		self.settings = sublime.load_settings('Origami.sublime-settings')
+		super(SaveLayoutCommand, self).__init__(window)
+
+	def on_done(self, nickname):
+		saved_layouts = self.settings.get('saved_layouts')
+		layout_names = [l['nickname'] for l in saved_layouts]
 		layout_data = self.get_layout()
-		layout = {}
-		layout['nickname'] = nickname
-		layout['rows'] = layout_data[0]
-		layout['cols'] = layout_data[1]
-		layout['cells'] = layout_data[2]
 
-		saved_layouts.append(layout)
-		settings.set('saved_layouts', saved_layouts)
+		if nickname in layout_names:
+			dialog_str = ('You already have a layout stored as "{0}".\n\n'
+						  'Do you want to continue and overwrite that '
+						  'layout?'.format(nickname))
+			dialog_btn = 'Overwrite layout'
+
+			if sublime.ok_cancel_dialog(dialog_str, dialog_btn):
+				def get_index(seq, attr, value):
+				    return next(i for (i, d) in enumerate(seq) if d[attr] == value)
+
+				layout = saved_layouts[get_index(saved_layouts, 'nickname', nickname)]
+				layout['rows'] = layout_data[0]
+				layout['cols'] = layout_data[1]
+				layout['cells'] = layout_data[2]
+			else:
+				self.window.run_command("save_layout")
+				return
+		else:
+			layout = {}
+			layout['nickname'] = nickname
+			layout['rows'] = layout_data[0]
+			layout['cols'] = layout_data[1]
+			layout['cells'] = layout_data[2]
+			saved_layouts.append(layout)
+
+		self.settings.set('saved_layouts', saved_layouts)
 		sublime.save_settings('Origami.sublime-settings')
 
 	def run(self):
-		view = self.window.active_view()
 		self.window.show_input_panel(
 			'Window layout nickname:',
 			'',
-			self.set_layout_info,
+			self.on_done,
 			None,
 			None
 		)
@@ -573,61 +595,106 @@ class SaveLayoutCommand(PaneCommand):
 class RestoreLayoutCommand(PaneCommand):
 	"""
 	Restore a saved layout from a settings file.
+
 	"""
-	layouts = []
 
-	def callback(self, index):
-		view = self.window.active_view()
-		settings = sublime.load_settings('Origami.sublime-settings')
-		saved_layouts = settings.get('saved_layouts')
+	def __init__(self, window):
+		self.window = window
+		self.settings = sublime.load_settings('Origami.sublime-settings')
+		super(RestoreLayoutCommand, self).__init__(window)
 
-		if index > -1:
+	def on_done(self, index):
+		saved_layouts = self.settings.get('saved_layouts')
+
+		if index != -1:
 			selected_layout = saved_layouts[index]
 			layout = {}
 			layout['cells'] = selected_layout['cells']
 			layout['cols'] = selected_layout['cols']
 			layout['rows'] = selected_layout['rows']
 			fixed_set_layout(self.window, layout)
-		else:
-			self.layouts = []
 
 	def run(self):
-		view = self.window.active_view()
-		settings = sublime.load_settings('Origami.sublime-settings')
-		saved_layouts = settings.get('saved_layouts')
+		if self.settings.has('saved_layouts'):
+			saved_layouts = self.settings.get('saved_layouts')
+			layout_names = [l['nickname'] for l in saved_layouts]
+			self.window.show_quick_panel(layout_names, self.on_done)
 
-		for layout in saved_layouts:
-			self.layouts.append(layout['nickname'])
-
-		self.window.show_quick_panel(self.layouts, self.callback)
 
 class RemoveLayoutCommand(PaneCommand):
 	"""
 	Remove a previously saved layout from your settings file
+
 	"""
-	layouts = []
 
-	def callback(self, index):
-		view = self.window.active_view()
-		settings = sublime.load_settings('Origami.sublime-settings')
-		saved_layouts = settings.get('saved_layouts')
+	def __init__(self, window):
+		self.window = window
+		self.settings = sublime.load_settings('Origami.sublime-settings')
+		super(RemoveLayoutCommand, self).__init__(window)
 
-		if index > -1:
+	def on_done(self, index):
+		saved_layouts = self.settings.get('saved_layouts')
+
+		if index != -1:
 			saved_layouts.pop(index)
-			settings.set('saved_layouts', saved_layouts)
+			self.settings.set('saved_layouts', saved_layouts)
 			sublime.save_settings('Origami.sublime-settings')
 
-		self.layouts = []
+	def run(self):
+		if self.settings.has('saved_layouts'):
+			saved_layouts = self.settings.get('saved_layouts')
+			layout_names = [l['nickname'] for l in saved_layouts]
+			self.window.show_quick_panel(layout_names, self.on_done)
+
+
+class NewWindowFromSavedLayoutCommand(PaneCommand):
+	"""
+	Brings up a list of saved views and allows the user
+	to create a new window using that layout.
+
+	"""
+
+	def __init__(self, window):
+		self.window = window
+		self.settings = sublime.load_settings('Origami.sublime-settings')
+		super(NewWindowFromSavedLayoutCommand, self).__init__(window)
+
+	def on_done(self, index):
+		saved_layouts = self.settings.get('saved_layouts')
+
+		if index != -1:
+			selected_layout = saved_layouts[index]
+			layout = {}
+			layout['cells'] = selected_layout['cells']
+			layout['cols'] = selected_layout['cols']
+			layout['rows'] = selected_layout['rows']
+
+			self.window.run_command("new_window")
+			new_window = sublime.active_window()
+			fixed_set_layout(new_window, layout)
 
 	def run(self):
-		view = self.window.active_view()
-		settings = sublime.load_settings('Origami.sublime-settings')
-		saved_layouts = settings.get('saved_layouts')
+		if self.settings.has('saved_layouts'):
+			saved_layouts = self.settings.get('saved_layouts')
+			layout_names = [l['nickname'] for l in saved_layouts]
+			self.window.show_quick_panel(layout_names, self.on_done)
 
-		for layout in saved_layouts:
-			self.layouts.append(layout['nickname'])
 
-		self.window.show_quick_panel(self.layouts, self.callback)
+class NewWindowWithCurrentLayoutCommand(PaneCommand):
+	"""
+	Opens a new window using the current layout settings.
+
+	"""
+
+	def __init__(self, window):
+		self.window = window
+		super(NewWindowWithCurrentLayoutCommand, self).__init__(window)
+
+	def run(self):
+		layout = self.window.get_layout()
+		self.window.run_command("new_window")
+		new_window = sublime.active_window()
+		fixed_set_layout(new_window, layout)
 
 
 class AutoCloseEmptyPanes(sublime_plugin.EventListener):

@@ -33,6 +33,8 @@
 	{ "command": "save_layout", "caption": "Origami: Save Current Layout" },
 	{ "command": "restore_layout", "caption": "Origami: Restore Saved Layout" },
 	{ "command": "remove_layout", "caption": "Origami: Remove Saved Layout" },
+	{ "command": "new_window_from_saved_layout", "caption": "Origami: New Window from Saved Layout" },
+	{ "command": "new_window_with_current_layout", "caption": "Origami: New Window with Current Layout" },
 
 	{ "command": "zoom_pane", "args": {"fraction": 0.9}, "caption": "Origami: Zoom Current Pane" },
 	{ "command": "unzoom_pane", "args": {}, "caption": "Origami: Unzoom Current Pane" }

@@ -86,6 +86,20 @@
                                 ]
                             }
                         ]
+                    },
+                    {
+                        "caption": "Window",
+                        "children":
+                        [
+                            {
+                                "caption": "New",
+                                "children":
+                                [
+                                    { "command": "new_window_from_saved_layout", "caption": "From Saved Layout" },
+                                    { "command": "new_window_with_current_layout", "caption": "With Current Layout" }
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
