@@ -36,6 +36,7 @@
 	{ "command": "new_window_from_saved_layout", "caption": "Origami: New Window from Saved Layout" },
 	{ "command": "new_window_with_current_layout", "caption": "Origami: New Window with Current Layout" },
 
+	{ "command": "toggle_zoom_pane", "args": {"fraction": 0.9}, "caption": "Origami: Zoom/Unzoom Current Pane (Toggle Zoom)" },
 	{ "command": "zoom_pane", "args": {"fraction": 0.9}, "caption": "Origami: Zoom Current Pane" },
 	{ "command": "unzoom_pane", "args": {}, "caption": "Origami: Unzoom Current Pane" }
 ]
