@@ -1,3 +1,4 @@
+from __future__ import division
 import sublime, sublime_plugin
 import copy
 from functools import partial
