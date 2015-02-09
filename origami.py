@@ -367,7 +367,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			self.unzoom_pane()
 
 
-	def create_pane(self, direction):
+	def create_pane(self, direction, give_focus=False):
 		window = self.window
 		rows, cols, cells = self.get_layout()
 		current_group = window.active_group()
@@ -398,6 +398,9 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			cells.append(unfocused_cell)
 			layout = {"cols": cols, "rows": rows, "cells": cells}
 			fixed_set_layout(window, layout)
+
+			if give_focus:
+				self.travel_to_pane(direction)
 
 	def destroy_current_pane(self):
 		#Out of the four adjacent panes, one was split to create this pane.
@@ -512,9 +515,11 @@ class ZoomPaneCommand(PaneCommand):
 	def run(self, fraction=None):
 		self.zoom_pane(fraction)
 
+
 class UnzoomPaneCommand(PaneCommand):
 	def run(self):
 		self.unzoom_pane()
+
 
 class ToggleZoomPaneCommand(PaneCommand):
 	def run(self, fraction=None):
@@ -522,18 +527,21 @@ class ToggleZoomPaneCommand(PaneCommand):
 
 
 class CreatePaneCommand(PaneCommand):
-	def run(self, direction):
-		self.create_pane(direction)
+	def run(self, direction, give_focus=False):
+		self.create_pane(direction, give_focus)
+
 
 class DestroyPaneCommand(PaneCommand):
 	def run(self, direction):
 		self.destroy_pane(direction)
+
 
 class ResizePaneCommand(PaneCommand):
 	def run(self, orientation, mode = None):
 		if mode == None:
 			mode = "NEAREST"
 		self.resize_panes(orientation, mode)
+
 
 class ReorderPaneCommand(PaneCommand):
 	def run(self):
