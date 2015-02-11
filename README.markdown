@@ -42,6 +42,8 @@ You can have Origami automatically zoom the active pane by setting `origami_auto
 
 Origami can also automatically close a pane for you once you've closed the last file in it. Just set `origami_auto_close_empty_panes` to true in your user preferences.
 
+Origami can also automatically move files of the same syntax into the same pane group when opening them. Set `syntax_grouping` to `true` in your user or project settings. If you only want specific syntax types to be automatically grouped, you can selectively enable them using the `enabled_syntaxes` list in your user or project settings. (If you don't know the syntax name to use, you can open the Sublime console with <kbd>CTRL</kbd>+<kbd>~</kbd> and type `sublime.active_window().active_view().settings().get('syntax')`. Copy the name of the _tmLanguage_ file without the path parameters.
+
 Install
 -------
 
