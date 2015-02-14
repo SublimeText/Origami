@@ -788,9 +788,22 @@ class AutoZoomOnFocus(sublime_plugin.EventListener):
 
 class AutoSwitchPane(sublime_plugin.EventListener):
 	def get_syntax_name(self, view):
-		syntax_path = view.settings().get('syntax')
-		syntax_name = os.path.splitext(os.path.basename(syntax_path))[0].lower()
-		return syntax_name
+		pt = view.sel()[0].end()
+		scopes = view.scope_name(pt)
+		if scopes:
+			for scope in scopes.strip().split(" "):
+				if "source." in scope:
+					return scope[7:].lower()
+
+				if "text.html." in scope:
+					return scope[10:].lower()
+
+				if "text." in scope:
+					return scope[5:].lower()
+		else:
+			# fallback to path search if scopes are not available
+			syntax_path = view.settings().get('syntax')
+			return os.path.splitext(os.path.basename(syntax_path))[0].lower()
 
 	def on_load(self, view):
 		syntax_grouping = get_setting(view, 'syntax_grouping')
