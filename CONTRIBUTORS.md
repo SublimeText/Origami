@@ -1,6 +1,6 @@
 Origami was originally created by:
 
-* adzenith
+* Nikolaus Wittenstein (adzenith)
 
 Other contributors:
 
