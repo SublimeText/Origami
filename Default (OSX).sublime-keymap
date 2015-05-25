@@ -3,7 +3,7 @@
   { "keys": ["super+k", "right"], "command": "travel_to_pane", "args": {"direction": "right"} },
   { "keys": ["super+k", "down"], "command": "travel_to_pane", "args": {"direction": "down"} },
   { "keys": ["super+k", "left"], "command": "travel_to_pane", "args": {"direction": "left"} },
-  
+
   { "keys": ["super+k", "shift+up"], "command": "carry_file_to_pane", "args": {"direction": "up"} },
   { "keys": ["super+k", "shift+right"], "command": "carry_file_to_pane", "args": {"direction": "right"} },
   { "keys": ["super+k", "shift+down"], "command": "carry_file_to_pane", "args": {"direction": "down"} },
@@ -13,12 +13,16 @@
   { "keys": ["super+k", "alt+right"], "command": "clone_file_to_pane", "args": {"direction": "right"} },
   { "keys": ["super+k", "alt+down"], "command": "clone_file_to_pane", "args": {"direction": "down"} },
   { "keys": ["super+k", "alt+left"], "command": "clone_file_to_pane", "args": {"direction": "left"} },
-  
+  // You can also create the pane automatically with the following command (insert empty parameters):
+  // { "keys": [], "command": "create_pane_with_cloned_file", "args": {"direction": ""} }
+
   { "keys": ["super+k", "super+up"], "command": "create_pane", "args": {"direction": "up"} },
   { "keys": ["super+k", "super+right"], "command": "create_pane", "args": {"direction": "right"} },
   { "keys": ["super+k", "super+down"], "command": "create_pane", "args": {"direction": "down"} },
   { "keys": ["super+k", "super+left"], "command": "create_pane", "args": {"direction": "left"} },
-  
+  // You can also add  "give_focus": true to automatically focus on the new pane as follows:
+  // { "keys": [], "command": "create_pane", "args": {"direction": "", "give_focus": true} }
+
   { "keys": ["super+k", "super+shift+up"], "command": "destroy_pane", "args": {"direction": "up"} },
   { "keys": ["super+k", "super+shift+right"], "command": "destroy_pane", "args": {"direction": "right"} },
   { "keys": ["super+k", "super+shift+down"], "command": "destroy_pane", "args": {"direction": "down"} },
