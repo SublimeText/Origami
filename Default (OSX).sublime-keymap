@@ -34,7 +34,10 @@
   { "keys": ["super+k", "super+alt+right"], "command": "create_pane_with_file", "args": {"direction": "right"} },
   { "keys": ["super+k", "super+alt+down"], "command": "create_pane_with_file", "args": {"direction": "down"} },
   { "keys": ["super+k", "super+alt+left"], "command": "create_pane_with_file", "args": {"direction": "left"} },
-  
+
+  // You can swap a file from the current pane with another by binding the following command:
+  // { "keys": [], "command": "swap_files_with_pane", "args": { "direction": ""} }
+
   { "keys": ["super+k", "super+z"], "command": "zoom_pane", "args": {"fraction": 0.9} },
   { "keys": ["super+k", "super+shift+z"], "command": "unzoom_pane", "args": {} },
 

@@ -483,6 +483,23 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			layout = {"cols": cols, "rows": rows, "cells": cells}
 			fixed_set_layout(window, layout)
 
+	def swap_files_with_pane(self, direction):
+		adjacent_cell = self.adjacent_cell(direction)
+
+		if adjacent_cell:
+			cells = self.get_cells()
+			group_index = cells.index(adjacent_cell)
+
+			view = self.window.active_view_in_group(group_index)
+			active_view = self.window.active_view()
+
+			if view and active_view:
+				_, view_index = self.window.get_view_index(view)
+				active_group_index, active_view_index = self.window.get_view_index(active_view)
+
+				self.window.set_view_index(view, active_group_index, active_view_index)
+				self.window.set_view_index(active_view, group_index, view_index)
+
 
 class TravelToPaneCommand(PaneCommand):
 	def run(self, direction):
@@ -509,6 +526,11 @@ class CreatePaneWithClonedFileCommand(PaneCommand):
 	def run(self, direction):
 		self.create_pane(direction)
 		self.clone_file_to_pane(direction)
+
+
+class SwapFilesWithPaneCommand(PaneCommand):
+	def run(self, direction):
+		self.swap_files_with_pane(direction)
 
 
 class ZoomPaneCommand(PaneCommand):

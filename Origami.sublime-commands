@@ -24,6 +24,11 @@
 	{ "command": "create_pane", "args": {"direction": "down", "give_focus": true}, "caption": "Origami: Create and Focus Pane Below" },
 	{ "command": "create_pane", "args": {"direction": "left", "give_focus": true}, "caption": "Origami: Create and Focus Pane on the Left" },
 
+	{ "command": "swap_files_with_pane", "args": {"direction": "up"}, "caption": "Origami: Swap Files with Pane Above" },
+	{ "command": "swap_files_with_pane", "args": {"direction": "right"}, "caption": "Origami: Swap Files with Pane on the Right" },
+	{ "command": "swap_files_with_pane", "args": {"direction": "down"}, "caption": "Origami: Swap Files with Pane Below" },
+	{ "command": "swap_files_with_pane", "args": {"direction": "left"}, "caption": "Origami: Swap Files with Pane on the Left" },
+
 	{ "command": "destroy_pane", "args": {"direction": "up"}, "caption": "Origami: Destroy Pane Above" },
 	{ "command": "destroy_pane", "args": {"direction": "right"}, "caption": "Origami: Destroy Pane on the Right" },
 	{ "command": "destroy_pane", "args": {"direction": "down"}, "caption": "Origami: Destroy Pane Below" },
