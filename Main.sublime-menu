@@ -84,6 +84,16 @@
                                     { "command": "clone_file_to_pane", "args": {"direction": "right"}, "caption": "Right" },
                                     { "command": "clone_file_to_pane", "args": {"direction": "left"}, "caption": "Left" }
                                 ]
+                            },
+                            {
+                                "caption": "Pull from",
+                                "children":
+                                [
+                                    { "command": "pull_file_from_pane", "args": {"direction": "up"}, "caption": "Above" },
+                                    { "command": "pull_file_from_pane", "args": {"direction": "down"}, "caption": "Below" },
+                                    { "command": "pull_file_from_pane", "args": {"direction": "right"}, "caption": "Right" },
+                                    { "command": "pull_file_from_pane", "args": {"direction": "left"}, "caption": "Left" }
+                                ]
                             }
                         ]
                     },
