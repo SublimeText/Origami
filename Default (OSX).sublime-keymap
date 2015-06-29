@@ -35,6 +35,10 @@
   { "keys": ["super+k", "super+alt+down"], "command": "create_pane_with_file", "args": {"direction": "down"} },
   { "keys": ["super+k", "super+alt+left"], "command": "create_pane_with_file", "args": {"direction": "left"} },
   
+
+  // You can pull a file from another pane by binding the following command:
+  // { "keys": [], "command": "pull_file_from_pane", "args": { "direction": ""} }
+
   { "keys": ["super+k", "super+z"], "command": "zoom_pane", "args": {"fraction": 0.9} },
   { "keys": ["super+k", "super+shift+z"], "command": "unzoom_pane", "args": {} },
 

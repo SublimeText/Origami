@@ -485,6 +485,19 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			layout = {"cols": cols, "rows": rows, "cells": cells}
 			fixed_set_layout(window, layout)
 
+	def pull_file_from_pane(self, direction):
+		adjacent_cell = self.adjacent_cell(direction)
+
+		if adjacent_cell:
+			cells = self.get_cells()
+			group_index = cells.index(adjacent_cell)
+
+			view = self.window.active_view_in_group(group_index)
+
+			if view:
+				active_group_index = self.window.active_group()
+				self.window.set_view_index(view, active_group_index, 0)
+
 
 class TravelToPaneCommand(PaneCommand):
 	def run(self, direction):
@@ -511,6 +524,11 @@ class CreatePaneWithClonedFileCommand(PaneCommand):
 	def run(self, direction):
 		self.create_pane(direction)
 		self.clone_file_to_pane(direction)
+
+
+class PullFileFromPaneCommand(PaneCommand):
+	def run(self, direction):
+		self.pull_file_from_pane(direction)
 
 
 class ZoomPaneCommand(PaneCommand):
