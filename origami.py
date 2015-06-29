@@ -114,6 +114,8 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			cells = self.get_cells()
 			new_group_index = cells.index(adjacent_cell)
 			self.window.focus_group(new_group_index)
+		else:
+			self.create_pane(direction, True)
 
 	def carry_file_to_pane(self, direction):
 		view = self.window.active_view()
