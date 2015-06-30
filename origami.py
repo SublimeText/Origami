@@ -108,22 +108,22 @@ class PaneCommand(sublime_plugin.WindowCommand):
 				dupe_views.append(pd)
 		return dupe_views
 
-	def travel_to_pane(self, direction):
+	def travel_to_pane(self, direction, create_new_if_necessary=False):
 		adjacent_cell = self.adjacent_cell(direction)
 		if adjacent_cell:
 			cells = self.get_cells()
 			new_group_index = cells.index(adjacent_cell)
 			self.window.focus_group(new_group_index)
-		else:
+		elif create_new_if_necessary:
 			self.create_pane(direction, True)
 
-	def carry_file_to_pane(self, direction):
+	def carry_file_to_pane(self, direction, create_new_if_necessary=False):
 		view = self.window.active_view()
 		if view == None:
 			# If we're in an empty group, there's no active view
 			return
 		window = self.window
-		self.travel_to_pane(direction)
+		self.travel_to_pane(direction, create_new_if_necessary)
 		window.set_view_index(view, window.active_group(), 0)
 
 	def clone_file_to_pane(self, direction):
@@ -500,12 +500,12 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 
 class TravelToPaneCommand(PaneCommand):
-	def run(self, direction):
-		self.travel_to_pane(direction)
+	def run(self, direction, create_new_if_necessary=False):
+		self.travel_to_pane(direction, create_new_if_necessary)
 
 
 class CarryFileToPaneCommand(PaneCommand):
-	def run(self, direction):
+	def run(self, direction, create_new_if_necessary=False):
 		self.carry_file_to_pane(direction)
 
 
