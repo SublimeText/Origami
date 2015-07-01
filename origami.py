@@ -62,6 +62,14 @@ def fixed_set_layout_no_focus_change(window, layout):
 	active_group = window.active_group()
 	window.set_layout(layout)
 
+class WithSettings:
+	_settings = None
+
+	def settings(self):
+		if self._settings is None:
+			self._settings = sublime.load_settings('Origami.sublime-settings')
+		return self._settings
+
 class PaneCommand(sublime_plugin.WindowCommand):
 	"Abstract base class for commands."
 
@@ -108,22 +116,22 @@ class PaneCommand(sublime_plugin.WindowCommand):
 				dupe_views.append(pd)
 		return dupe_views
 
-	def travel_to_pane(self, direction):
+	def travel_to_pane(self, direction, create_new_if_necessary=False):
 		adjacent_cell = self.adjacent_cell(direction)
 		if adjacent_cell:
 			cells = self.get_cells()
 			new_group_index = cells.index(adjacent_cell)
 			self.window.focus_group(new_group_index)
-		else:
+		elif create_new_if_necessary:
 			self.create_pane(direction, True)
 
-	def carry_file_to_pane(self, direction):
+	def carry_file_to_pane(self, direction, create_new_if_necessary=False):
 		view = self.window.active_view()
 		if view == None:
 			# If we're in an empty group, there's no active view
 			return
 		window = self.window
-		self.travel_to_pane(direction)
+		self.travel_to_pane(direction, create_new_if_necessary)
 		window.set_view_index(view, window.active_group(), 0)
 
 	def clone_file_to_pane(self, direction):
@@ -499,14 +507,18 @@ class PaneCommand(sublime_plugin.WindowCommand):
 				self.window.set_view_index(view, active_group_index, 0)
 
 
-class TravelToPaneCommand(PaneCommand):
-	def run(self, direction):
-		self.travel_to_pane(direction)
+class TravelToPaneCommand(PaneCommand, WithSettings):
+	def run(self, direction, create_new_if_necessary=None):
+		if create_new_if_necessary is None:
+			create_new_if_necessary = self.settings().get('create_new_pane_if_necessary')
+		self.travel_to_pane(direction, create_new_if_necessary)
 
 
-class CarryFileToPaneCommand(PaneCommand):
-	def run(self, direction):
-		self.carry_file_to_pane(direction)
+class CarryFileToPaneCommand(PaneCommand, WithSettings):
+	def run(self, direction, create_new_if_necessary=None):
+		if create_new_if_necessary is None:
+			create_new_if_necessary = self.settings().get('create_new_pane_if_necessary')
+		self.carry_file_to_pane(direction, create_new_if_necessary)
 
 
 class CloneFileToPaneCommand(PaneCommand):
@@ -568,7 +580,7 @@ class ReorderPaneCommand(PaneCommand):
 		self.reorder_panes()
 
 
-class SaveLayoutCommand(PaneCommand):
+class SaveLayoutCommand(PaneCommand, WithSettings):
 	"""
 	Save the current layout configuration in a settings file.
 
@@ -576,11 +588,10 @@ class SaveLayoutCommand(PaneCommand):
 
 	def __init__(self, window):
 		self.window = window
-		self.settings = sublime.load_settings('Origami.sublime-settings')
 		super(SaveLayoutCommand, self).__init__(window)
 
 	def on_done(self, nickname):
-		saved_layouts = self.settings.get('saved_layouts')
+		saved_layouts = self.settings().get('saved_layouts')
 		layout_names = [l['nickname'] for l in saved_layouts]
 		layout_data = self.get_layout()
 
@@ -609,7 +620,7 @@ class SaveLayoutCommand(PaneCommand):
 			layout['cells'] = layout_data[2]
 			saved_layouts.append(layout)
 
-		self.settings.set('saved_layouts', saved_layouts)
+		self.settings().set('saved_layouts', saved_layouts)
 		sublime.save_settings('Origami.sublime-settings')
 
 	def run(self):
@@ -621,7 +632,7 @@ class SaveLayoutCommand(PaneCommand):
 			None
 		)
 
-class RestoreLayoutCommand(PaneCommand):
+class RestoreLayoutCommand(PaneCommand, WithSettings):
 	"""
 	Restore a saved layout from a settings file.
 
@@ -629,11 +640,10 @@ class RestoreLayoutCommand(PaneCommand):
 
 	def __init__(self, window):
 		self.window = window
-		self.settings = sublime.load_settings('Origami.sublime-settings')
 		super(RestoreLayoutCommand, self).__init__(window)
 
 	def on_done(self, index):
-		saved_layouts = self.settings.get('saved_layouts')
+		saved_layouts = self.settings().get('saved_layouts')
 
 		if index != -1:
 			selected_layout = saved_layouts[index]
@@ -644,13 +654,13 @@ class RestoreLayoutCommand(PaneCommand):
 			fixed_set_layout(self.window, layout)
 
 	def run(self):
-		if self.settings.has('saved_layouts'):
-			saved_layouts = self.settings.get('saved_layouts')
+		if settings.has('saved_layouts'):
+			saved_layouts = self.settings().get('saved_layouts')
 			layout_names = [l['nickname'] for l in saved_layouts]
 			self.window.show_quick_panel(layout_names, self.on_done)
 
 
-class RemoveLayoutCommand(PaneCommand):
+class RemoveLayoutCommand(PaneCommand, WithSettings):
 	"""
 	Remove a previously saved layout from your settings file
 
@@ -658,25 +668,24 @@ class RemoveLayoutCommand(PaneCommand):
 
 	def __init__(self, window):
 		self.window = window
-		self.settings = sublime.load_settings('Origami.sublime-settings')
 		super(RemoveLayoutCommand, self).__init__(window)
 
 	def on_done(self, index):
-		saved_layouts = self.settings.get('saved_layouts')
+		saved_layouts = self.settings().get('saved_layouts')
 
 		if index != -1:
 			saved_layouts.pop(index)
-			self.settings.set('saved_layouts', saved_layouts)
+			self.settings().set('saved_layouts', saved_layouts)
 			sublime.save_settings('Origami.sublime-settings')
 
 	def run(self):
-		if self.settings.has('saved_layouts'):
-			saved_layouts = self.settings.get('saved_layouts')
+		if self.settings().has('saved_layouts'):
+			saved_layouts = self.settings().get('saved_layouts')
 			layout_names = [l['nickname'] for l in saved_layouts]
 			self.window.show_quick_panel(layout_names, self.on_done)
 
 
-class NewWindowFromSavedLayoutCommand(PaneCommand):
+class NewWindowFromSavedLayoutCommand(PaneCommand, WithSettings):
 	"""
 	Brings up a list of saved views and allows the user
 	to create a new window using that layout.
@@ -685,11 +694,10 @@ class NewWindowFromSavedLayoutCommand(PaneCommand):
 
 	def __init__(self, window):
 		self.window = window
-		self.settings = sublime.load_settings('Origami.sublime-settings')
 		super(NewWindowFromSavedLayoutCommand, self).__init__(window)
 
 	def on_done(self, index):
-		saved_layouts = self.settings.get('saved_layouts')
+		saved_layouts = self.settings().get('saved_layouts')
 
 		if index != -1:
 			selected_layout = saved_layouts[index]
@@ -703,8 +711,8 @@ class NewWindowFromSavedLayoutCommand(PaneCommand):
 			fixed_set_layout(new_window, layout)
 
 	def run(self):
-		if self.settings.has('saved_layouts'):
-			saved_layouts = self.settings.get('saved_layouts')
+		if self.settings().has('saved_layouts'):
+			saved_layouts = self.settings().get('saved_layouts')
 			layout_names = [l['nickname'] for l in saved_layouts]
 			self.window.show_quick_panel(layout_names, self.on_done)
 
