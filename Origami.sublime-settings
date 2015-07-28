@@ -10,5 +10,8 @@
      * Valid format: {"nickname": XXXX, "cells": XXXX,
      *                "cols": XXXX, "rows": XXXX}
      */
-    "saved_layouts": []
+    "saved_layouts": [],
+
+    // Create a new pane when switching in a direction without one
+    "create_new_pane_if_necessary": true
 }
