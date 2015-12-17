@@ -654,7 +654,7 @@ class RestoreLayoutCommand(PaneCommand, WithSettings):
 			fixed_set_layout(self.window, layout)
 
 	def run(self):
-		if settings.has('saved_layouts'):
+		if self.settings().has('saved_layouts'):
 			saved_layouts = self.settings().get('saved_layouts')
 			layout_names = [l['nickname'] for l in saved_layouts]
 			self.window.show_quick_panel(layout_names, self.on_done)
