@@ -30,7 +30,7 @@ It is also possible to edit the pane sizes. After `super+k` press:
 In the keybindings you can change a `mode` which specifies which separation lines you want to edit.
 * `ALL` means all horizontal (or vertical) separators
 * `RELEVANT` means all horizontal (or vertical) separators which intersect the column (row) of the selected row.
-* `NEAREST` means top and bottom (or left and right) separators
+* `NEAREST` means top and bottom (or left and right) separators. This is the default `mode`.
 * `BEFORE` means top (or left) separator
 * `AFTER` means bottom (or right) separator
 
