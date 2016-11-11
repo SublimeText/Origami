@@ -8,24 +8,24 @@ Try it out! I think you'll like it.
 
 Keyboard shortcuts
 ------------------
-Origami is driven by keyboard shortcuts. By default, these keyboard shortcuts are all two-stage, and are hidden behind `super+k`. First press `super+k`, then press the arrow keys with modifiers:
+Origami is driven by keyboard shortcuts. By default, these keyboard shortcuts are all two-stage, and are hidden behind `command+k`. First press `command+k`, then press the arrow keys with modifiers:
 
 * no modifiers: travel to an adjacent pane
 * `shift`: carry the current file to the destination
 * `alt` (`option`): clone the current file to the destination
-* `super`: create an adjacent pane
-* `super+shift`: destroy an adjacent pane
+* `command`: create an adjacent pane
+* `command+shift`: destroy an adjacent pane
 
 These keyboard shortcuts are designed to make it really easy to modify the layout of your editor.
 
-Additionally, Origami allows one to zoom the current pane, making it take up a large portion of the window. As above, first press `super+k`, then press:
+Additionally, Origami allows one to zoom the current pane, making it take up a large portion of the window. As above, first press `command+k`, then press:
 
-* `super+z`: Zoom the current pane so it takes up 90% of the screen (the fraction is changeable in the keybindings)
-* `shift+super+z`: Unzoom: equally space all panes
+* `command+z`: Zoom the current pane so it takes up 90% of the screen (the fraction is changeable in the keybindings)
+* `shift+command+z`: Unzoom: equally space all panes
 
-It is also possible to edit the pane sizes. After `super+k` press:
-* `super+r`: Adjust the top and bottom separator
-* `super+c`: Adjust the left and right separator
+It is also possible to edit the pane sizes. After `command+k` press:
+* `command+r`: Adjust the top and bottom separator
+* `command+c`: Adjust the left and right separator
 
 In the keybindings you can change a `mode` which specifies which separation lines you want to edit.
 * `ALL` means all horizontal (or vertical) separators
@@ -34,7 +34,7 @@ In the keybindings you can change a `mode` which specifies which separation line
 * `BEFORE` means top (or left) separator
 * `AFTER` means bottom (or right) separator
 
-(Note: Windows and Linux use `ctrl` instead of `super`.)
+(Note: Windows and Linux use `ctrl` instead of `command`.)
 
 Automation
 ----------
