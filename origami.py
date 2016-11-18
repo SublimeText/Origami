@@ -134,7 +134,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		self.travel_to_pane(direction, create_new_if_necessary)
 		window.set_view_index(view, window.active_group(), 0)
 
-	def clone_file_to_pane(self, direction):
+	def clone_file_to_pane(self, direction, create_new_if_necessary=False):
 		window = self.window
 		view = window.active_view()
 		if view == None:
@@ -156,7 +156,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			new_sel.add(s)
 		sublime.set_timeout(lambda : new_view.set_viewport_position(view.viewport_position(), False), 0)
 
-		self.carry_file_to_pane(direction)
+		self.carry_file_to_pane(direction, create_new_if_necessary)
 
 	def reorder_panes(self, leave_files_at_position = True):
 		_, _, cells = self.get_layout()
@@ -522,8 +522,10 @@ class CarryFileToPaneCommand(PaneCommand, WithSettings):
 
 
 class CloneFileToPaneCommand(PaneCommand):
-	def run(self, direction):
-		self.clone_file_to_pane(direction)
+	def run(self, direction, create_new_if_necessary=None):
+		if create_new_if_necessary is None:
+			create_new_if_necessary = self.settings().get('create_new_pane_if_necessary')
+		self.clone_file_to_pane(direction, create_new_if_necessary)
 
 
 class CreatePaneWithFileCommand(PaneCommand):
