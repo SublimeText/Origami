@@ -521,7 +521,7 @@ class CarryFileToPaneCommand(PaneCommand, WithSettings):
 		self.carry_file_to_pane(direction, create_new_if_necessary)
 
 
-class CloneFileToPaneCommand(PaneCommand):
+class CloneFileToPaneCommand(PaneCommand, WithSettings):
 	def run(self, direction, create_new_if_necessary=None):
 		if create_new_if_necessary is None:
 			create_new_if_necessary = self.settings().get('create_new_pane_if_necessary')
