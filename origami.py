@@ -252,9 +252,13 @@ class PaneCommand(sublime_plugin.WindowCommand):
 	def _on_resize_panes_get_layout(self, orientation, cells, relevant_indx, orig_data, text):
 		window = self.window
 		rows, cols, _ = self.get_layout()
+
+		input_data = [float(x) for x in text.split(",")]
+		if any(d > 1.0 for d in input_data):
+			return {"cols": cols, "rows": rows, "cells": cells}
+
 		cells = copy.deepcopy(cells)
 		data = copy.deepcopy(orig_data)
-		input_data = [float(x) for x in text.split(",")]
 		for i, d in zip(relevant_indx, input_data):
 			data[i] = d
 
