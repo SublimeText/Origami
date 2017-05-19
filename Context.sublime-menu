@@ -1,0 +1,114 @@
+[
+    {
+        "caption": "Origami",
+        "children":
+        [
+            // Destroy current pane
+            {
+                "caption": "Close current",
+                "command": "destroy_pane", "args": {"direction": "self"}
+            },
+            // Pane
+            {
+                "caption": "Pane",
+                "children":
+                [
+                    {
+                        "caption": "Create",
+                        "children":
+                        [
+                            { "command": "create_pane", "args": {"direction": "up"}, "caption": "Above" },
+                            { "command": "create_pane", "args": {"direction": "down"}, "caption": "Below" },
+                            { "command": "create_pane", "args": {"direction": "right"}, "caption": "Right" },
+                            { "command": "create_pane", "args": {"direction": "left"}, "caption": "Left" }
+                        ]
+                    },
+                    {
+                        "caption": "Travel to",
+                        "children":
+                        [
+                            { "command": "travel_to_pane", "args": {"direction": "up"}, "caption": "Above" },
+                            { "command": "travel_to_pane", "args": {"direction": "down"}, "caption": "Below" },
+                            { "command": "travel_to_pane", "args": {"direction": "right"}, "caption": "Right" },
+                            { "command": "travel_to_pane", "args": {"direction": "left"}, "caption": "Left" }
+                        ]
+                    }
+                ]
+            },
+            // File
+            {
+                "caption": "File",
+                "children":
+                [
+                    {
+                        "caption": "Create to",
+                        "children":
+                        [
+                            { "command": "create_pane_with_file", "args": {"direction": "up"}, "caption": "Above" },
+                            { "command": "create_pane_with_file", "args": {"direction": "down"}, "caption": "Below" },
+                            { "command": "create_pane_with_file", "args": {"direction": "right"}, "caption": "Right" },
+                            { "command": "create_pane_with_file", "args": {"direction": "left"}, "caption": "Left" }
+                        ]
+                    },
+                    {
+                        "caption": "Carry to",
+                        "children":
+                        [
+                            { "command": "carry_file_to_pane", "args": {"direction": "up"}, "caption": "Above" },
+                            { "command": "carry_file_to_pane", "args": {"direction": "down"}, "caption": "Below" },
+                            { "command": "carry_file_to_pane", "args": {"direction": "right"}, "caption": "Right" },
+                            { "command": "carry_file_to_pane", "args": {"direction": "left"}, "caption": "Left" }
+                        ]
+                    },
+                    {
+                        "caption": "Clone to",
+                        "children":
+                        [
+                            { "command": "clone_file_to_pane", "args": {"direction": "up"}, "caption": "Above" },
+                            { "command": "clone_file_to_pane", "args": {"direction": "down"}, "caption": "Below" },
+                            { "command": "clone_file_to_pane", "args": {"direction": "right"}, "caption": "Right" },
+                            { "command": "clone_file_to_pane", "args": {"direction": "left"}, "caption": "Left" }
+                        ]
+                    },
+                    {
+                        "caption": "Pull from",
+                        "children":
+                        [
+                            { "command": "pull_file_from_pane", "args": {"direction": "up"}, "caption": "Above" },
+                            { "command": "pull_file_from_pane", "args": {"direction": "down"}, "caption": "Below" },
+                            { "command": "pull_file_from_pane", "args": {"direction": "right"}, "caption": "Right" },
+                            { "command": "pull_file_from_pane", "args": {"direction": "left"}, "caption": "Left" }
+                        ]
+                    }
+                ]
+            },
+            // Window
+            {
+                "caption": "Window",
+                "children":
+                [
+                    {
+                        "caption": "New",
+                        "children":
+                        [
+                            { "command": "new_window_from_saved_layout", "caption": "From Saved Layout" },
+                            { "command": "new_window_with_current_layout", "caption": "With Current Layout" }
+                        ]
+                    }
+                ]
+            },
+            // Destroy
+            {
+                "caption": "Destroy",
+                "children":
+                [
+                    { "command": "destroy_pane", "args": {"direction": "up"}, "caption": "Above" },
+                    { "command": "destroy_pane", "args": {"direction": "down"}, "caption": "Below" },
+                    { "command": "destroy_pane", "args": {"direction": "right"}, "caption": "Right" },
+                    { "command": "destroy_pane", "args": {"direction": "left"}, "caption": "Left" },
+                    { "command": "destroy_pane", "args": {"direction": "self"}, "caption": "Current Pane" }
+                ]
+            }
+        ]
+    }
+]
