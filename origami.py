@@ -611,7 +611,7 @@ class SaveLayoutCommand(PaneCommand, WithSettings):
 
 			if sublime.ok_cancel_dialog(dialog_str, dialog_btn):
 				def get_index(seq, attr, value):
-				    return next(i for (i, d) in enumerate(seq) if d[attr] == value)
+					return next(i for (i, d) in enumerate(seq) if d[attr] == value)
 
 				layout = saved_layouts[get_index(saved_layouts, 'nickname', nickname)]
 				layout['rows'] = layout_data[0]
@@ -742,9 +742,11 @@ class NewWindowWithCurrentLayoutCommand(PaneCommand):
 		fixed_set_layout(new_window, layout)
 
 
-class AutoCloseEmptyPanes(sublime_plugin.EventListener):
+class AutoCloseEmptyPanes(sublime_plugin.EventListener, WithSettings):
 	def on_close(self, view):
+		# Read from global settings for backward compatibility
 		auto_close = view.settings().get("origami_auto_close_empty_panes", False)
+		auto_close = self.settings().get("auto_close_empty_panes", auto_close)
 		if not auto_close:
 			return
 		window = sublime.active_window()
@@ -760,7 +762,7 @@ class AutoCloseEmptyPanes(sublime_plugin.EventListener):
 			if len(window.views_in_group(active_group)) == 0:
 				window.run_command("destroy_pane", args={"direction":"self"})
 
-class AutoZoomOnFocus(sublime_plugin.EventListener):
+class AutoZoomOnFocus(sublime_plugin.EventListener, WithSettings):
 	running = False
 	active_group = -1
 
@@ -785,7 +787,9 @@ class AutoZoomOnFocus(sublime_plugin.EventListener):
 	def on_activated(self, view):
 		if self.running:
 			return
+		# Read from global settings for backward compatibility
 		fraction = view.settings().get("origami_auto_zoom_on_focus", False)
+		fraction = self.settings().get("auto_zoom_on_focus", fraction)
 		if not fraction:
 			return
 		if view.settings().get("is_widget"):
