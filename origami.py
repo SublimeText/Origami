@@ -738,7 +738,8 @@ class NewWindowWithCurrentLayoutCommand(PaneCommand):
 
 class AutoCloseEmptyPanes(sublime_plugin.EventListener):
 	def on_close(self, view):
-		auto_close = view.settings().get("origami_auto_close_empty_panes", False)
+    # auto_close = view.settings().get("origami_auto_close_empty_panes", False)
+		auto_close = sublime.load_settings('Origami.sublime-settings').get('origami_auto_close_empty_panes', False)
 		if not auto_close:
 			return
 		window = sublime.active_window()
@@ -779,7 +780,8 @@ class AutoZoomOnFocus(sublime_plugin.EventListener):
 	def on_activated(self, view):
 		if self.running:
 			return
-		fraction = view.settings().get("origami_auto_zoom_on_focus", False)
+    # fraction = view.settings().get("origami_auto_zoom_on_focus", False)
+		fraction = sublime.load_settings('Origami.sublime-settings').get("origami_auto_zoom_on_focus", False)
 		if not fraction:
 			return
 		if view.settings().get("is_widget"):
