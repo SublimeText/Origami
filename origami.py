@@ -132,7 +132,10 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			return
 		window = self.window
 		self.travel_to_pane(direction, create_new_if_necessary)
-		window.set_view_index(view, window.active_group(), 0)
+
+		active_group = window.active_group()
+		views_in_group = window.views_in_group(active_group)
+		window.set_view_index(view, active_group, len(views_in_group))
 
 	def clone_file_to_pane(self, direction, create_new_if_necessary=False):
 		window = self.window
@@ -504,7 +507,8 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 			if view:
 				active_group_index = self.window.active_group()
-				self.window.set_view_index(view, active_group_index, 0)
+				views_in_group = self.window.views_in_group(active_group_index)
+				self.window.set_view_index(view, active_group_index, len(views_in_group))
 
 
 class TravelToPaneCommand(PaneCommand, WithSettings):
