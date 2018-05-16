@@ -131,6 +131,14 @@ class PaneCommand(sublime_plugin.WindowCommand):
 				
 		return buffer_exists, target_view
 
+	def clone_viewport (self, view, new_view):
+		new_sel = new_view.sel()
+		new_sel.clear()
+		for s in view.sel():
+			new_sel.add(s)
+
+		sublime.set_timeout(lambda : new_view.set_viewport_position(view.viewport_position(), False), 0)
+
 	def travel_to_pane(self, direction, create_new_if_necessary=False):
 		adjacent_cell = self.adjacent_cell(direction)
 		if adjacent_cell:
@@ -145,6 +153,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		if view == None:
 			# If we're in an empty group, there's no active view
 			return
+
 		window = self.window
 		self.travel_to_pane(direction, create_new_if_necessary)
 		window.set_view_index(view, window.active_group(), 0)
@@ -165,12 +174,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		window.set_view_index(new_view, group, original_index)
 
 		# Fix the new view's selection and viewport
-		new_sel = new_view.sel()
-		new_sel.clear()
-		for s in view.sel():
-			new_sel.add(s)
-		sublime.set_timeout(lambda : new_view.set_viewport_position(view.viewport_position(), False), 0)
-
+		self.clone_viewport (view, new_view)
 		self.carry_file_to_pane(direction, create_new_if_necessary)
 
 	def focus_file_on_pane(self, direction, create_new_if_necessary=False):
@@ -188,6 +192,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		buffer_exists, target_view = self.is_view_in_group(view, target_group)
 		
 		if buffer_exists:
+			self.clone_viewport (view, target_view)
 			window.focus_view(target_view)
 		else:
 		 	window.focus_group(source_group)
