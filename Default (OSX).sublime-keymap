@@ -16,6 +16,20 @@
   // You can also create the pane automatically with the following command (insert empty parameters):
   // { "keys": [], "command": "create_pane_with_cloned_file", "args": {"direction": ""} }
 
+  { "keys": ["super+k", "super+alt+shift+up"], "command": "focus_file_on_pane", "args": {"direction": "up"} },
+  { "keys": ["super+k", "super+alt+shift+right"], "command": "focus_file_on_pane", "args": {"direction": "right"} },
+  { "keys": ["super+k", "super+alt+shift+down"], "command": "focus_file_on_pane", "args": {"direction": "down"} },
+  { "keys": ["super+k", "super+alt+shift+left"], "command": "focus_file_on_pane", "args": {"direction": "left"} },
+  // You can also create the pane automatically with the following command (insert empty parameters):
+  // { "keys": [], "command": "create_pane_with_cloned_file", "args": {"direction": ""} }
+
+  { "keys": ["super+k", "super+i" , "super+alt+shift+up"], "command": "focus_or_clone_file_on_pane", "args": {"direction": "up"} },
+  { "keys": ["super+k", "super+i" , "super+alt+shift+right"], "command": "focus_or_clone_file_on_pane", "args": {"direction": "right"} },
+  { "keys": ["super+k", "super+i" , "super+alt+shift+down"], "command": "focus_or_clone_file_on_pane", "args": {"direction": "down"} },
+  { "keys": ["super+k", "super+i" , "super+alt+shift+left"], "command": "focus_or_clone_file_on_pane", "args": {"direction": "left"} },
+  // You can also create the pane automatically with the following command (insert empty parameters):
+  // { "keys": [], "command": "create_pane_with_cloned_file", "args": {"direction": ""} }
+
   { "keys": ["super+k", "super+up"], "command": "create_pane", "args": {"direction": "up"} },
   { "keys": ["super+k", "super+right"], "command": "create_pane", "args": {"direction": "right"} },
   { "keys": ["super+k", "super+down"], "command": "create_pane", "args": {"direction": "down"} },

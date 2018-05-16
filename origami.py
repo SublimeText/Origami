@@ -116,6 +116,21 @@ class PaneCommand(sublime_plugin.WindowCommand):
 				dupe_views.append(pd)
 		return dupe_views
 
+	def is_view_in_group(self, view, group):
+		views = self.window.views_in_group(group)
+		buffers = [v.buffer_id() for v in views]
+
+		buffer_id = view.buffer_id()
+		buffer_exists = False
+		target_view = None
+		for current_view in views:
+			if current_view.buffer_id() == buffer_id:
+				buffer_exists = True
+				target_view = current_view
+				break
+				
+		return buffer_exists, target_view
+
 	def travel_to_pane(self, direction, create_new_if_necessary=False):
 		adjacent_cell = self.adjacent_cell(direction)
 		if adjacent_cell:
@@ -158,6 +173,27 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 		self.carry_file_to_pane(direction, create_new_if_necessary)
 
+	def focus_file_on_pane(self, direction, create_new_if_necessary=False):
+		window = self.window
+		view = window.active_view()
+		if view == None: 
+	 		# If we're in an empty group, there's no active view
+	 		# Therefore there is nothing to focus
+	 		return
+
+		source_group =  window.active_group()
+		self.travel_to_pane(direction, create_new_if_necessary)
+		target_group = window.active_group()
+
+		buffer_exists, target_view = self.is_view_in_group(view, target_group)
+		
+		if buffer_exists:
+			window.focus_view(target_view)
+		else:
+		 	window.focus_group(source_group)
+
+		return buffer_exists
+	
 	def reorder_panes(self, leave_files_at_position = True):
 		_, _, cells = self.get_layout()
 		current_cell = cells[self.window.active_group()]
@@ -520,6 +556,18 @@ class CarryFileToPaneCommand(PaneCommand, WithSettings):
 			create_new_if_necessary = self.settings().get('create_new_pane_if_necessary')
 		self.carry_file_to_pane(direction, create_new_if_necessary)
 
+class FocusFileOnPaneCommand(PaneCommand, WithSettings):
+ 	def run(self, direction, create_new_if_necessary=None):
+ 		if create_new_if_necessary is None:
+ 			create_new_if_necessary = self.settings().get('create_new_pane_if_necessary')
+ 		self.focus_file_on_pane(direction, create_new_if_necessary)
+
+class FocusOrCloneFileOnPaneCommand(PaneCommand, WithSettings):
+ 	def run(self, direction, create_new_if_necessary=None):
+ 		if create_new_if_necessary is None:
+ 			create_new_if_necessary = self.settings().get('create_new_pane_if_necessary')
+ 		if not self.focus_file_on_pane(direction, create_new_if_necessary):
+ 			self.clone_file_to_pane(direction, create_new_if_necessary)
 
 class CloneFileToPaneCommand(PaneCommand, WithSettings):
 	def run(self, direction, create_new_if_necessary=None):

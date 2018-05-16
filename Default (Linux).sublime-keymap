@@ -16,6 +16,20 @@
   // You can also create the pane automatically with the following command (insert empty parameters):
   // { "keys": [], "command": "create_pane_with_cloned_file", "args": {"direction": ""} }
 
+  { "keys": ["ctrl+k", "ctrl+alt+shift+up"], "command": "focus_file_on_pane", "args": {"direction": "up"} },
+  { "keys": ["ctrl+k", "ctrl+alt+shift+right"], "command": "focus_file_on_pane", "args": {"direction": "right"} },
+  { "keys": ["ctrl+k", "ctrl+alt+shift+down"], "command": "focus_file_on_pane", "args": {"direction": "down"} },
+  { "keys": ["ctrl+k", "ctrl+alt+shift+left"], "command": "focus_file_on_pane", "args": {"direction": "left"} },
+  // You can also create the pane automatically with the following command (insert empty parameters):
+  // { "keys": [], "command": "create_pane_with_cloned_file", "args": {"direction": ""} }
+
+  { "keys": ["ctrl+k", "ctrl+i" , "ctrl+alt+shift+up"], "command": "focus_or_clone_file_on_pane", "args": {"direction": "up"} },
+  { "keys": ["ctrl+k", "ctrl+i" , "ctrl+alt+shift+right"], "command": "focus_or_clone_file_on_pane", "args": {"direction": "right"} },
+  { "keys": ["ctrl+k", "ctrl+i" , "ctrl+alt+shift+down"], "command": "focus_or_clone_file_on_pane", "args": {"direction": "down"} },
+  { "keys": ["ctrl+k", "ctrl+i" , "ctrl+alt+shift+left"], "command": "focus_or_clone_file_on_pane", "args": {"direction": "left"} },
+  // You can also create the pane automatically with the following command (insert empty parameters):
+  // { "keys": [], "command": "create_pane_with_cloned_file", "args": {"direction": ""} }
+  
   { "keys": ["ctrl+k", "ctrl+up"], "command": "create_pane", "args": {"direction": "up"} },
   { "keys": ["ctrl+k", "ctrl+right"], "command": "create_pane", "args": {"direction": "right"} },
   { "keys": ["ctrl+k", "ctrl+down"], "command": "create_pane", "args": {"direction": "down"} },
