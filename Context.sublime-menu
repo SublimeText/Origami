@@ -79,6 +79,26 @@
                             { "command": "pull_file_from_pane", "args": {"direction": "right"}, "caption": "Right" },
                             { "command": "pull_file_from_pane", "args": {"direction": "left"}, "caption": "Left" }
                         ]
+                    },
+                    {
+                        "caption": "Focus on",
+                        "children":
+                        [
+                            { "command": "focus_file_on_pane", "args": {"direction": "up"}, "caption": "Above" },
+                            { "command": "focus_file_on_pane", "args": {"direction": "down"}, "caption": "Below" },
+                            { "command": "focus_file_on_pane", "args": {"direction": "right"}, "caption": "Right" },
+                            { "command": "focus_file_on_pane", "args": {"direction": "left"}, "caption": "Left" }
+                        ]
+                    },
+                    {
+                        "caption": "Focus or Clone to",
+                        "children":
+                        [
+                            { "command": "focus_or_clone_file_on_pane", "args": {"direction": "up"}, "caption": "Above" },
+                            { "command": "focus_or_clone_file_on_pane", "args": {"direction": "down"}, "caption": "Below" },
+                            { "command": "focus_or_clone_file_on_pane", "args": {"direction": "right"}, "caption": "Right" },
+                            { "command": "focus_or_clone_file_on_pane", "args": {"direction": "left"}, "caption": "Left" }
+                        ]
                     }
                 ]
             },
