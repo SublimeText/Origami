@@ -136,6 +136,8 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		active_group = window.active_group()
 		views_in_group = window.views_in_group(active_group)
 		window.set_view_index(view, active_group, len(views_in_group))
+		sublime.set_timeout(lambda: window.focus_view(view))
+		
 
 	def clone_file_to_pane(self, direction, create_new_if_necessary=False):
 		window = self.window
