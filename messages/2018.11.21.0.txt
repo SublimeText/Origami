@@ -1,0 +1,8 @@
+* Added release notes (these!) and an install message.
+
+* All settings can now be set in Origami.sublime-settings.
+  If you are still using the User settings, Origami will still read those too.
+
+* If you have auto_close_empty_panes enabled, Origami will no longer close panes
+  when transient views are closed. This fixes a bug where you couldn't use the
+  command palette to open a file in a new pane you just created.

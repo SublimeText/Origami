@@ -1,0 +1,19 @@
+Origami
+   the art of folding paper
+
+https://github.com/SublimeText/Origami
+
+Origami is a new way of thinking about panes in Sublime Text:
+you tell Sublime Text where you want a new pane, and it makes one for you.
+It works seamlessly alongside the built-in layout commands.
+
+All commands are available under the View>Origami menu, as well as in the
+command palette (search for Origami).
+
+Keybindings also exist for most commands. Origami shortcuts start by pressing
+and releasing ctrl+k (or cmd+k), followed by a second shortcut, like this:
+ * ctrl/cmd+k, then an arrow: move focus to the pane in that direction
+ * ctrl/cmd+k, then shift+arrow: move the current file to the destination
+ * ctrl/cmd+k, then alt/option+arrow: clone the current file to the destination
+ * ctrl/cmd+k, then ctrl/cmd+arrow: create an adjacent pane
+ * ctrl/cmd+k, then ctrl/cmd+shift+arrow: destroy an adjacent pane
