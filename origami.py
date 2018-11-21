@@ -747,7 +747,15 @@ class NewWindowWithCurrentLayoutCommand(PaneCommand):
 
 
 class AutoCloseEmptyPanes(sublime_plugin.EventListener, WithSettings):
-	def on_close(self, view):
+	def is_tabless_view(self, view):
+		"""When you make a new pane, it comes with a tabless view that gets a tab when you type into it. You also get
+		a similar view when using the command palette to open a file.
+		If we think it's this kind of view, return True."""
+		if view.window().get_view_index(view)[1] == -1:
+			return True
+		return False
+
+	def on_pre_close(self, view):
 		# Read from global settings for backward compatibility
 		auto_close = view.settings().get("origami_auto_close_empty_panes", False)
 		auto_close = self.settings().get("auto_close_empty_panes", auto_close)
@@ -756,15 +764,13 @@ class AutoCloseEmptyPanes(sublime_plugin.EventListener, WithSettings):
 		window = sublime.active_window()
 		active_group = window.active_group()
 
-		if sublime.version()[0] == '2':
-			# in sublime 2 on_close is called before the view is removed, so destroying
-			# the current pane at this point will crash it.  using set_timeout avoids this
-			if len(window.views_in_group(active_group)) == 1:
-				sublime.set_timeout(lambda: window.run_command("destroy_pane", {"direction":"self"}), 0)
-		else:
-			# otherwise fall back on the current behavior
-			if len(window.views_in_group(active_group)) == 0:
-				window.run_command("destroy_pane", args={"direction":"self"})
+		if self.is_tabless_view(view):
+			# We don't want to close the pane when closing a transient view
+			return
+
+		# We're in pre_close, so use set_timeout to close the group right after this.
+		if len(window.views_in_group(active_group)) == 1:
+			sublime.set_timeout(lambda: window.run_command("destroy_pane", {"direction":"self"}), 0)
 
 class AutoZoomOnFocus(sublime_plugin.EventListener, WithSettings):
 	running = False
