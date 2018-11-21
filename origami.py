@@ -751,9 +751,15 @@ class AutoCloseEmptyPanes(sublime_plugin.EventListener, WithSettings):
 		"""When you make a new pane, it comes with a tabless view that gets a tab when you type into it. You also get
 		a similar view when using the command palette to open a file.
 		If we think it's this kind of view, return True."""
-		if view.window().get_view_index(view)[1] == -1:
+		if sublime.version()[0] == '2':
+			return False
+		elif view.window().get_view_index(view)[1] == -1:
 			return True
 		return False
+
+	def on_close(self, view):
+		if sublime.version()[0] == '2':
+			self.on_pre_close(view)
 
 	def on_pre_close(self, view):
 		# Read from global settings for backward compatibility
