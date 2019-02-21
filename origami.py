@@ -137,7 +137,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		views_in_group = window.views_in_group(active_group)
 		window.set_view_index(view, active_group, len(views_in_group))
 		sublime.set_timeout(lambda: window.focus_view(view))
-		
+
 
 	def clone_file_to_pane(self, direction, create_new_if_necessary=False):
 		window = self.window
@@ -753,7 +753,7 @@ class AutoCloseEmptyPanes(sublime_plugin.EventListener, WithSettings):
 		If we think it's this kind of view, return True."""
 		if sublime.version()[0] == '2':
 			return False
-		elif view.window().get_view_index(view)[1] == -1:
+		elif view.window() and view.window().get_view_index(view)[1] == -1:
 			return True
 		return False
 
