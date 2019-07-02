@@ -767,7 +767,12 @@ class AutoCloseEmptyPanes(sublime_plugin.EventListener, WithSettings):
 		auto_close = self.settings().get("auto_close_empty_panes", auto_close)
 		if not auto_close:
 			return
-		window = sublime.active_window()
+
+		window = view.window()
+		if window == None:
+			# If we're the last view in the window, then the window closes before on_pre_close is called (!!).
+			# In this case, we don't want to close anything extra because the window is already closing.
+			return
 		active_group = window.active_group()
 
 		if self.is_tabless_view(view):
