@@ -13,5 +13,8 @@
     "saved_layouts": [],
 
     // Create a new pane when switching in a direction without one
-    "create_new_pane_if_necessary": true
+    "create_new_pane_if_necessary": true,
+
+    // Destroy unused panes when switching away from them
+    "destroy_empty_panes": false,
 }
