@@ -472,8 +472,9 @@ class PaneCommand(sublime_plugin.WindowCommand):
         if cell_to_remove:
             active_view = window.active_view()
             group_to_remove = cells.index(cell_to_remove)
+            has_content = len(window.views_in_group(group_to_remove)) > 0
 
-            if only_on_empty and self.has_content(group_to_remove):
+            if only_on_empty and has_content:
                 return
 
             dupe_views = self.duplicated_views(current_group, group_to_remove)
@@ -511,11 +512,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
             layout = {"cols": cols, "rows": rows, "cells": cells}
             fixed_set_layout(window, layout)
-
-    def has_content(self, group_index):
-        view = self.window.active_view_in_group(group_index)
-        return view and ( view.name() or view.file_name() or view.is_loading() or view.is_dirty() or view.is_scratch() )
-
 
     def pull_file_from_pane(self, direction):
         adjacent_cell = self.adjacent_cell(direction)
