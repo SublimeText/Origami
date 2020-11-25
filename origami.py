@@ -212,11 +212,11 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 		if mode == "BEFORE":
 			current_cell = cells[self.window.active_group()]
-			relevant_index.update((current_cell[min2]))
+			relevant_index.add(current_cell[min2])
 
 		elif mode == "AFTER":
 			current_cell = cells[self.window.active_group()]
-			relevant_index.update((current_cell[max2]))
+			relevant_index.add(current_cell[max2])
 
 		elif mode == "NEAREST":
 			current_cell = cells[self.window.active_group()]
