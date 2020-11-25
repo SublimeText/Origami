@@ -1,6 +1,6 @@
 Origami
 ======
-Origami is a new way of thinking about panes in Sublime Text 2 and 3: you tell Sublime Text where you want a new pane, and it makes one for you. It works seamlessly alongside the built-in layout commands.
+Origami is a new way of thinking about panes in Sublime Text: you tell Sublime Text where you want a new pane, and it makes one for you. It works seamlessly alongside the built-in layout commands.
 
 Ordinarily one uses the commands under View>Layout, or if one is quite intrepid a custom keyboard shortcut can be made to give a specific layout, but both of these solutions were unsatisfactory to me. Perhaps they were to you too! That's what this plugin is for.
 
@@ -42,7 +42,24 @@ You can have Origami automatically zoom the active pane by setting `auto_zoom_on
 
 Origami can also automatically close a pane for you once you've closed the last file in it. Just set `auto_close_empty_panes` to true in the Origami preferences.
 
-Install
--------
+Installation
+------------
 
-Search for Origami on [Package Control](https://sublime.wbond.net/)!
+#### Using package control
+
+1. Open up the command palette: <kbd>ctrl+shift+p</kbd>
+2. Search for `Package Control: Install Package`
+3. Search for `Origami`
+4. Hit <kbd>enter</kbd> :wink:
+
+#### Using the command line
+
+If you want to contribute to this package, first thanks, and second, you should download this using `git` so that you can propose your changes.
+
+```bash
+cd "%APPDATA%\Sublime Text 3\Packages"             # on Windows
+cd ~/Library/Application\ Support/Sublime\ Text\ 3 # on Mac
+cd ~/.config/sublime-text-3                        # on Linux
+
+git clone "https://github.com/SublimeText/Origami.git"
+```
