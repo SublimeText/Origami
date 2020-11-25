@@ -133,14 +133,6 @@
                         "children":
                         [
                             {
-                                "caption": "README",
-                                "command": "open_file",
-                                "args": {
-                                    "file": "${packages}/Origami/Origami.sublime-settings"
-                                }
-                            },
-                            { "caption": "-" },
-                            {
                                 "caption": "Settings",
                                 "command": "edit_settings",
                                 "args": {
@@ -148,7 +140,6 @@
                                     "default": "// Settings in here override those in \"Origami/Origami.sublime-settings\"\n{\n\t$0\n}\n"
                                 }
                             },
-                            { "caption": "-" },
                             {
                                 "caption": "Key Bindings",
                                 "command": "edit_settings",
@@ -156,6 +147,14 @@
                                     "base_file": "${packages}/Origami/Default ($platform).sublime-keymap",
                                     "user_file": "${packages}/User/Default (${platform}).sublime-keymap",
                                     "default": "[\n\t$0\n]\n",
+                                }
+                            },
+                            { "caption": "-" },
+                            {
+                                "caption": "README",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/Origami/Origami.sublime-settings"
                                 }
                             },
                         ]
