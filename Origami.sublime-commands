@@ -11,8 +11,19 @@
 
 	{ "command": "clone_file_to_pane", "args": {"direction": "up"}, "caption": "Origami: Clone File to Pane Above" },
 	{ "command": "clone_file_to_pane", "args": {"direction": "right"}, "caption": "Origami: Clone File to Pane on the Right" },
-	{ "command": "clone_file_to_pane", "args": {"direction": "down"}, "caption": "Origami: Clone File to Pane Below" },
+	{ "command": "clone_file_to_pane", "args": {"direction": "down"}, "cakption": "Origami: Clone File to Pane Below" },
 	{ "command": "clone_file_to_pane", "args": {"direction": "left"}, "caption": "Origami: Clone File to Pane on the Left" },
+
+	{ "command": "focus_file_on_pane", "args": {"direction": "up"}, "caption": "Origami: Focus File on the Pane Above" },
+	{ "command": "focus_file_on_pane", "args": {"direction": "right"}, "caption": "Origami: Focus File on the Pane on the Right" },
+	{ "command": "focus_file_on_pane", "args": {"direction": "down"}, "caption": "Origami: Focus File on the Pane Below" },
+	{ "command": "focus_file_on_pane", "args": {"direction": "left"}, "caption": "Origami: Focus File on the Pane on the Left" },
+
+	{ "command": "focus_or_clone_file_on_pane", "args": {"direction": "up"}, "caption": "Origami: Focus or Clone File on the Pane Above" },
+	{ "command": "focus_or_clone_file_on_pane", "args": {"direction": "right"}, "caption": "Origami: Focus or Clone File on the Pane on the Right" },
+	{ "command": "focus_or_clone_file_on_pane", "args": {"direction": "down"}, "caption": "Origami: Focus or Clone File on the Pane Below" },
+	{ "command": "focus_or_clone_file_on_pane", "args": {"direction": "left"}, "caption": "Origami: Focus or Clone File on the Pane on the Left" },
+	{ "command": "focus_or_clone_file_on_closest_pane", "caption": "Origami: Focus or Clone File on the closest panel" },
 
 	{ "command": "create_pane", "args": {"direction": "up"}, "caption": "Origami: Create Pane Above" },
 	{ "command": "create_pane", "args": {"direction": "right"}, "caption": "Origami: Create Pane on the Right" },
