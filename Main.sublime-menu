@@ -148,7 +148,15 @@
                                     "user_file": "${packages}/User/Default (${platform}).sublime-keymap",
                                     "default": "[\n\t$0\n]\n",
                                 }
-                            }
+                            },
+                            { "caption": "-" },
+                            {
+                                "caption": "README",
+                                "command": "open_file",
+                                "args": {
+                                    "file": "${packages}/Origami/README.markdown"
+                                }
+                            },
                         ]
                     }
                 ]
