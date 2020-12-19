@@ -1,6 +1,7 @@
 from __future__ import division
 import sublime, sublime_plugin
 import copy
+import os
 from functools import partial
 
 XMIN, YMIN, XMAX, YMAX = list(range(4))
@@ -69,6 +70,27 @@ class WithSettings:
 		if self._settings is None:
 			self._settings = sublime.load_settings('Origami.sublime-settings')
 		return self._settings
+
+def get_setting(view, key, default=None):
+    """
+    Get a Sublime Text setting value, starting in the project-specific
+    settings file, then the user-specific settings file, and finally
+    the package-specific settings file. Also accepts an optional default.
+    """
+    try:
+        settings = view.settings()
+        if settings.has('Origami'):
+            s = settings.get('Origami').get(key)
+            if s and len(s) > 0:
+                return s
+            else:
+                pass
+        else:
+            pass
+    except:
+        pass
+    global_settings = sublime.load_settings('Origami.sublime-settings')
+    return global_settings.get(key, default)
 
 class PaneCommand(sublime_plugin.WindowCommand):
 	"Abstract base class for commands."
@@ -824,3 +846,42 @@ class AutoZoomOnFocus(sublime_plugin.EventListener, WithSettings):
 		self.running = True
 
 		sublime.set_timeout(lambda: self.delayed_zoom(view, fraction), 0)
+
+class AutoSwitchPane(sublime_plugin.EventListener):
+	def get_syntax_name(self, view):
+		pt = view.sel()[0].end()
+		scopes = view.scope_name(pt)
+		if scopes:
+			for scope in scopes.strip().split(" "):
+				if "source." in scope:
+					return scope[7:].lower()
+
+				if "text.html." in scope:
+					return scope[10:].lower()
+
+				if "text." in scope:
+					return scope[5:].lower()
+		else:
+			# fallback to path search if scopes are not available
+			syntax_path = view.settings().get('syntax')
+			return os.path.splitext(os.path.basename(syntax_path))[0].lower()
+
+	def on_load(self, view):
+		syntax_grouping = get_setting(view, 'syntax_grouping')
+		enabled_syntaxes = [s.lower() for s in get_setting(view, 'enabled_syntaxes')]
+
+		if syntax_grouping:
+			w = sublime.active_window()
+			view = w.active_view()
+			views = w.views()
+			current_syntax = self.get_syntax_name(view)
+
+			if views and (len(enabled_syntaxes) == 0 or current_syntax in enabled_syntaxes):
+				for v in views:
+					syntax = self.get_syntax_name(v)
+					group = w.get_view_index(v)[0]
+
+					if syntax and syntax == current_syntax:
+						w.set_view_index(view, group, 0)
+						w.focus_view(view)
+
