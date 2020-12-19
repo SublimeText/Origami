@@ -1,4 +1,4 @@
 {
-  "install": "messages/install.txt",
-  "2018.11.21.0": "messages/2018.11.21.0.txt"
+  "2.1.0": "messages/2.1.0.txt",
+  "install": "messages/install.txt"
 }
