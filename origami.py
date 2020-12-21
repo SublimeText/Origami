@@ -59,7 +59,7 @@ def cells_adjacent_to_cell_in_direction(cells, cell, direction):
 		return [c for c in cells if cell[YMAX] == c[YMIN]]
 	if direction == "left":
 		return [c for c in cells if cell[XMIN] == c[XMAX]]
-	return None
+	raise Exception('Unsupported direction "{}"'.format(direction))
 
 
 class WithSettings:
@@ -200,13 +200,14 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			max1 = YMAX
 			min2 = XMIN
 			max2 = XMAX
-
 		elif orientation == "rows":
 			data = rows
 			min1 = XMIN
 			max1 = XMAX
 			min2 = YMIN
 			max2 = YMAX
+		else:
+			raise Exception('Unsupported orientation "{}"'.format(orientation))
 
 		relevant_index = set()
 
