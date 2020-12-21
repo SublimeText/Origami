@@ -35,13 +35,16 @@
   { "keys": ["super+k", "super+alt+down"], "command": "create_pane_with_file", "args": {"direction": "down"} },
   { "keys": ["super+k", "super+alt+left"], "command": "create_pane_with_file", "args": {"direction": "left"} },
 
-
   // You can pull a file from another pane by binding the following command:
   // { "keys": [], "command": "pull_file_from_pane", "args": { "direction": ""} }
 
-  { "keys": ["super+k", "super+z"], "command": "zoom_pane", "args": {"fraction": 0.9} },
-  { "keys": ["super+k", "super+shift+z"], "command": "unzoom_pane", "args": {} },
+  // NOTE: The following keybindings are disabled as they conflict with built-in features.
+  // You can copy those to your user keybindings and change to your choosen combination
+  // or just enable if you don't care about built-in features.
 
-  { "keys": ["super+k", "super+c"], "command": "resize_pane", "args": {"orientation": "cols"} },
-  { "keys": ["super+k", "super+r"], "command": "resize_pane", "args": {"orientation": "rows"} }
+  // { "keys": ["super+k", "super+z"], "command": "zoom_pane", "args": {"fraction": 0.9} },
+  // { "keys": ["super+k", "super+shift+z"], "command": "unzoom_pane", "args": {} },
+
+  // { "keys": ["super+k", "super+c"], "command": "resize_pane", "args": {"orientation": "cols"} },
+  // { "keys": ["super+k", "super+r"], "command": "resize_pane", "args": {"orientation": "rows"} },
 ]

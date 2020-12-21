@@ -1,0 +1,6 @@
+**BREAKING**:
+ - The default keybindings for zooming and changing pane sizes are now disabled due to a conflict with built-in ST features.
+
+   You can re-enable them by opening the `Preferences: Origami Key Bindings` from the Command Palette and copying
+   disabled keybindings to your user keybindings. Consider changing the key combination if you care about having
+   built-in features.
