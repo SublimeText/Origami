@@ -75,7 +75,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 	"""Abstract base class for commands."""
 
 	def get_layout(self):
-		layout = self.window.get_layout()
+		layout = self.window.layout()
 		rows = layout["rows"]
 		cols = layout["cols"]
 		cells = layout["cells"]
@@ -729,7 +729,7 @@ class NewWindowWithCurrentLayoutCommand(PaneCommand):
 		super(NewWindowWithCurrentLayoutCommand, self).__init__(window)
 
 	def run(self):
-		layout = self.window.get_layout()
+		layout = self.window.layout()
 		self.window.run_command("new_window")
 		new_window = sublime.active_window()
 		new_window.set_layout(layout)
