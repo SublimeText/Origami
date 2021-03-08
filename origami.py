@@ -16,19 +16,19 @@ def decrement_if_greater(x, threshold):
 	return x
 
 def pull_up_cells_after(cells, threshold):
-	return [    [x0,decrement_if_greater(y0, threshold),
+	return [	[x0,decrement_if_greater(y0, threshold),
 				x1,decrement_if_greater(y1, threshold)] for (x0,y0,x1,y1) in cells]
 
 def push_right_cells_after(cells, threshold):
-	return [    [increment_if_greater_or_equal(x0, threshold),y0,
+	return [	[increment_if_greater_or_equal(x0, threshold),y0,
 				increment_if_greater_or_equal(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
 
 def push_down_cells_after(cells, threshold):
-	return [    [x0,increment_if_greater_or_equal(y0, threshold),
+	return [	[x0,increment_if_greater_or_equal(y0, threshold),
 				x1,increment_if_greater_or_equal(y1, threshold)] for (x0,y0,x1,y1) in cells]
 
 def pull_left_cells_after(cells, threshold):
-	return [    [decrement_if_greater(x0, threshold),y0,
+	return [	[decrement_if_greater(x0, threshold),y0,
 				decrement_if_greater(x1, threshold),y1] for (x0,y0,x1,y1) in cells]
 
 def opposite_direction(direction):
@@ -118,7 +118,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 	def travel_to_pane(self, direction, create_new_if_necessary=False, destroy_old_if_empty=False):
 		adjacent_cell = self.adjacent_cell(direction)
-
 		if adjacent_cell:
 			cells = self.get_cells()
 			new_group_index = cells.index(adjacent_cell)
@@ -321,8 +320,8 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		current_col = current_cell[0]
 		num_cols = len(cols)-1
 
-		#TODO:  the sizes of the unzoomed panes are calculated incorrectly if the
-		#       unzoomed panes have a split that overlaps the zoomed pane.
+		#TODO:	the sizes of the unzoomed panes are calculated incorrectly if the
+		#     	unzoomed panes have a split that overlaps the zoomed pane.
 		current_col_width = 1 if num_cols==1 else fraction
 		other_col_width = 0 if num_cols==1 else (1-current_col_width)/(num_cols-1)
 
@@ -465,7 +464,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		current_cell = cells[current_group]
 
 		adjacent_cells = cells_adjacent_to_cell_in_direction(cells, current_cell, direction)
-
 		if len(adjacent_cells) == 1:
 			cell_to_remove = adjacent_cells[0]
 
@@ -473,7 +471,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			active_view = window.active_view()
 			group_to_remove = cells.index(cell_to_remove)
 			has_content = len(window.views_in_group(group_to_remove)) > 0
-
 			if only_on_empty and has_content:
 				return
 
