@@ -455,7 +455,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		if cell_to_remove:
 			active_view = window.active_view()
 			group_to_remove = cells.index(cell_to_remove)
-			has_content = len(window.views_in_group(group_to_remove)) > 0
+			has_content = len(window.sheets_in_group(group_to_remove)) > 0
 			if only_on_empty and has_content:
 				return
 
