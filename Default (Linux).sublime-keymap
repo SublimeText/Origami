@@ -3,12 +3,12 @@
   { "keys": ["ctrl+k", "right"], "command": "travel_to_pane", "args": {"direction": "right"} },
   { "keys": ["ctrl+k", "down"], "command": "travel_to_pane", "args": {"direction": "down"} },
   { "keys": ["ctrl+k", "left"], "command": "travel_to_pane", "args": {"direction": "left"} },
-  
+
   { "keys": ["ctrl+k", "shift+up"], "command": "carry_file_to_pane", "args": {"direction": "up"} },
   { "keys": ["ctrl+k", "shift+right"], "command": "carry_file_to_pane", "args": {"direction": "right"} },
   { "keys": ["ctrl+k", "shift+down"], "command": "carry_file_to_pane", "args": {"direction": "down"} },
   { "keys": ["ctrl+k", "shift+left"], "command": "carry_file_to_pane", "args": {"direction": "left"} },
-  
+
   { "keys": ["ctrl+k", "alt+up"], "command": "clone_file_to_pane", "args": {"direction": "up"} },
   { "keys": ["ctrl+k", "alt+right"], "command": "clone_file_to_pane", "args": {"direction": "right"} },
   { "keys": ["ctrl+k", "alt+down"], "command": "clone_file_to_pane", "args": {"direction": "down"} },
@@ -29,20 +29,22 @@
   { "keys": ["ctrl+k", "ctrl+shift+left"], "command": "destroy_pane", "args": {"direction": "left"} },
   // You can also destroy the current pane by binding the following command:
   // { "keys": [], "command": "destroy_pane", "args": {"direction": "self"} },
-  
+
   { "keys": ["ctrl+k", "ctrl+alt+up"], "command": "create_pane_with_file", "args": {"direction": "up"} },
   { "keys": ["ctrl+k", "ctrl+alt+right"], "command": "create_pane_with_file", "args": {"direction": "right"} },
   { "keys": ["ctrl+k", "ctrl+alt+down"], "command": "create_pane_with_file", "args": {"direction": "down"} },
   { "keys": ["ctrl+k", "ctrl+alt+left"], "command": "create_pane_with_file", "args": {"direction": "left"} },
-  
 
   // You can pull a file from another pane by binding the following command:
   // { "keys": [], "command": "pull_file_from_pane", "args": { "direction": ""} }
 
-  { "keys": ["ctrl+k", "ctrl+z"], "command": "zoom_pane", "args": {"fraction": 0.9} },
-  { "keys": ["ctrl+k", "ctrl+shift+z"], "command": "unzoom_pane", "args": {} },
+  // NOTE: The following keybindings are disabled as they conflict with built-in features.
+  // You can copy those to your user keybindings and change to your choosen combination
+  // or just enable if you don't care about built-in features.
 
-  { "keys": ["ctrl+k", "ctrl+c"], "command": "resize_pane", "args": {"orientation": "cols"} },
-  { "keys": ["ctrl+k", "ctrl+r"], "command": "resize_pane", "args": {"orientation": "rows"} }
+  // { "keys": ["ctrl+k", "ctrl+z"], "command": "zoom_pane", "args": {"fraction": 0.9} },
+  // { "keys": ["ctrl+k", "ctrl+shift+z"], "command": "unzoom_pane", "args": {} },
 
+  // { "keys": ["ctrl+k", "ctrl+c"], "command": "resize_pane", "args": {"orientation": "cols"} },
+  // { "keys": ["ctrl+k", "ctrl+r"], "command": "resize_pane", "args": {"orientation": "rows"} },
 ]

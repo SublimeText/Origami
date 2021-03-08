@@ -48,5 +48,22 @@
 
 	{ "command": "toggle_zoom_pane", "args": {"fraction": 0.9}, "caption": "Origami: Zoom/Unzoom Current Pane (Toggle Zoom)" },
 	{ "command": "zoom_pane", "args": {"fraction": 0.9}, "caption": "Origami: Zoom Current Pane" },
-	{ "command": "unzoom_pane", "args": {}, "caption": "Origami: Unzoom Current Pane" }
+	{ "command": "unzoom_pane", "args": {}, "caption": "Origami: Unzoom Current Pane" },
+
+	{
+		"caption": "Preferences: Origami Settings",
+		"command": "edit_settings",
+		"args": {
+			"base_file": "${packages}/Origami/Origami.sublime-settings",
+			"default": "// Settings in here override those in \"Origami/Origami.sublime-settings\"\n{\n\t$0\n}\n"}
+	},
+	{
+		"caption": "Preferences: Origami Key Bindings",
+		"command": "edit_settings",
+		"args": {
+			"base_file": "${packages}/Origami/Default ($platform).sublime-keymap",
+			"user_file": "${packages}/User/Default ($platform).sublime-keymap",
+			"default": "[\n\t$0\n]\n",
+		}
+	}
 ]
