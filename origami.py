@@ -76,9 +76,9 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 	def get_layout(self):
 		layout = self.window.layout()
-		cells = layout["cells"]
 		rows = layout["rows"]
 		cols = layout["cols"]
+		cells = layout["cells"]
 		return rows, cols, cells
 
 	def get_cells(self):
@@ -113,16 +113,18 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		potential_dupe_views = self.window.views_in_group(duplicating_group)
 		return [pd for pd in potential_dupe_views if pd.buffer_id() in original_buffers]
 
-	def travel_to_pane(self, direction, create_new_if_necessary=False):
+	def travel_to_pane(self, direction, create_new_if_necessary=False, destroy_old_if_empty=False):
 		adjacent_cell = self.adjacent_cell(direction)
 		if adjacent_cell:
 			cells = self.get_cells()
 			new_group_index = cells.index(adjacent_cell)
 			self.window.focus_group(new_group_index)
+			if destroy_old_if_empty:
+				self.destroy_pane(opposite_direction(direction), True)
 		elif create_new_if_necessary:
-			self.create_pane(direction, True)
+			self.create_pane(direction, True, destroy_old_if_empty)
 
-	def carry_file_to_pane(self, direction, create_new_if_necessary=False):
+	def carry_file_to_pane(self, direction, create_new_if_necessary=False, destroy_old_if_empty=False):
 		view = self.window.active_view()
 		if view is None:
 			# If we're in an empty group, there's no active view
@@ -134,6 +136,9 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		views_in_group = window.views_in_group(active_group)
 		window.set_view_index(view, active_group, len(views_in_group))
 		sublime.set_timeout(lambda: window.focus_view(view))
+
+		if destroy_old_if_empty:
+			self.destroy_pane(opposite_direction(direction), True)
 
 	def clone_file_to_pane(self, direction, create_new_if_necessary=False):
 		window = self.window
@@ -374,7 +379,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		else:
 			self.unzoom_pane()
 
-	def create_pane(self, direction, give_focus=False):
+	def create_pane(self, direction, give_focus=False, destroy_old_if_empty=False):
 		window = self.window
 		rows, cols, cells = self.get_layout()
 		current_group = window.active_group()
@@ -407,7 +412,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			window.set_layout(layout)
 
 			if give_focus:
-				self.travel_to_pane(direction)
+				self.travel_to_pane(direction, False, destroy_old_if_empty)
 
 	def destroy_current_pane(self):
 		# Out of the four adjacent panes, one was split to create this pane.
@@ -431,7 +436,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			self.travel_to_pane(target_dir)
 			self.destroy_pane(opposite_direction(target_dir))
 
-	def destroy_pane(self, direction):
+	def destroy_pane(self, direction, only_on_empty=False):
 		if direction == "self":
 			self.destroy_current_pane()
 			return
@@ -450,6 +455,10 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		if cell_to_remove:
 			active_view = window.active_view()
 			group_to_remove = cells.index(cell_to_remove)
+			has_content = len(window.sheets_in_group(group_to_remove)) > 0
+			if only_on_empty and has_content:
+				return
+
 			dupe_views = self.duplicated_views(current_group, group_to_remove)
 			for d in dupe_views:
 				window.focus_view(d)
@@ -502,17 +511,21 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
 
 class TravelToPaneCommand(PaneCommand, WithSettings):
-	def run(self, direction, create_new_if_necessary=None):
+	def run(self, direction, create_new_if_necessary=None, destroy_old_if_empty=None):
 		if create_new_if_necessary is None:
 			create_new_if_necessary = self.settings().get('create_new_pane_if_necessary')
-		self.travel_to_pane(direction, create_new_if_necessary)
+		if destroy_old_if_empty is None:
+			destroy_old_if_empty = self.settings().get('destroy_empty_panes')
+		self.travel_to_pane(direction, create_new_if_necessary, destroy_old_if_empty)
 
 
 class CarryFileToPaneCommand(PaneCommand, WithSettings):
-	def run(self, direction, create_new_if_necessary=None):
+	def run(self, direction, create_new_if_necessary=None, destroy_old_if_empty=None):
 		if create_new_if_necessary is None:
 			create_new_if_necessary = self.settings().get('create_new_pane_if_necessary')
-		self.carry_file_to_pane(direction, create_new_if_necessary)
+		if destroy_old_if_empty is None:
+			destroy_old_if_empty = self.settings().get('destroy_empty_panes')
+		self.carry_file_to_pane(direction, create_new_if_necessary, destroy_old_if_empty)
 
 
 class CloneFileToPaneCommand(PaneCommand, WithSettings):
@@ -716,7 +729,7 @@ class NewWindowWithCurrentLayoutCommand(PaneCommand):
 		super(NewWindowWithCurrentLayoutCommand, self).__init__(window)
 
 	def run(self):
-		layout = self.window.get_layout()
+		layout = self.window.layout()
 		self.window.run_command("new_window")
 		new_window = sublime.active_window()
 		new_window.set_layout(layout)
