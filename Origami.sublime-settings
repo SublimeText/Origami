@@ -12,9 +12,17 @@
      */
     "saved_layouts": [],
 
-    // Create a new pane when switching in a direction without one
+    // Create a new pane when switching in a direction without one.
     "create_new_pane_if_necessary": true,
 
-    // Destroy unused panes when switching away from them
+    // Automatically zoom the active pane.
+    // Set it to `true` for the default zoom, or to a user-definable
+    // fraction of the screen, such as "0.75".
+    "auto_zoom_on_focus": true,
+
+    // Automatically close a pane once you've closed the last file in it.
+    "auto_close_empty_panes": false,
+
+    // Destroy unused panes when switching away from them.
     "destroy_empty_panes": false,
 }
