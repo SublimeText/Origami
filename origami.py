@@ -4,6 +4,7 @@ import copy
 from functools import partial
 
 
+SETTINGS_FILENAME = 'Origami.sublime-settings'
 XMIN, YMIN, XMAX, YMAX = range(4)
 
 
@@ -20,23 +21,31 @@ def decrement_if_greater(x, threshold):
 
 
 def pull_up_cells_after(cells, threshold):
-	return [[x0, decrement_if_greater(y0, threshold),
-			 x1, decrement_if_greater(y1, threshold)] for (x0, y0, x1, y1) in cells]
+	return [
+		[x0, decrement_if_greater(y0, threshold), x1, decrement_if_greater(y1, threshold)]
+		for (x0, y0, x1, y1) in cells
+	]
 
 
 def push_right_cells_after(cells, threshold):
-	return [[increment_if_greater_or_equal(x0, threshold), y0,
-			 increment_if_greater_or_equal(x1, threshold), y1] for (x0, y0, x1, y1) in cells]
+	return [
+		[increment_if_greater_or_equal(x0, threshold), y0, increment_if_greater_or_equal(x1, threshold), y1]
+		for (x0, y0, x1, y1) in cells
+	]
 
 
 def push_down_cells_after(cells, threshold):
-	return [[x0, increment_if_greater_or_equal(y0, threshold),
-			 x1, increment_if_greater_or_equal(y1, threshold)] for (x0, y0, x1, y1) in cells]
+	return [
+		[x0, increment_if_greater_or_equal(y0, threshold), x1, increment_if_greater_or_equal(y1, threshold)]
+		for (x0, y0, x1, y1) in cells
+	]
 
 
 def pull_left_cells_after(cells, threshold):
-	return [[decrement_if_greater(x0, threshold), y0,
-			 decrement_if_greater(x1, threshold), y1] for (x0, y0, x1, y1) in cells]
+	return [
+		[decrement_if_greater(x0, threshold), y0, decrement_if_greater(x1, threshold), y1]
+		for (x0, y0, x1, y1) in cells
+	]
 
 
 def opposite_direction(direction):
@@ -67,7 +76,7 @@ class WithSettings:
 
 	def settings(self):
 		if self._settings is None:
-			self._settings = sublime.load_settings('Origami.sublime-settings')
+			self._settings = sublime.load_settings(SETTINGS_FILENAME)
 		return self._settings
 
 
@@ -628,7 +637,7 @@ class SaveLayoutCommand(PaneCommand, WithSettings):
 			saved_layouts.append(layout)
 
 		self.settings().set('saved_layouts', saved_layouts)
-		sublime.save_settings('Origami.sublime-settings')
+		sublime.save_settings(SETTINGS_FILENAME)
 
 	def run(self):
 		self.window.show_input_panel(
@@ -679,7 +688,7 @@ class RemoveLayoutCommand(PaneCommand, WithSettings):
 		if index != -1:
 			saved_layouts.pop(index)
 			self.settings().set('saved_layouts', saved_layouts)
-			sublime.save_settings('Origami.sublime-settings')
+			sublime.save_settings(SETTINGS_FILENAME)
 
 	def run(self):
 		if self.settings().has('saved_layouts'):
