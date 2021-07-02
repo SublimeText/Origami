@@ -547,7 +547,7 @@ class CloneFileToPaneCommand(PaneCommand, WithSettings):
 class CreatePaneWithFileCommand(PaneCommand):
 	def run(self, direction):
 		self.create_pane(direction)
-		self.carry_file_to_pane(direction)
+		self.pull_file_from_pane(opposite_direction(direction))
 
 
 class CreatePaneWithClonedFileCommand(PaneCommand):
