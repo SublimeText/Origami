@@ -162,6 +162,8 @@ class PaneCommand(sublime_plugin.WindowCommand):
         # then when we remove it from the group, focus will fall to the
         # original view.
         new_view = window.active_view()
+        if new_view is None:
+            return
         window.set_view_index(new_view, group, original_index)
 
         # Fix the new view's selection and viewport
@@ -174,7 +176,6 @@ class PaneCommand(sublime_plugin.WindowCommand):
         self.carry_file_to_pane(direction, create_new_if_necessary)
 
     def reorder_panes(self, leave_files_at_position=True):
-        _, _, cells = self.get_layout()
         old_index = self.window.active_group()
         on_done = partial(self._on_reorder_done, old_index, leave_files_at_position)
         view = self.window.show_input_panel("enter new index", str(old_index + 1), on_done, None, None)
@@ -202,7 +203,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
             for position, v in enumerate(new_files):
                 self.window.set_view_index(v, old_index, position)
 
-        layout = {"cols": cols, "rows": rows, "cells": cells}
+        layout = {"cols": cols, "rows": rows, "cells": cells}  # type: sublime.Layout
         self.window.set_layout(layout)
 
     def resize_panes(self, orientation, mode):
@@ -262,7 +263,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
         view.sel().clear()
         view.sel().add(sublime.Region(0, view.size()))
 
-    def _on_resize_panes_get_layout(self, orientation, cells, relevant_index, orig_data, text):
+    def _on_resize_panes_get_layout(self, orientation, cells, relevant_index, orig_data, text) -> sublime.Layout:
         rows, cols, _ = self.get_layout()
 
         input_data = [float(x) for x in text.split(",")]
@@ -339,7 +340,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
         for i in range(num_rows):
             rows.append(rows[i] + (current_row_height if i == current_row else other_row_height))
 
-        layout = {"cols": cols, "rows": rows, "cells": cells}
+        layout = {"cols": cols, "rows": rows, "cells": cells}  # type: sublime.Layout
         window.set_layout(layout)
 
     def unzoom_pane(self):
@@ -360,7 +361,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
         for i in range(num_rows):
             rows.append(rows[i] + row_height)
 
-        layout = {"cols": cols, "rows": rows, "cells": cells}
+        layout = {"cols": cols, "rows": rows, "cells": cells}  # type: sublime.Layout
         window.set_layout(layout)
 
     def toggle_zoom(self, fraction):
@@ -399,7 +400,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
         if direction in ("up", "down"):
             cells = push_down_cells_after(cells, old_cell[YMAX])
             rows.insert(old_cell[YMAX], (rows[old_cell[YMIN]] + rows[old_cell[YMAX]]) / 2)
-            new_cell = [old_cell[XMIN], old_cell[YMAX], old_cell[XMAX], old_cell[YMAX]+1]
+            new_cell = [old_cell[XMIN], old_cell[YMAX], old_cell[XMAX], old_cell[YMAX] + 1]
             old_cell = [old_cell[XMIN], old_cell[YMIN], old_cell[XMAX], old_cell[YMAX]]
 
         elif direction in ("right", "left"):
@@ -417,7 +418,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
                 unfocused_cell = new_cell
             cells.insert(current_group, focused_cell)
             cells.append(unfocused_cell)
-            layout = {"cols": cols, "rows": rows, "cells": cells}
+            layout = {"cols": cols, "rows": rows, "cells": cells}  # type: sublime.Layout
             window.set_layout(layout)
 
             if give_focus:
@@ -501,7 +502,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
                     cells[cells.index(cell)][XMIN] = cell_to_remove[XMIN]
                 cells = pull_left_cells_after(cells, cell_to_remove[XMAX])
 
-            layout = {"cols": cols, "rows": rows, "cells": cells}
+            layout = {"cols": cols, "rows": rows, "cells": cells}  # type: sublime.Layout
             window.set_layout(layout)
 
     def pull_file_from_pane(self, direction):
@@ -607,13 +608,12 @@ class SaveLayoutCommand(PaneCommand, WithSettings):
 
     def on_done(self, nickname):
         saved_layouts = self.settings().get('saved_layouts')
-        layout_names = [l['nickname'] for l in saved_layouts]
+        layout_names = [layout['nickname'] for layout in saved_layouts]
         layout_data = self.get_layout()
 
         if nickname in layout_names:
             dialog_str = ('You already have a layout stored as "{0}".\n\n'
-                          'Do you want to continue and overwrite that '
-                          'layout?'.format(nickname))
+                          'Do you want to continue and overwrite that layout?'.format(nickname))
             dialog_btn = 'Overwrite layout'
 
             if sublime.ok_cancel_dialog(dialog_str, dialog_btn):
@@ -665,13 +665,13 @@ class RestoreLayoutCommand(PaneCommand, WithSettings):
                 'cells': selected_layout['cells'],
                 'cols': selected_layout['cols'],
                 'rows': selected_layout['rows']
-            }
+            }  # type: sublime.Layout
             self.window.set_layout(layout)
 
     def run(self):
         if self.settings().has('saved_layouts'):
             saved_layouts = self.settings().get('saved_layouts')
-            layout_names = [l['nickname'] for l in saved_layouts]
+            layout_names = [layout['nickname'] for layout in saved_layouts]
             self.window.show_quick_panel(layout_names, self.on_done)
 
 
@@ -693,7 +693,7 @@ class RemoveLayoutCommand(PaneCommand, WithSettings):
     def run(self):
         if self.settings().has('saved_layouts'):
             saved_layouts = self.settings().get('saved_layouts')
-            layout_names = [l['nickname'] for l in saved_layouts]
+            layout_names = [layout['nickname'] for layout in saved_layouts]
             self.window.show_quick_panel(layout_names, self.on_done)
 
 
@@ -716,7 +716,7 @@ class NewWindowFromSavedLayoutCommand(PaneCommand, WithSettings):
                 'cells': selected_layout['cells'],
                 'cols': selected_layout['cols'],
                 'rows': selected_layout['rows']
-            }
+            }  # type: sublime.Layout
 
             self.window.run_command("new_window")
             new_window = sublime.active_window()
@@ -725,7 +725,7 @@ class NewWindowFromSavedLayoutCommand(PaneCommand, WithSettings):
     def run(self):
         if self.settings().has('saved_layouts'):
             saved_layouts = self.settings().get('saved_layouts')
-            layout_names = [l['nickname'] for l in saved_layouts]
+            layout_names = [layout['nickname'] for layout in saved_layouts]
             self.window.show_quick_panel(layout_names, self.on_done)
 
 
