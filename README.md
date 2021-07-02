@@ -10,17 +10,18 @@ Try it out! I think you'll like it.
 Keyboard shortcuts
 ------------------
 
-> **NOTE**: Windows and Linux use `ctrl` instead of `command`.
-
 Origami is driven by keyboard shortcuts. By default, these keyboard shortcuts are all two-stage, and are hidden behind `command+k`. First press `command+k`, then press the arrow keys with modifiers:
 
-| First       | Then                    | Action                                    |
-| ----------- | ----------------------- | ----------------------------------------- |
-| `command+k` | ▲►▼◄                  | travel to an adjacent pane                |
-| `command+k` | `shift`+▲►▼◄          | carry the current file to the destination |
-| `command+k` | `alt` (`option`)+▲►▼◄ | clone the current file to the destination |
-| `command+k` | `command`+▲►▼◄        | create an adjacent pane                   |
-| `command+k` | `command+shift`+▲►▼◄  | destroy an adjacent pane                  |
+> **NOTE**: Windows and Linux use `ctrl` instead of `command`.
+
+| First       | Then                                       | Action                                    |
+| ----------- | ------------------------------------------ | ----------------------------------------- |
+| `command+k` | ▲►▼◄                                       | travel to an adjacent pane                |
+| `command+k` | `shift`+▲►▼◄                               | carry the current file to the destination |
+| `command+k` | `alt` (`option` on Mac)+▲►▼◄               | clone the current file to the destination |
+| `command+k` | `command`+▲►▼◄                             | create an adjacent pane                   |
+| `command+k` | `command+shift`+▲►▼◄                       | destroy an adjacent pane                  |
+| `command+k` | `ctrl+alt` (`command+option` on Mac)+▲►▼◄  | create an adjacent pane and carry the current file to the destination |
 
 These keyboard shortcuts are designed to make it really easy to modify the layout of your editor.
 
