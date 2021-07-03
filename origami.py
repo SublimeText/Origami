@@ -263,7 +263,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
         view.sel().clear()
         view.sel().add(sublime.Region(0, view.size()))
 
-    def _on_resize_panes_get_layout(self, orientation, cells, relevant_index, orig_data, text) -> sublime.Layout:
+    def _on_resize_panes_get_layout(self, orientation, cells, relevant_index, orig_data, text):
         rows, cols, _ = self.get_layout()
 
         input_data = [float(x) for x in text.split(",")]
