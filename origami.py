@@ -761,8 +761,10 @@ class AutoCloseEmptyPanes(sublime_plugin.EventListener, WithSettings):
 
     def on_pre_close(self, view):
         # Read from global settings for backward compatibility
-        auto_close = view.settings().get("origami_auto_close_empty_panes", False)
-        auto_close = self.settings().get("auto_close_empty_panes", auto_close)
+        auto_close = (
+            view.settings().get("origami_auto_close_empty_panes")
+            or self.settings().get("auto_close_empty_panes")
+        )
         if not auto_close:
             return
 
@@ -810,8 +812,10 @@ class AutoZoomOnFocus(sublime_plugin.EventListener, WithSettings):
         if self.running:
             return
         # Read from global settings for backward compatibility
-        fraction = view.settings().get("origami_auto_zoom_on_focus", False)
-        fraction = self.settings().get("auto_zoom_on_focus", fraction)
+        fraction = (
+            view.settings().get("origami_auto_zoom_on_focus")
+            or self.settings().get("auto_zoom_on_focus")
+        )
         if not fraction:
             return
         if view.settings().get("is_widget"):
