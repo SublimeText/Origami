@@ -761,8 +761,9 @@ class AutoCloseEmptyPanes(sublime_plugin.EventListener, WithSettings):
 
     def on_pre_close(self, view):
         # Read from global settings for backward compatibility
-        auto_close = view.settings().get("origami_auto_close_empty_panes", False)
-        auto_close = self.settings().get("auto_close_empty_panes", auto_close)
+        auto_close = view.settings().get("origami_auto_close_empty_panes")
+        if not isinstance(auto_close, bool):
+            auto_close = self.settings().get("auto_close_empty_panes")
         if not auto_close:
             return
 
