@@ -309,11 +309,20 @@ class PaneCommand(sublime_plugin.WindowCommand):
         layout = self._on_resize_panes_get_layout(orientation, cells, relevant_index, orig_data, text)
         self.window.set_layout(layout)
 
-    def zoom_pane(self, fraction):
-        if fraction is None:
-            fraction = .9
+    def zoom_pane(self, auto_zoom):
+        # if fraction is None:
+        #     fraction = .9
+        fraction = .9
+        height = .9
+        # if isinstance(auto_zoom, float|int):
+        if isinstance(auto_zoom, float) or isinstance(auto_zoom, int):
+            fraction = auto_zoom
+        elif isinstance(auto_zoom, list):
+            fraction = auto_zoom[0]
+            height = auto_zoom[1]
 
         fraction = min(1, max(0, fraction))
+        height  = min(1, max(0, height))
 
         window = self.window
         rows, cols, cells = self.get_layout()
@@ -334,7 +343,8 @@ class PaneCommand(sublime_plugin.WindowCommand):
         current_row = current_cell[1]
         num_rows = len(rows) - 1
 
-        current_row_height = 1 if num_rows == 1 else fraction
+        # current_row_height = 1 if num_rows == 1 else fraction
+        current_row_height = 1 if num_rows == 1 else height
         other_row_height = 0 if num_rows == 1 else (1 - current_row_height) / (num_rows - 1)
         rows = [0.0]
         for i in range(num_rows):
