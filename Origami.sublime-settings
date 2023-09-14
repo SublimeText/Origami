@@ -24,9 +24,6 @@
     // Automatically close a pane once you've closed the last file in it.
     "auto_close_empty_panes": false,
 
-    // Automatically focus a pane when View.on_hover event.
-    "auto_focus_on_hover": false,
-
     // Destroy unused panes when switching away from them.
     "destroy_empty_panes": false,
 }
