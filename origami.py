@@ -838,26 +838,3 @@ class AutoZoomOnFocus(sublime_plugin.EventListener, WithSettings):
         self.running = True
 
         sublime.set_timeout(lambda: self.delayed_zoom(view, fraction), 0)
-
-
-class TravelToPaneOnMoveCommand(sublime_plugin.EventListener, WithSettings):
-
-    # I know there is Command.want_event can trigger some input function when mouse action.
-    # But there any sublime callback like on_mouse_move?
-    # View.on_hover Event callback
-    # this callback receive a view reference, and a text point (text length), 
-    # which can be conver to window position like this below:
-    #   view.text_to_window(txtpoint)
-    # hover_zone enum defined sublime.HoverZone under sublime Python 3.8
-    def on_hover(self, view, txtpoint, hover_zone):
-
-        if not self.settings().get("auto_focus_on_hover") : 
-            # or view.settings().get("origami_auto_focus_on_hover")
-            return
-
-        try:
-            window_id = sublime.active_window().window_id
-            sublime_api.window_focus_view(window_id, view.view_id)
-        except Exception as ex:
-            zones = ['TEXT', 'GUTTER', 'MARGIN']
-            print("on_hover error=>", ex, {"point": txtpoint, "hover_zone": zones[hover_zone-1]})
