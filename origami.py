@@ -312,8 +312,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
         self.window.set_layout(layout)
 
     def zoom_pane(self, auto_zoom):
-        fraction_horizontal = .9
-        fraction_vertical = .9
+        fraction_horizontal = fraction_vertical = .9
         
         if isinstance(auto_zoom, float) or isinstance(auto_zoom, int):
             fraction_horizontal = auto_zoom
