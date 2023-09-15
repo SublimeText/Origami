@@ -1,5 +1,4 @@
 import sublime
-# from sublime import HoverZone
 import sublime_api
 import sublime_plugin
 import copy
@@ -316,7 +315,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
         
         if isinstance(auto_zoom, float) or isinstance(auto_zoom, int):
             fraction_horizontal = auto_zoom
-        elif isinstance(auto_zoom, list):
+        elif isinstance(auto_zoom, list) and len(auto_zoom) == 2:
             if isinstance(auto_zoom[0], float) or isinstance(auto_zoom[0], int):
                 fraction_horizontal = auto_zoom[0]
             if isinstance(auto_zoom[1], float) or isinstance(auto_zoom[1], int):
