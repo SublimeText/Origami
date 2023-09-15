@@ -315,7 +315,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
         fraction_horizontal = fraction_vertical = .9
         
         if isinstance(auto_zoom, float) or isinstance(auto_zoom, int):
-            fraction_horizontal = auto_zoom
+            fraction_horizontal = fraction_vertical = auto_zoom
         elif isinstance(auto_zoom, list) and len(auto_zoom) == 2:
             if isinstance(auto_zoom[0], float) or isinstance(auto_zoom[0], int):
                 fraction_horizontal = auto_zoom[0]
