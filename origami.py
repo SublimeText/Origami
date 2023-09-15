@@ -1,5 +1,4 @@
 import sublime
-import sublime_api
 import sublime_plugin
 import copy
 from functools import partial
