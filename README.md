@@ -56,7 +56,6 @@ You can have Origami automatically zoom the active pane by setting `auto_zoom_on
 
 Origami can also automatically close a pane for you once you've closed the last file in it. Just set `auto_close_empty_panes` to true in the Origami preferences.
 
-
 Installation
 ------------
 
