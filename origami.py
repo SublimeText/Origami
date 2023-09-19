@@ -309,16 +309,16 @@ class PaneCommand(sublime_plugin.WindowCommand):
         layout = self._on_resize_panes_get_layout(orientation, cells, relevant_index, orig_data, text)
         self.window.set_layout(layout)
 
-    def zoom_pane(self, auto_zoom):
+    def zoom_pane(self, fraction):
         fraction_horizontal = fraction_vertical = .9
-        
-        if isinstance(auto_zoom, float) or isinstance(auto_zoom, int):
-            fraction_horizontal = fraction_vertical = auto_zoom
-        elif isinstance(auto_zoom, list) and len(auto_zoom) == 2:
-            if isinstance(auto_zoom[0], float) or isinstance(auto_zoom[0], int):
-                fraction_horizontal = auto_zoom[0]
-            if isinstance(auto_zoom[1], float) or isinstance(auto_zoom[1], int):
-                fraction_vertical = auto_zoom[1]
+
+        if isinstance(fraction, float) or isinstance(fraction, int):
+            fraction_horizontal = fraction_vertical = fraction
+        elif isinstance(fraction, list) and len(fraction) == 2:
+            if isinstance(fraction[0], float) or isinstance(fraction[0], int):
+                fraction_horizontal = fraction[0]
+            if isinstance(fraction[1], float) or isinstance(fraction[1], int):
+                fraction_vertical = fraction[1]
 
         fraction_horizontal = min(1, max(0, fraction_horizontal))
         fraction_vertical  = min(1, max(0, fraction_vertical))
