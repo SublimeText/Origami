@@ -17,7 +17,8 @@
 
     // Automatically zoom the active pane.
     // Set it to `true` for the default zoom, or to a user-definable
-    // fraction of the screen, such as "0.75".
+    // fraction of the screen, such as "0.75", or "[0.5, 0.6]" for
+    // horizontal and vertical correspondingly.
     "auto_zoom_on_focus": false,
 
     // Automatically close a pane once you've closed the last file in it.

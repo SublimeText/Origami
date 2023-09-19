@@ -1,7 +1,9 @@
 *.pyc
 *.cache
 *.sublime-project
+*.sublime-workspace
 *.hgignore
 *.hgtags
 *.DS_Store
+pyrightconfig.json
 package-metadata.json

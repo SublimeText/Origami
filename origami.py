@@ -310,10 +310,18 @@ class PaneCommand(sublime_plugin.WindowCommand):
         self.window.set_layout(layout)
 
     def zoom_pane(self, fraction):
-        if fraction is None:
-            fraction = .9
+        fraction_horizontal = fraction_vertical = .9
 
-        fraction = min(1, max(0, fraction))
+        if isinstance(fraction, float) or isinstance(fraction, int):
+            fraction_horizontal = fraction_vertical = fraction
+        elif isinstance(fraction, list) and len(fraction) == 2:
+            if isinstance(fraction[0], float) or isinstance(fraction[0], int):
+                fraction_horizontal = fraction[0]
+            if isinstance(fraction[1], float) or isinstance(fraction[1], int):
+                fraction_vertical = fraction[1]
+
+        fraction_horizontal = min(1, max(0, fraction_horizontal))
+        fraction_vertical  = min(1, max(0, fraction_vertical))
 
         window = self.window
         rows, cols, cells = self.get_layout()
@@ -324,7 +332,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 
         # TODO: the sizes of the unzoomed panes are calculated incorrectly if the
         #       unzoomed panes have a split that overlaps the zoomed pane.
-        current_col_width = 1 if num_cols == 1 else fraction
+        current_col_width = 1 if num_cols == 1 else fraction_horizontal
         other_col_width = 0 if num_cols == 1 else (1 - current_col_width) / (num_cols - 1)
 
         cols = [0.0]
@@ -334,7 +342,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
         current_row = current_cell[1]
         num_rows = len(rows) - 1
 
-        current_row_height = 1 if num_rows == 1 else fraction
+        current_row_height = 1 if num_rows == 1 else fraction_vertical
         other_row_height = 0 if num_rows == 1 else (1 - current_row_height) / (num_rows - 1)
         rows = [0.0]
         for i in range(num_rows):

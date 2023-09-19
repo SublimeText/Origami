@@ -52,7 +52,7 @@ In the keybindings you can change a `mode` which specifies which separation line
 Automation
 ----------
 
-You can have Origami automatically zoom the active pane by setting `auto_zoom_on_focus` in your Origami user preferences. Set it to `true` for the default zoom, or set it to a user-definable fraction of the screen, such as `0.75`.
+You can have Origami automatically zoom the active pane by setting `auto_zoom_on_focus` in your Origami user preferences. Set it to `true` for the default zoom, or set it to a user-definable fraction of the screen, such as `0.75`, or `[0.5, 0.6]` for horizontal and vertical correspondingly.
 
 Origami can also automatically close a pane for you once you've closed the last file in it. Just set `auto_close_empty_panes` to true in the Origami preferences.
 
