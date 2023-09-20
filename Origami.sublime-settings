@@ -20,7 +20,10 @@
     // fraction of the screen, such as "0.75", or "[0.5, 0.6]" for
     // horizontal and vertical correspondingly.
     "auto_zoom_on_focus": false,
-
+    
+    // Automatically focus a pane when View.on_hover event.
+    "auto_focus_on_hover": false,
+ 
     // Automatically close a pane once you've closed the last file in it.
     "auto_close_empty_panes": false,
 
