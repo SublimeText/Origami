@@ -373,7 +373,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
         window.set_layout(layout)
 
     def toggle_zoom(self, fraction):
-        rows, cols, cells = self.get_layout()
+        rows, cols, _ = self.get_layout()
         equal_spacing = True
 
         num_cols = len(cols) - 1
@@ -749,6 +749,33 @@ class NewWindowWithCurrentLayoutCommand(PaneCommand):
         self.window.run_command("new_window")
         new_window = sublime.active_window()
         new_window.set_layout(layout)
+
+class NewWindowWithFavouriteLayoutCommand(PaneCommand, WithSettings):
+    """Opens a new window using the favourite layout settings."""
+
+    def __init__(self, window):
+        self.window = window
+        super(NewWindowWithFavouriteLayoutCommand, self).__init__(window)
+
+    def run(self):
+        if not self.settings().has('saved_layouts'):
+            return
+
+        saved_layouts = self.settings().get('saved_layouts')
+        favourite_layout = next(
+            (layout for layout in saved_layouts if layout['favourite']), None)
+
+        if favourite_layout:
+            layout = {
+                'cells': favourite_layout['cells'],
+                'cols': favourite_layout['cols'],
+                'rows': favourite_layout['rows']
+            }  # type: sublime.Layout
+
+            self.window.run_command("new_window")
+            new_window = sublime.active_window()
+            if new_window.is_valid():
+                new_window.set_layout(layout)
 
 
 class AutoCloseEmptyPanes(sublime_plugin.EventListener, WithSettings):
