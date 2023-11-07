@@ -1,3 +1,5 @@
+.tox
+.ruff_cache
 *.pyc
 *.cache
 *.sublime-project

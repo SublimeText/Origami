@@ -1,0 +1,6 @@
+.gitattributes export-ignore
+.github export-ignore
+.gitignore export-ignore
+mypy.ini export-ignore
+pyproject.toml export-ignore
+tox.ini export-ignore

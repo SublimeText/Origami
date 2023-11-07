@@ -321,7 +321,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
                 fraction_vertical = fraction[1]
 
         fraction_horizontal = min(1, max(0, fraction_horizontal))
-        fraction_vertical  = min(1, max(0, fraction_vertical))
+        fraction_vertical = min(1, max(0, fraction_vertical))
 
         window = self.window
         rows, cols, cells = self.get_layout()
